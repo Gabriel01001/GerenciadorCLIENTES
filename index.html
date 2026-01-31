@@ -237,7 +237,10 @@
             <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:28px;" onclick="fecharModal('modal-edit')">&times;</span> 
             <h3 style="margin-top:0; color:#3b82f6">Editar: <span id="edit-user-display"></span></h3> 
             <div class="form-grid"> 
-                <div class="full-width"><label style="font-size:11px; font-weight:bold;">Nova Senha:</label><input type="text" id="edit-pass"></div> 
+                <div class="full-width">
+                    <label style="font-size:11px; font-weight:bold;">Senha (Deixe vazio para não alterar):</label>
+                    <input type="text" id="edit-pass" placeholder="Redefinir senha...">
+                </div> 
                 <div class="full-width"><label style="font-size:11px; font-weight:bold;">Vencimento:</label><input type="text" id="edit-date" placeholder="DD/MM/AAAA"></div> 
                 <div class="full-width"><label style="font-size:11px; font-weight:bold;">WhatsApp:</label><input type="text" id="edit-wa"></div> 
                 <div class="full-width"><label style="font-size:11px; font-weight:bold;">Valor:</label><input type="text" id="edit-val"></div> 
@@ -329,8 +332,17 @@
                         diff = Math.ceil((dV - hoje) / 86400000);
                         if(diff < 0 && !dados.isMaster) { msg.innerText = "Acesso expirado."; localStorage.removeItem(SESSION_KEY); btn.disabled = false; txt.style.display = 'block'; loader.style.display = 'none'; return; }
                     }
-                    currentUserData = dados; currentUserData.pass = p; 
-                    localStorage.setItem(SESSION_KEY, JSON.stringify({user: u, pass: p}));
+                    currentUserData = dados; 
+                    // Se a senha veio no login, atualizamos (pode ser útil se houver troca)
+                    if(dados.pass) {
+                        currentUserData.pass = dados.pass;
+                        localStorage.setItem(SESSION_KEY, JSON.stringify({user: u, pass: dados.pass}));
+                    } else {
+                        // Se não veio, usa a que digitamos
+                        currentUserData.pass = p;
+                        localStorage.setItem(SESSION_KEY, JSON.stringify({user: u, pass: p}));
+                    }
+
                     if(!db[u]) db[u] = {links:[], salvos:[], naoSalvos: []};
                     
                     document.getElementById('login-screen').classList.add('hidden');
@@ -473,10 +485,11 @@
             });
         }
 
-        function abrirModalEdit(user, pass, date, wa, val, role) {
+        // --- NOVA FUNÇÃO DE ABRIR EDIÇÃO (SEM MOSTRAR SENHA) ---
+        function abrirModalEdit(user, date, wa, val, role) {
             userEditing = user;
             document.getElementById('edit-user-display').innerText = user;
-            document.getElementById('edit-pass').value = pass;
+            document.getElementById('edit-pass').value = ""; // Senha vazia por segurança
             document.getElementById('edit-date').value = date;
             document.getElementById('edit-wa').value = wa;
             document.getElementById('edit-val').value = val;
@@ -488,9 +501,13 @@
         async function salvarEdicao() {
             const btn = document.getElementById('btn-save-edit');
             const msg = document.getElementById('msg-edit');
+            
+            // Se o campo senha estiver vazio, não enviamos nada (backend ignora)
+            const novaSenha = document.getElementById('edit-pass').value.trim();
+            
             const payload = {
                 userOriginal: userEditing,
-                pass: document.getElementById('edit-pass').value,
+                pass: novaSenha, 
                 date: document.getElementById('edit-date').value,
                 wa: document.getElementById('edit-wa').value,
                 val: document.getElementById('edit-val').value,
@@ -508,12 +525,9 @@
         // --- FUNÇÃO AUXILIAR PARA LER DATA PT-BR (COM HORA) ---
         function parsePtBrDate(str) {
             if(!str) return null;
-            // Espera "dd/mm/aaaa hh:mm" ou "dd/mm/aaaa"
             let parts = str.split(' ');
             let datePart = parts[0].split('/');
             let timePart = parts.length > 1 ? parts[1].split(':') : ['00', '00'];
-            
-            // Cria data (Mes começa do 0 em JS)
             return new Date(datePart[2], datePart[1]-1, datePart[0], timePart[0], timePart[1]);
         }
 
@@ -536,7 +550,7 @@
                     const hoje = new Date(); hoje.setHours(0,0,0,0); 
                     if(dados.length === 0) { lista.innerHTML = '<p style="text-align:center; color:#666;">Nenhum usuário.</p>'; return; } 
                     
-                    const hiddenCols = ['pass', 'valor', 'criador', 'pix', 'cargo', 'cadastro', 'volor revenda', 'valor revenda'];
+                    const hiddenCols = ['pass', 'senha', 'valor', 'criador', 'pix', 'cargo', 'cadastro', 'volor revenda', 'valor revenda'];
                     
                     let html = `<div class="table-responsive"><table class="admin-table"><thead><tr><th style="width: 50px;">Status</th>`; 
                     
@@ -550,39 +564,46 @@
                     
                     const isSubAdmin = currentUserData.cargo === 'Sub-Admin'; 
                     dados.forEach((row) => { 
-                        const dateVal = row[2]; 
-                        const userRole = row[5]; 
-                        let statusText = ""; let displayStatusDot = "status-active"; let statusBtn = ''; 
-                        const uUser = row[0] || ""; const uWa = row[3] || ""; const statusAcc = row[8] || "Ativo"; const statusIcon = statusAcc === 'Pendente' ? '⏳' : (statusAcc === 'Bloqueado' ? '🚫' : (statusAcc === 'Expirado' ? '🛑' : '✅')); 
+                        // Mapeamento baseado no array vindo do backend
+                        // Ordem: 0=User, 1=Pass, 2=Date, 3=Wa, 4=Val, 5=Role, 6=Pix, 7=Status, 8=Creator
+                        const uUser = row[0] || ""; 
+                        const uPass = row[1] || ""; // Agora vem "******"
+                        const uDate = row[2] || "";
+                        const uWa   = row[3] || "";
+                        const uVal  = row[4] || "";
+                        const uRole = row[5] || "";
+                        const uPix  = row[6] || "";
+                        const uStatus = row[7] || "Ativo";
+                        const uCreator = row[8] || "";
                         
-                        // LÓGICA DE STATUS (COM VERIFICAÇÃO DE HORA PARA TESTE)
-                        if (userRole === 'Teste') { 
+                        let statusText = ""; let displayStatusDot = "status-active"; let statusBtn = '';
+                        const statusIcon = uStatus === 'Pendente' ? '⏳' : (uStatus === 'Bloqueado' ? '🚫' : (uStatus === 'Expirado' ? '🛑' : '✅')); 
+                        
+                        // LÓGICA DE STATUS
+                        if (uRole === 'Teste') { 
                             let isExpired = false;
-                            
-                            // Se já tiver marcado como expirado na planilha
-                            if (statusAcc === 'Expirado') isExpired = true;
+                            if (uStatus === 'Expirado') isExpired = true;
                             else {
-                                // Verifica a hora atual vs hora do teste
-                                const dTeste = parsePtBrDate(dateVal);
+                                const dTeste = parsePtBrDate(uDate);
                                 const agora = new Date();
                                 if (dTeste && dTeste < agora) isExpired = true;
                             }
 
                             if (isExpired) { 
                                 displayStatusDot = "status-expired"; 
-                                statusText = "Vencido"; // Muda texto para Vencido
+                                statusText = "Vencido"; 
                             } else { 
                                 displayStatusDot = "status-test"; 
                                 statusText = "Teste"; 
                             } 
                         } 
-                        else if (dateVal === 'Vitalício') {
+                        else if (uDate === 'Vitalício') {
                              displayStatusDot = "status-active"; statusText = "Vitalício";
                         }
                         else { 
-                            if (statusAcc === 'Expirado') { displayStatusDot = "status-expired"; statusText = "Expirado"; } 
+                            if (uStatus === 'Expirado') { displayStatusDot = "status-expired"; statusText = "Expirado"; } 
                             else { 
-                                const dV = formatarData(dateVal); dV.setHours(0,0,0,0); 
+                                const dV = formatarData(uDate); dV.setHours(0,0,0,0); 
                                 const diff = Math.ceil((dV - hoje) / 86400000); 
                                 if (isNaN(diff)) { statusText = "-"; } 
                                 else { 
@@ -592,8 +613,8 @@
                             } 
                         } 
                         
-                        if (isSubAdmin) { statusBtn = `<button class="status-btn btn-auto" style="width:35px; height:35px; padding:0; font-size:16px; cursor: not-allowed; opacity: 0.6;" title="Status: ${statusAcc}">${statusIcon}</button>`; } 
-                        else { statusBtn = `<button class="status-btn btn-auto" style="width:35px; height:35px; padding:0; font-size:16px;" title="Alterar Status (${statusAcc})" onclick="alterarStatus('${uUser}')">${statusIcon}</button>`; } 
+                        if (isSubAdmin) { statusBtn = `<button class="status-btn btn-auto" style="width:35px; height:35px; padding:0; font-size:16px; cursor: not-allowed; opacity: 0.6;" title="Status: ${uStatus}">${statusIcon}</button>`; } 
+                        else { statusBtn = `<button class="status-btn btn-auto" style="width:35px; height:35px; padding:0; font-size:16px;" title="Alterar Status (${uStatus})" onclick="alterarStatus('${uUser}')">${statusIcon}</button>`; } 
                         const renewBtn = `<button class="renew-btn btn-auto" style="width:35px; height:35px; padding:0; font-size:16px;" title="Renovar" onclick="clickRenovar('${uUser}')">📅</button>`; 
                         
                         html += `<tr><td><span class="status-dot ${displayStatusDot}" title="${statusText}"></span><small>${statusText}</small></td>`; 
@@ -605,8 +626,8 @@
                             html += `<td ${hiddenClass}>${cell}</td>`; 
                         }); 
                         
-                        const uPass = row[1]; const uDate = row[2]; const uVal = row[4];
-                        html += `<td><div style="display:flex; gap:5px;">${statusBtn}${renewBtn}<button class="chat-btn btn-auto" style="width:35px; height:35px; padding:0; font-size:16px;" title="Chat" onclick="window.open('https://wa.me/55${String(uWa).replace(/\D/g,'')}')">💬</button><button class="vip-btn btn-auto" style="width:35px; height:35px; padding:0; font-size:16px;" title="Enviar Dados" onclick="prepararEnvioWhatsApp('${uUser}','${uPass}','${uWa}','${uDate}','${uVal}')">📨</button><button class="edit-btn btn-auto" style="width:35px; height:35px; padding:0; font-size:16px;" title="Editar" onclick="abrirModalEdit('${uUser}','${uPass}','${uDate}','${uWa}','${uVal}', '${userRole}')">✏️</button></div></td></tr>`; 
+                        // IMPORTANTE: Passamos uRole para abrirModalEdit
+                        html += `<td><div style="display:flex; gap:5px;">${statusBtn}${renewBtn}<button class="chat-btn btn-auto" style="width:35px; height:35px; padding:0; font-size:16px;" title="Chat" onclick="window.open('https://wa.me/55${String(uWa).replace(/\D/g,'')}')">💬</button><button class="vip-btn btn-auto" style="width:35px; height:35px; padding:0; font-size:16px;" title="Enviar Dados" onclick="prepararEnvioWhatsApp('${uUser}','******','${uWa}','${uDate}','${uVal}')">📨</button><button class="edit-btn btn-auto" style="width:35px; height:35px; padding:0; font-size:16px;" title="Editar" onclick="abrirModalEdit('${uUser}','${uDate}','${uWa}','${uVal}', '${uRole}')">✏️</button></div></td></tr>`; 
                     }); 
                     html += `</tbody></table></div>`; lista.innerHTML = html; 
                     
@@ -623,8 +644,6 @@
         function prepararEnvioAposCriacao() { fecharModalSucessoCriacao(); prepararEnvioWhatsApp(tempUser, tempPass, tempWa, tempDate, tempVal); }
         function prepararEnvioWhatsApp(u, p, w, d, v) { tempUser = u; tempPass = p; tempWa = w; tempDate = d; tempVal = v; document.getElementById('send-dest').innerText = u; const previewHtml = `👤 <b>Usuário:</b> ${u}<br>🔑 <b>Senha:</b> ${p}<br>📅 <b>Vencimento:</b> ${d}<br>🌐 <b>Site:</b> www.gerenciadorwa.com.br`; document.getElementById('preview-msg-content').innerHTML = previewHtml; document.getElementById('whatsapp-extra-msg').value = ""; document.getElementById('modal-send-whatsapp').classList.add('show'); }
         function finalizarEnvioWhatsApp() { const extra = document.getElementById('whatsapp-extra-msg').value; const quebra = extra ? `\n\n${extra}` : ""; const msg = `🔐 *Seu Acesso Gerenciador |WA|*\n\n👤 *Usuário:* ${tempUser}\n🔑 *Senha:* ${tempPass}\n📅 *Vencimento:* ${tempDate}\n🌐 *Site:* www.gerenciadorwa.com.br${quebra}`; window.open(`https://wa.me/55${String(tempWa).replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`); fecharModal('modal-send-whatsapp'); }
-        function abrirModalEdit(user, pass, date, wa, val) { userEditing = user; document.getElementById('edit-user-display').innerText = user; document.getElementById('edit-pass').value = pass; document.getElementById('edit-date').value = date; document.getElementById('edit-wa').value = wa; document.getElementById('edit-val').value = val; document.getElementById('msg-edit').innerText = ''; document.getElementById('modal-edit').classList.add('show'); }
-        async function salvarEdicao() { const btn = document.getElementById('btn-save-edit'); const msg = document.getElementById('msg-edit'); const payload = { userOriginal: userEditing, pass: document.getElementById('edit-pass').value, date: document.getElementById('edit-date').value, wa: document.getElementById('edit-wa').value, val: document.getElementById('edit-val').value }; btn.disabled = true; btn.innerText = "Atualizando..."; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'edit_user', user: currentUserData.user, pass: currentUserData.pass, dadosEditados: payload }) }); const res = await req.json(); if(res.success) { alert("Atualizado!"); fecharModal('modal-edit'); abrirAdminPanel(); } else { msg.innerText = res.msg; } } catch(e) { msg.innerText = "Erro."; } finally { btn.disabled = false; btn.innerText = "💾 Atualizar Dados"; } }
         function filtrarUsuarios() { const termo = document.getElementById('search-user').value.toLowerCase(); const linhas = document.querySelectorAll('.admin-table tbody tr'); linhas.forEach(tr => { const texto = tr.innerText.toLowerCase(); tr.style.display = texto.includes(termo) ? '' : 'none'; }); }
         function abrirModalRenovar() { let chave = currentUserData.pix; if (!chave || chave === "undefined") chave = "Chave não cadastrada"; document.getElementById('pix-display').innerText = chave; document.getElementById('modal-renovar').classList.add('show'); }
         function copiarPixReal() { const t = document.getElementById('pix-display').innerText; if(navigator.clipboard) { navigator.clipboard.writeText(t).then(()=>alert("Copiado!")); } else { const el = document.createElement("input"); el.value = t; document.body.appendChild(el); el.select(); document.execCommand("copy"); document.body.removeChild(el); alert("Copiado!"); } }
@@ -638,7 +657,6 @@
         function lerArquivoSalvos(i) { const r=new FileReader(); r.onload=(e)=>{if(!db[currentUserData.user].salvos) db[currentUserData.user].salvos=[]; const linhas = e.target.result.split('\n'); const novos = linhas.filter(l => l.trim() && !db[currentUserData.user].salvos.includes(l.trim())); db[currentUserData.user].salvos.push(...novos); renderizar();}; r.readAsText(i.files[0]); i.value=''; }
         function tratarAberturaLink(idx, link) { if (lastOpenedLink) { if(!db[currentUserData.user].naoSalvos) db[currentUserData.user].naoSalvos = []; db[currentUserData.user].naoSalvos.push(lastOpenedLink); } lastOpenedLink = link; if(link.includes('http')) { window.open(link); } else { window.open(`whatsapp://send?phone=55${link.replace(/\D/g,'')}`); } db[currentUserData.user].links.splice(idx, 1); document.getElementById('last-link-opened').innerText = link; document.getElementById('save-prompt').style.display = 'flex'; renderizar(); }
         function confirmarSalvamento(sim) { const u = currentUserData.user; if(!db[u].salvos) db[u].salvos=[]; if(!db[u].naoSalvos) db[u].naoSalvos=[]; if(sim && lastOpenedLink) { db[u].salvos.push(lastOpenedLink); } else if (!sim && lastOpenedLink) { db[u].naoSalvos.push(lastOpenedLink); } document.getElementById('save-prompt').style.display = 'none'; lastOpenedLink = ""; renderizar(); }
-        function toggleAuto() { /* ... */ }
     </script>
 </body>
 </html>
