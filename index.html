@@ -1,4 +1,238 @@
-<div id="modal-edit" class="modal-overlay" style="z-index: 1002;"> 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gerenciador |WA|</title>
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%2310b981%22/><text x=%2250%22 y=%2250%22 font-size=%2260%22 text-anchor=%22middle%22 dy=%22.35em%22>⚡</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%2310b981%22/><text x=%2250%22 y=%2250%22 font-size=%2260%22 text-anchor=%22middle%22 dy=%22.35em%22>⚡</text></svg>">
+    
+    <meta name="theme-color" content="#10b981">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --primary: #10b981; --dark: #064e3b; --bg: #f3f4f6; --text: #1f2937; --danger: #ef4444; --card: #fff; --radius: 12px; --blue: #3b82f6; --gold: #f59e0b; --gray: #6b7280; --purple: #8b5cf6; }
+        body.dark-mode { --bg: #111827; --text: #f9fafb; --card: #1f2937; }
+        * { box-sizing: border-box; } 
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 10px; transition: 0.3s; }
+        .container { max-width: 900px; margin: 0 auto; background: var(--card); padding: 15px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .hidden { display: none !important; }
+        input, textarea, select { width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #e5e7eb; border-radius: var(--radius); font-family: inherit; background: #f9fafb; color: #333; font-size: 14px; }
+        body.dark-mode input, body.dark-mode select, body.dark-mode textarea { background: #374151; color: white; border-color: #4b5563; }
+        button { width: 100%; padding: 12px; border: none; border-radius: var(--radius); background: var(--primary); color: white; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; }
+        button:hover { filter: brightness(0.9); transform: translateY(-1px); }
+        button.secondary { background: #e5e7eb; color: #333; }
+        button.danger { background: var(--danger); }
+        button.edit-btn { background: #3b82f6; color: white; }
+        button.status-btn { background: var(--gold); color: white; border: 1px solid #d97706; }
+        button.test-btn { background: #8b5cf6; color: white; }
+        button.admin-btn { background: var(--text); color: var(--card); }
+        button.chat-btn { background: #25d366; color: white; }
+        button.renew-btn { background: #8b5cf6; color: white; }
+        button.vip-btn { background: #fffbeb; color: #b45309; border: 1px solid #fcd34d; }
+        .btn-auto { width: auto !important; padding: 8px 16px; font-size: 13px; margin: 3px; flex-shrink: 0; }
+        
+        .tutorial-btn-orange { background: linear-gradient(135deg, #fb923c, #ea580c); color: white; border: none; padding: 8px 20px; font-size: 12px; border-radius: 25px; box-shadow: 0 4px 10px rgba(234, 88, 12, 0.4); transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .tutorial-btn-orange:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(234, 88, 12, 0.6); filter: brightness(1.1); }
+        .tutorial-card { background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05); border-radius: 15px; padding: 15px; margin-bottom: 20px; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        body.dark-mode .tutorial-card { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+        .tutorial-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .tut-title-text { font-weight: 700; color: var(--primary); margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .card { background: var(--card); border: 1px solid #e5e7eb; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; border-radius: var(--radius); align-items: center; gap: 10px; overflow: hidden; }
+        .link-text { flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 13px; min-width: 0; word-break: break-all; }
+        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:none; justify-content:center; align-items:center; z-index:1000; backdrop-filter: blur(4px); padding: 20px; }
+        .modal-overlay.show { display:flex; }
+        
+        .modal-content { background:var(--card); padding: 20px; border-radius:20px; width: 100%; max-width: 400px; position:relative; color: var(--text); max-height: 80vh; overflow-y: auto; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+        
+        @media (min-width: 768px) {
+            #modal-admin .modal-content {
+                max-width: 1400px; 
+                width: 98%;
+            }
+        }
+
+        .pay-card { text-align: center; border: 2px solid #10b981; border-radius: 15px; padding: 15px; background: rgba(16, 185, 129, 0.1); margin-bottom: 15px; }
+        .pay-key { font-family: monospace; font-size: 13px; background: var(--bg); padding: 10px; border-radius: 8px; border: 1px dashed #ccc; margin: 15px 0; word-break: break-all; }
+        
+        .table-responsive { overflow-x: auto; border: 1px solid #eee; border-radius: 10px; margin-top: 10px; }
+        .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 700px; }
+        .admin-table th { background: #f3f4f6; color: #374151; padding: 12px; text-align: center !important; font-weight: 700; border-bottom: 2px solid #e5e7eb; white-space: nowrap; }
+        .admin-table td { padding: 10px; border-bottom: 1px solid #eee; vertical-align: middle; white-space: nowrap; text-align: center !important; }
+        .admin-table tr:hover { background: rgba(0,0,0,0.02); }
+        
+        .col-extra { display: none; }
+        
+        .status-dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+        .status-active { background-color: #10b981; }
+        .status-expired { background-color: #ef4444; }
+        .status-pending { background-color: #f59e0b; }
+        .status-test { background-color: #06b6d4; box-shadow: 0 0 6px #06b6d4; }
+        .theme-toggle { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; border-radius: 50%; padding: 0; background: var(--primary); color: white; border: none; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-size: 24px; }
+        .save-prompt { background: #eff6ff; color: #1e40af; padding: 10px; border-radius: var(--radius); border: 1px dashed #3b82f6; margin-top: 10px; display: none; align-items: center; justify-content: space-between; gap: 8px; }
+        .pagination-ctrl { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 15px; margin-bottom: 20px; font-size: 13px; }
+        .loader { border: 3px solid rgba(0,0,0,0.1); border-top: 3px solid var(--primary); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: none; margin: 0 auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .full-width { grid-column: span 2; }
+        .discarded-section { margin-top: 30px; border-top: 2px dashed #e5e7eb; padding-top: 20px; }
+        .card-discarded { border-left: 4px solid var(--gray); opacity: 0.8; }
+        .msg-box { min-height: 60px; resize: vertical; margin-bottom: 15px; }
+        .tutorial-step { text-align: left; margin-bottom: 15px; background: rgba(0,0,0,0.03); padding: 10px; border-radius: 10px; font-size: 13px; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border-radius: 10px; background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .timer-badge { background: #ef4444; color: white; padding: 2px 8px; border-radius: 5px; font-size: 12px; font-weight: bold; margin-left: 5px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
+    <div class="container">
+        <div id="login-screen" style="text-align: center; max-width: 400px; margin: 40px auto;">
+            <div style="background: var(--primary); width: 60px; height: 60px; border-radius: 15px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 30px; color: white;">⚡</div>
+            <h2 style="font-weight: 700;">Gerenciador <span>|WA|</span></h2>
+            <input type="text" id="user" placeholder="Usuário">
+            <input type="password" id="pass" placeholder="Senha">
+            <button onclick="conectarBanco()" id="btn-login">
+                <span id="txt-login">Entrar</span>
+                <div class="loader" id="loader-login"></div>
+            </button>
+            <p id="msg-login" style="color: red; font-size: 14px; margin-top: 10px; font-weight: 600;"></p>
+            <button onclick="window.open('https://wa.me/5521970458286')" class="secondary btn-auto" style="margin-top:20px;">💬 Suporte Técnico</button>
+            <div style="margin-top: 40px; font-size: 11px; opacity: 0.6; color: var(--text);"><p style="margin:0;">&copy; 2026 Gerenciador |WA|</p><p style="margin:2px 0 0 0;">Dev: <b>Gabriel Martins</b></p></div>
+        </div>
+
+        <div id="app-screen" class="hidden">
+            <div class="header">
+                <div style="max-width: 70%;">
+                    <h3 id="ola-user" style="margin:0; font-size: 18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">...</h3>
+                    <small id="status-acesso"></small>
+                    <div style="margin-top: 10px;">
+                        <button class="tutorial-btn-orange btn-auto" onclick="abrirTutoriais()">📺 Tutoriais</button>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 5px; align-items: flex-end;">
+                    <button id="btn-open-admin" class="admin-btn btn-auto hidden" onclick="abrirAdminPanel()">⚙️ Master</button>
+                    <button onclick="logout()" class="danger btn-auto">Sair</button>
+                </div>
+            </div>
+
+            <div id="file-download-card" class="card" style="background: #eff6ff; border: 1px solid #bfdbfe; display: none; color: #1f2937 !important;">
+                <div style="display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                    <span style="font-size: 24px;">📥</span>
+                    <div style="overflow: hidden;">
+                        <div style="font-weight: bold; font-size: 14px; color: #1f2937;" id="file-title">Arquivo</div>
+                        <div style="font-size: 11px; color: #4b5563; white-space: nowrap;">Atualizado: <span id="file-date"></span></div>
+                    </div>
+                </div>
+                <button id="btn-download-file" onclick="baixarArquivoGeral()" class="btn-auto" style="background: #3b82f6;">Baixar</button>
+            </div>
+
+            <div id="vencimento-alert" class="card" style="background: #fff7ed; border: 1px solid #fdba74; display: none; margin-bottom: 20px; padding: 15px;">
+                <div style="display:flex; align-items:center; gap:5px; justify-content: space-between; width: 100%;">
+                    <span style="color:#333; font-size: 12px;">⚠️ Expira em <span id="dias-restantes-alerta" style="font-weight: bold;">0</span> dias.</span>
+                    <button onclick="abrirModalRenovar()" class="vip-btn btn-auto">Renovar</button>
+                </div>
+            </div>
+
+            <div style="background: rgba(0,0,0,0.03); padding: 15px; border-radius: var(--radius); margin-bottom: 20px; border: 1px solid #e5e7eb;">
+                <h4 style="margin: 0 0 10px 0;">📥 Adicionar Dados</h4>
+                <textarea id="links-input" rows="1" placeholder="Cole links ou números..."></textarea>
+                <div style="display: flex; gap: 8px;">
+                    <button onclick="addLinks()" class="btn-auto">Carregar</button>
+                    <button onclick="document.getElementById('file').click()" class="secondary btn-auto">📂 Arquivo</button>
+                    <input type="file" id="file" accept=".txt" hidden onchange="lerArquivo(this)">
+                </div>
+                <div id="save-prompt" class="save-prompt">
+                    <div style="overflow: hidden; flex: 1;"><span style="font-size: 12px; font-weight: bold;">Salvar anterior?</span><div id="last-link-opened" style="font-size: 10px; opacity: 0.7; overflow: hidden; text-overflow: ellipsis;"></div></div>
+                    <div style="display: flex; gap: 6px;"><button onclick="confirmarSalvamento(true)" class="btn-auto" style="padding: 6px 12px;">Sim</button><button onclick="confirmarSalvamento(false)" class="secondary btn-auto" style="padding: 6px 12px;">Não</button></div>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h4 style="color: var(--primary); margin:0;">Pendentes (<span id="count-pend">0</span>)</h4>
+                <button onclick="limparPendentes()" class="danger btn-auto" style="padding: 6px 12px; font-size: 11px;">🗑️ Limpar</button>
+            </div>
+            <div id="lista-pendentes"></div><div id="paginacao-pend" class="pagination-ctrl"></div>
+            
+            <h4 style="color: var(--blue);">Salvos (<span id="count-saved">0</span>)</h4>
+            <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                <button onclick="baixarSalvos()" class="secondary btn-auto">📥 Extrair</button>
+                <button onclick="document.getElementById('file-saved').click()" class="secondary btn-auto">📂 Arquivo</button>
+                <input type="file" id="file-saved" accept=".txt" hidden onchange="lerArquivoSalvos(this)">
+                <button onclick="limparSalvos()" class="danger btn-auto">🗑️ Limpar</button>
+            </div>
+            <div id="lista-salvos"></div><div id="paginacao-salv" class="pagination-ctrl"></div>
+
+            <div class="discarded-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <h4 style="color: var(--gray); margin:0;">Não Salvos (<span id="count-discarded">0</span>)</h4>
+                    <button onclick="limparDescartados()" class="danger btn-auto" style="padding: 6px 12px; font-size: 11px;">🗑️ Limpar</button>
+                </div>
+                <div id="lista-descartados"></div><div id="paginacao-desc" class="pagination-ctrl"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-admin" class="modal-overlay">
+        <div class="modal-content">
+            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:28px;" onclick="fecharModal('modal-admin')">&times;</span>
+            <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom:15px;">
+                <h2 style="color: var(--dark); font-size: 20px; margin:0;">⚙️ Gestão Master</h2>
+                <div style="display:flex; gap:8px;"><button class="secondary btn-auto" onclick="abrirAdminPanel()">🔄</button><button class="chat-btn btn-auto" onclick="abrirModalCreate()">➕ Novo</button></div>
+            </div>
+            
+            <div id="admin-msg-area" style="background:#fff7ed; border:1px dashed #f97316; padding:15px; border-radius:8px; margin-bottom:10px;">
+                <div style="font-size:12px; font-weight:bold; margin-bottom:8px; color:#c2410c;">🔔 Mensagem Global (Popup)</div>
+                <textarea id="global-msg-input" rows="2" placeholder="Escreva um aviso para todos os usuários..." style="margin-bottom:5px; font-size:12px;"></textarea>
+                <button class="btn-auto" style="background:#f97316; width:100% !important;" onclick="salvarMensagem()">Enviar Aviso</button>
+            </div>
+
+            <div id="upload-section-geral" style="background:#f9fafb; border:1px dashed #ccc; padding:15px; border-radius:8px; margin-bottom:10px;">
+                <div style="font-size:12px; font-weight:bold; margin-bottom:8px; color:#333;">📁 Arquivo OFICIAL (Todos)</div>
+                <div style="display:flex; gap:8px;"><input type="file" id="admin-file-upload" style="margin:0; padding:8px; font-size:12px; color:#333; width: 100%;"><button class="btn-auto" onclick="fazerUploadArquivo('geral')">Enviar</button></div>
+            </div>
+
+            <div id="upload-section-teste" style="background:#f0fdf4; border:1px dashed #16a34a; padding:15px; border-radius:8px; margin-bottom:20px;">
+                <div style="font-size:12px; font-weight:bold; margin-bottom:8px; color:#15803d;">🧪 Arquivo TESTE (Apenas Testes)</div>
+                <div style="display:flex; gap:8px;"><input type="file" id="admin-file-test" style="margin:0; padding:8px; font-size:12px; color:#333; width: 100%;"><button class="btn-auto" style="background:#16a34a;" onclick="fazerUploadArquivo('teste')">Enviar</button></div>
+            </div>
+            
+            <div id="upload-status" style="font-size:11px; color:#666; margin-bottom:10px;"></div>
+            
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                <input type="checkbox" id="toggle-details" onchange="toggleDetalhes()">
+                <label for="toggle-details" style="font-size:13px; cursor:pointer;">👁️ Mostrar Detalhes (Senha, Pix, etc)</label>
+            </div>
+
+            <input type="text" id="search-user" placeholder="🔍 Pesquisar usuário..." onkeyup="filtrarUsuarios()" style="margin-bottom: 15px;">
+            <div id="admin-users-list"></div>
+        </div>
+    </div>
+
+    <div id="modal-tutorials" class="modal-overlay" style="z-index: 1500;">
+        <div class="modal-content">
+            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:28px;" onclick="fecharModal('modal-tutorials')">&times;</span>
+            <h3 style="margin-top:0; color:var(--primary); font-size: 20px;">📺 Central de Ajuda</h3>
+            <div id="admin-tutorial-area" style="background:#fff7ed; padding:10px; border-radius:10px; margin-bottom:15px; border:1px dashed #f97316; display:none;">
+                <h4 style="margin:0 0 10px 0; font-size:12px; color:#c2410c;">➕ Adicionar Vídeo (Admin)</h4>
+                <input type="text" id="tut-title" placeholder="Título do Vídeo" style="font-size:12px; padding:8px;">
+                <input type="text" id="tut-link" placeholder="Link do YouTube/Drive" style="font-size:12px; padding:8px;">
+                <button onclick="salvarTutorial()" class="btn-auto" style="background:#f97316; width:100% !important;">Salvar Vídeo</button>
+            </div>
+            <div id="tutorials-list" style="text-align:left; padding-bottom: 10px;"><p style="text-align:center; color:#666; font-size:13px;">Carregando...</p></div>
+        </div>
+    </div>
+
+    <div id="modal-create" class="modal-overlay" style="z-index: 1001;"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:28px;" onclick="fecharModal('modal-create')">&times;</span> <h3 style="margin-top:0;">Novo Acesso</h3> <div class="form-grid"> <input type="text" id="new-user" placeholder="Usuário"> <input type="text" id="new-pass" placeholder="Senha"> <div class="full-width" id="days-container" style="display:flex; gap:5px; align-items:center;"><input type="number" id="new-days" placeholder="Dias" style="width: 80px; margin:0"><span style="font-size:12px; color:#666">dias de validade</span></div> <div class="full-width" id="role-container"><label style="font-size:12px; font-weight:bold; color:#333;">Tipo de Acesso:</label><select id="new-role" onchange="checkRole()"></select></div> <input type="text" id="new-wa" placeholder="WhatsApp (só números)" class="full-width"> <input type="text" id="new-val" placeholder="Valor (ex: 30,00)"> <input type="text" id="new-pix" placeholder="Chave PIX (opcional)"> </div> <button onclick="salvarNovoUsuario()" id="btn-save-user" style="margin-top:15px;">💾 Salvar</button> <p id="msg-create" style="color:red; font-size:12px; text-align:center; margin-top:5px;"></p> </div> </div>
+    
+    <div id="modal-edit" class="modal-overlay" style="z-index: 1002;"> 
         <div class="modal-content" style="max-width: 400px;"> 
             <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:28px;" onclick="fecharModal('modal-edit')">&times;</span> 
             <h3 style="margin-top:0; color:#3b82f6">Editar: <span id="edit-user-display"></span></h3> 
@@ -25,3 +259,400 @@
             <p id="msg-edit" style="color:red; font-size:12px; text-align:center; margin-top:5px;"></p> 
         </div> 
     </div>
+
+    <div id="modal-renovar" class="modal-overlay"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer;" onclick="fecharModal('modal-renovar')">&times;</span> <h3 style="text-align: center; color: var(--primary);">💎 Renovar Acesso</h3> <div class="pay-card"> <div style="font-size: 12px; font-weight: bold;">PIX PARA PAGAMENTO</div> <div class="pay-key" id="pix-display" style="font-size:16px; padding:15px;">...</div> </div> <button onclick="copiarPixReal()" class="chat-btn" style="border-radius: 50px; width:100%">📋 Copiar Chave PIX</button> </div> </div>
+    <div id="modal-install-tutorial" class="modal-overlay" style="z-index: 9999;"> <div class="modal-content" style="max-width: 350px;"> <div style="text-align:center; margin-bottom:20px;"> <div style="font-size:50px; margin-bottom:10px;">⚡</div> <h3 style="margin-top:0; font-size: 20px; font-weight: 700;">Instalar App</h3> <p style="font-size:14px; color: var(--text); line-height: 1.5;">Para a melhor experiência, adicione este app à sua tela inicial.</p> </div> <button id="btn-android-install" class="hidden" style="width:100% !important; margin-bottom:15px; font-size: 16px; padding: 15px;" onclick="instalarAndroid()">📲 Instalar Agora</button> <div id="tutorial-ios" class="hidden"><div class="tutorial-step">1. Toque no botão <b>Compartilhar</b> <span style="font-size:18px;">⎋</span> abaixo.</div><div class="tutorial-step">2. Role e selecione <b>Adicionar à Tela de Início</b> <span style="font-size:18px;">⊞</span>.</div></div> <div id="tutorial-android" class="hidden"><div class="tutorial-step">1. Toque nos <b>3 pontinhos</b> <span style="font-size:18px;">⋮</span> no topo do navegador.</div><div class="tutorial-step">2. Selecione <b>Adicionar à tela inicial</b> ou <b>Instalar app</b>.</div></div> <button class="secondary btn-auto" style="width:100% !important; margin-top:15px;" onclick="fecharInstallModal()">Agora não</button> </div> </div>
+    <div id="modal-global-msg" class="modal-overlay" style="z-index: 1100;"> <div class="modal-content" style="max-width: 400px; text-align: center;"> <div style="font-size: 40px; margin-bottom: 10px;">🔔</div> <h3 style="margin-top:0; color: var(--primary);">Comunicado</h3> <p id="msg-text" style="font-size: 14px; color: #333 !important; background: #f3f4f6; padding: 15px; border-radius: 10px;"></p> <button onclick="marcarMensagemLida()" class="btn-auto" style="margin-top: 15px; width: 100% !important;">Entendi</button> </div> </div>
+    <div id="modal-send-whatsapp" class="modal-overlay" style="z-index: 1200;"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:28px;" onclick="fecharModal('modal-send-whatsapp')">&times;</span> <h3 style="margin-top:0; color: #25d366;">📲 Enviar Acesso</h3> <p style="font-size:12px; margin:0 0 10px 0;">Para: <b id="send-dest">...</b></p> <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:10px; margin-bottom:15px; font-size:12px; color:#166534;"><div style="font-weight:bold; margin-bottom:5px;">📋 Dados que serão enviados:</div><div id="preview-msg-content" style="font-family:monospace; line-height:1.4;"></div></div> <label style="font-size:12px; font-weight:bold;">Mensagem Complementar (Opcional):</label> <textarea id="whatsapp-extra-msg" class="msg-box" placeholder="Ex: 'Aproveite sua tela!', 'Pagamento Confirmado', etc."></textarea> <button class="chat-btn" onclick="finalizarEnvioWhatsApp()">🚀 Enviar via WhatsApp</button> </div> </div>
+    <div id="modal-created-success" class="modal-overlay" style="z-index: 1300;"> <div class="modal-content" style="max-width: 350px; text-align:center;"> <div style="font-size: 50px;">✅</div> <h3 style="margin-top:0; color:var(--primary);">Usuário Criado!</h3> <p style="font-size:13px; color:#666; margin-bottom:20px;">O que deseja fazer agora?</p> <div style="display:flex; flex-direction:column; gap:10px;"><button class="chat-btn" onclick="prepararEnvioAposCriacao()">📲 Enviar Acesso</button><button class="secondary" onclick="fecharModalSucessoCriacao()">❌ Fechar</button></div> </div> </div>
+
+    <script>
+        // === URL DA SUA API ===
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzh5LpH26j4OyfMINRHP0XXikBZwFHKFYseMv8eXyJKP5X4cJKbij37wNJS3wg3YUUm/exec';
+
+        const DB_KEY = 'zapflow_v36';
+        const SESSION_KEY = 'zapflow_session_v36';
+        let db = JSON.parse(localStorage.getItem(DB_KEY)) || {};
+        let currentUserData = null; 
+        let lastOpenedLink = "";
+        let pgPend = 0, pgSalv = 0, pgDesc = 0; const ITENS_PAG = 5;
+        let autoTimer = null; let countdownRef = null;
+        let userEditing = null; let currentFileUrl = "";
+        let deferredPrompt; 
+        let tempUser="", tempPass="", tempWa="", tempDate="", tempVal="";
+        let timerInterval = null;
+
+        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
+
+        window.onload = () => {
+            if(localStorage.getItem('theme') === 'dark') { document.body.classList.add('dark-mode'); document.querySelector('.theme-toggle').innerText = '☀️'; }
+            setTimeout(verificarInstalacaoApp, 1000);
+            const session = localStorage.getItem(SESSION_KEY);
+            if(session) { const s = JSON.parse(session); document.getElementById('user').value = s.user; document.getElementById('pass').value = s.pass; conectarBanco(); }
+        };
+
+        function verificarInstalacaoApp() {
+            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) return;
+            const bannerFechadoEm = localStorage.getItem('install_banner_closed');
+            if (bannerFechadoEm && (new Date().getTime() - parseInt(bannerFechadoEm) < 86400000)) return; 
+            abrirTutorialInstall();
+        }
+        function abrirTutorialInstall() {
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            if (deferredPrompt) { document.getElementById('btn-android-install').classList.remove('hidden'); document.getElementById('tutorial-android').classList.add('hidden'); document.getElementById('tutorial-ios').classList.add('hidden'); }
+            else if (isIOS) { document.getElementById('btn-android-install').classList.add('hidden'); document.getElementById('tutorial-ios').classList.remove('hidden'); document.getElementById('tutorial-android').classList.add('hidden'); }
+            else { document.getElementById('btn-android-install').classList.add('hidden'); document.getElementById('tutorial-ios').classList.add('hidden'); document.getElementById('tutorial-android').classList.remove('hidden'); }
+            document.getElementById('modal-install-tutorial').classList.add('show');
+        }
+        async function instalarAndroid() { if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') fecharInstallModal(); deferredPrompt = null; } }
+        function fecharInstallModal() { document.getElementById('modal-install-tutorial').classList.remove('show'); localStorage.setItem('install_banner_closed', new Date().getTime()); }
+        function toggleTheme() { document.body.classList.toggle('dark-mode'); const isDark = document.body.classList.contains('dark-mode'); localStorage.setItem('theme', isDark ? 'dark' : 'light'); document.querySelector('.theme-toggle').innerText = isDark ? '☀️' : '🌙'; }
+        function formatarData(d) { if(!d) return new Date(); let l = String(d).trim(); if(l.includes('/')) { const p = l.split('/'); return new Date(p[2], p[1]-1, p[0]); } return new Date(l); }
+
+        async function conectarBanco() {
+            const u = document.getElementById('user').value.trim();
+            const p = document.getElementById('pass').value.trim();
+            const msg = document.getElementById('msg-login');
+            const btn = document.getElementById('btn-login');
+            const txt = document.getElementById('txt-login');
+            const loader = document.getElementById('loader-login');
+
+            if(!u || !p) return msg.innerText = "Preencha todos os campos.";
+            btn.disabled = true; txt.style.display = 'none'; loader.style.display = 'block'; msg.innerText = "";
+
+            try {
+                const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'login', user: u, pass: p }) });
+                const res = await req.json();
+
+                if (res.success) {
+                    const dados = res.data;
+                    let diff = 0;
+                    if (dados.cargo !== 'Teste' && dados.date !== 'Vitalício') {
+                        const dV = formatarData(dados.date); dV.setHours(0,0,0,0);
+                        const hoje = new Date(); hoje.setHours(0,0,0,0);
+                        diff = Math.ceil((dV - hoje) / 86400000);
+                        if(diff < 0 && !dados.isMaster) { msg.innerText = "Acesso expirado."; localStorage.removeItem(SESSION_KEY); btn.disabled = false; txt.style.display = 'block'; loader.style.display = 'none'; return; }
+                    }
+                    currentUserData = dados; 
+                    if(dados.pass) {
+                        currentUserData.pass = dados.pass;
+                        localStorage.setItem(SESSION_KEY, JSON.stringify({user: u, pass: dados.pass}));
+                    } else {
+                        currentUserData.pass = p;
+                        localStorage.setItem(SESSION_KEY, JSON.stringify({user: u, pass: p}));
+                    }
+
+                    if(!db[u]) db[u] = {links:[], salvos:[], naoSalvos: []};
+                    
+                    document.getElementById('login-screen').classList.add('hidden');
+                    document.getElementById('app-screen').classList.remove('hidden');
+                    document.getElementById('ola-user').innerText = "Olá, " + currentUserData.user;
+                    
+                    if (dados.cargo === 'Teste' && dados.testSeconds) {
+                        iniciarTimerTeste(dados.testSeconds);
+                    } else {
+                        document.getElementById('status-acesso').innerText = "Vence: " + currentUserData.date;
+                        if(diff <= 5 && !dados.isMaster && dados.date !== 'Vitalício') {
+                            document.getElementById('vencimento-alert').style.display = 'block';
+                            document.getElementById('dias-restantes-alerta').innerText = diff < 0 ? 0 : diff;
+                        }
+                    }
+
+                    if(dados.isMaster) document.getElementById('btn-open-admin').classList.remove('hidden');
+                    if (dados.file && dados.file.url && dados.cargo !== 'Sub-Admin') {
+                        document.getElementById('file-download-card').style.display = 'flex';
+                        document.getElementById('file-date').innerText = dados.file.time;
+                        document.getElementById('file-title').innerText = (dados.cargo === 'Teste') ? "Arquivo Teste (1h)" : "Arquivo Geral";
+                        currentFileUrl = dados.file.url;
+                        document.getElementById('btn-download-file').style.display = 'block'; 
+                    } else {
+                        document.getElementById('file-download-card').style.display = 'none';
+                    }
+
+                    if(dados.message && dados.message.trim() !== "") {
+                        const savedMsg = localStorage.getItem('zapflow_last_msg_' + currentUserData.user);
+                        if (savedMsg !== dados.message) {
+                            document.getElementById('msg-text').innerText = dados.message;
+                            document.getElementById('modal-global-msg').classList.add('show');
+                        }
+                    }
+                    renderizar();
+                } else {
+                    msg.innerText = res.msg || "Dados incorretos."; localStorage.removeItem(SESSION_KEY);
+                }
+            } catch(e) { console.error(e); msg.innerText = "Erro ao conectar. Verifique internet."; } 
+            finally { btn.disabled = false; txt.style.display = 'block'; loader.style.display = 'none'; }
+        }
+
+        function iniciarTimerTeste(seconds) {
+            const display = document.getElementById('status-acesso');
+            if (timerInterval) clearInterval(timerInterval);
+            let remaining = seconds;
+            function update() {
+                if (remaining <= 0) {
+                    display.innerText = "EXPIRADO"; display.style.color = "red"; clearInterval(timerInterval); alert("Seu tempo de teste acabou!"); logout(); return;
+                }
+                const m = Math.floor(remaining / 60); const s = remaining % 60;
+                display.innerHTML = `Expira em: <span class="timer-badge">${m}:${s < 10 ? '0'+s : s}</span>`;
+                remaining--;
+            }
+            update(); timerInterval = setInterval(update, 1000);
+        }
+
+        function marcarMensagemLida() { const msg = document.getElementById('msg-text').innerText; localStorage.setItem('zapflow_last_msg_' + currentUserData.user, msg); fecharModal('modal-global-msg'); }
+        function checkRole() { const r = document.getElementById('new-role').value; document.getElementById('days-container').style.display = (r === 'Teste') ? 'none' : 'flex'; }
+        
+        function abrirTutoriais() {
+            document.getElementById('modal-tutorials').classList.add('show');
+            const isAdmin = currentUserData.cargo === 'Admin';
+            document.getElementById('admin-tutorial-area').style.display = isAdmin ? 'block' : 'none';
+            carregarListaTutoriais(isAdmin);
+        }
+
+        async function carregarListaTutoriais(isAdmin) {
+            const listDiv = document.getElementById('tutorials-list');
+            try {
+                const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'get_tutorials' }) });
+                const res = await req.json();
+                if(res.success && res.list.length > 0) {
+                    listDiv.innerHTML = '';
+                    res.list.forEach(vid => {
+                        let embedUrl = vid.link;
+                        if(vid.link.includes('youtu.be')) embedUrl = vid.link.replace('youtu.be/','youtube.com/embed/');
+                        else if(vid.link.includes('watch?v=')) embedUrl = vid.link.replace('watch?v=','embed/');
+                        const btnDelete = isAdmin ? `<button class="danger btn-auto" style="margin-top:10px;" onclick="deletarTutorial(${vid.id})">Apagar Vídeo</button>` : '';
+                        listDiv.innerHTML += `<div class="tutorial-card"><div class="tut-title-text">📺 ${vid.title}</div><div class="video-container"><iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe></div>${btnDelete}</div>`;
+                    });
+                } else { listDiv.innerHTML = '<p style="text-align:center; color:#666; font-size:13px; margin-top:20px;">Nenhum tutorial disponível no momento.</p>'; }
+            } catch(e) { listDiv.innerHTML = '<p style="text-align:center; color:red">Erro ao carregar vídeos.</p>'; }
+        }
+
+        async function salvarTutorial() {
+            const t = document.getElementById('tut-title').value;
+            const l = document.getElementById('tut-link').value;
+            if(!t || !l) return alert("Preencha tudo.");
+            if(!confirm("Adicionar este vídeo?")) return;
+            try {
+                const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'save_tutorial', user: currentUserData.user, pass: currentUserData.pass, title: t, link: l }) });
+                const res = await req.json();
+                if(res.success) { alert("Salvo!"); document.getElementById('tut-title').value=''; document.getElementById('tut-link').value=''; carregarListaTutoriais(true); }
+            } catch(e) { alert("Erro."); }
+        }
+
+        async function deletarTutorial(id) {
+            if(!confirm("Tem certeza que deseja apagar este vídeo?")) return;
+            try {
+                await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'delete_tutorial', user: currentUserData.user, pass: currentUserData.pass, id: id }) });
+                carregarListaTutoriais(true);
+            } catch(e) { alert("Erro."); }
+        }
+
+        function fazerUploadArquivo(modo) {
+            const idInput = (modo === 'teste') ? 'admin-file-test' : 'admin-file-upload';
+            const input = document.getElementById(idInput);
+            const status = document.getElementById('upload-status');
+            if (input.files.length === 0) return alert("Selecione um arquivo!");
+            const file = input.files[0];
+            const reader = new FileReader();
+            status.innerText = "Enviando " + modo + "...";
+            reader.onload = async function(e) {
+                const base64 = e.target.result.split(',')[1]; 
+                try {
+                    const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'upload_file', user: currentUserData.user, pass: currentUserData.pass, fileData: base64, fileName: file.name, fileType: file.type, mode: modo }) });
+                    const res = await req.json();
+                    if (res.success) { status.innerText = "Sucesso! Link salvo."; alert("Arquivo " + modo + " enviado com sucesso!"); location.reload(); } 
+                    else { status.innerText = "Erro: " + res.msg; }
+                } catch(err) { status.innerText = "Erro de conexão."; }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function salvarMensagem() { const msg = document.getElementById('global-msg-input').value; if (!confirm("Salvar essa mensagem para TODOS?")) return; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'save_message', user: currentUserData.user, pass: currentUserData.pass, message: msg }) }); const res = await req.json(); if (res.success) alert("Mensagem salva!"); else alert("Erro ao salvar."); } catch(e) { alert("Erro de conexão."); } }
+        function processarNovosLinks(listaBruta) { const u = currentUserData.user; if (!db[u]) db[u] = { links: [], salvos: [], naoSalvos: [] }; if (!db[u].salvos) db[u].salvos = []; if (!db[u].naoSalvos) db[u].naoSalvos = []; const jaExistem = new Set([...db[u].links, ...db[u].salvos, ...db[u].naoSalvos]); let adicionados = 0; let duplicados = 0; listaBruta.forEach(link => { const l = link.trim(); if (l) { if (jaExistem.has(l)) { duplicados++; } else { db[u].links.push(l); jaExistem.add(l); adicionados++; } } }); if (duplicados > 0) alert(`Filtrado: ${adicionados} novos adicionados. ${duplicados} repetidos removidos.`); renderizar(); }
+        function addLinks(){ const t=document.getElementById('links-input'); const linhas = t.value.split('\n'); processarNovosLinks(linhas); t.value=''; pgPend = 0; }
+        function lerArquivo(i) { const r=new FileReader(); r.onload=(e)=>{ const linhas = e.target.result.split('\n'); processarNovosLinks(linhas); }; r.readAsText(i.files[0]); i.value=''; }
+        function renderizar() { const u = currentUserData.user; if(!db[u]) db[u] = {links:[], salvos:[], naoSalvos:[]}; if(!db[u].naoSalvos) db[u].naoSalvos = []; const p = document.getElementById('lista-pendentes'); p.innerHTML = ''; const tP = db[u].links.length; document.getElementById('count-pend').innerText = tP; db[u].links.slice(pgPend*ITENS_PAG, (pgPend+1)*ITENS_PAG).forEach((l,i) => { p.innerHTML += `<div class="card"><span class="link-text">${l}</span><button class="btn-auto" onclick="tratarAberturaLink(${pgPend*ITENS_PAG+i},'${l}')">Abrir ↗</button></div>`; }); renderControles('paginacao-pend', tP, pgPend, (n)=> {pgPend=n; renderizar();}); const s = document.getElementById('lista-salvos'); s.innerHTML = ''; const tS = db[u].salvos ? db[u].salvos.length : 0; document.getElementById('count-saved').innerText = tS; if(db[u].salvos) db[u].salvos.slice(pgSalv*ITENS_PAG, (pgSalv+1)*ITENS_PAG).forEach((l,i) => { s.innerHTML += `<div class="card" style="border-left:4px solid var(--primary)"><span class="link-text">${l}</span><button class="danger btn-auto" onclick="db['${u}'].salvos.splice(${pgSalv*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-salv', tS, pgSalv, (n)=> {pgSalv=n; renderizar();}); const d = document.getElementById('lista-descartados'); d.innerHTML = ''; const tD = db[u].naoSalvos ? db[u].naoSalvos.length : 0; document.getElementById('count-discarded').innerText = tD; if(db[u].naoSalvos) db[u].naoSalvos.slice(pgDesc*ITENS_PAG, (pgDesc+1)*ITENS_PAG).forEach((l,i) => { d.innerHTML += `<div class="card card-discarded"><span class="link-text">${l}</span><button class="btn-auto" onclick="resgatarDescartado(${pgDesc*ITENS_PAG+i})">♻️</button><button class="danger btn-auto" onclick="db['${u}'].naoSalvos.splice(${pgDesc*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-desc', tD, pgDesc, (n)=> {pgDesc=n; renderizar();}); localStorage.setItem(DB_KEY, JSON.stringify(db)); }
+        function renderControles(id, total, atual, cb) { const div = document.getElementById(id), max = Math.ceil(total/ITENS_PAG); if(max <= 1) { div.innerHTML = ''; return; } div.innerHTML = `<button class="secondary btn-auto" ${atual===0?'disabled':''} onclick="(${cb})(${atual-1})">«</button><span>${atual+1}/${max}</span><button class="secondary btn-auto" ${atual>=max-1?'disabled':''} onclick="(${cb})(${atual+1})">»</button>`; }
+        async function alterarStatus(targetUser) { if(!confirm("Deseja alterar o status deste usuário?")) return; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggle_status', user: currentUserData.user, pass: currentUserData.pass, targetUser: targetUser }) }); const res = await req.json(); if(res.success) { alert("Status alterado: " + res.novoStatus); abrirAdminPanel(); } else { alert("Erro: " + res.msg); } } catch(e) { alert("Erro de conexão."); } }
+        async function clickRenovar(targetUser) { const dias = prompt("Renovar por quantos dias?", "30"); if (!dias) return; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'renew_user', user: currentUserData.user, pass: currentUserData.pass, targetUser: targetUser, days: dias }) }); const res = await req.json(); if (res.success) { alert("Usuário renovado com sucesso!"); abrirAdminPanel(); } else { alert("Erro: " + res.msg); } } catch(e) { alert("Erro de conexão."); } }
+        
+        function toggleDetalhes() {
+            const chk = document.getElementById('toggle-details');
+            const extras = document.querySelectorAll('.col-extra');
+            extras.forEach(el => {
+                el.style.display = chk.checked ? 'table-cell' : 'none';
+            });
+        }
+
+        // --- FUNÇÃO DE ABRIR EDIÇÃO (SEM MOSTRAR SENHA e SEM MOSTRAR CARGO P/ SUB) ---
+        function abrirModalEdit(user, date, wa, val, role) {
+            userEditing = user;
+            document.getElementById('edit-user-display').innerText = user;
+            document.getElementById('edit-pass').value = ""; // Senha vazia por segurança
+            document.getElementById('edit-date').value = date;
+            document.getElementById('edit-wa').value = wa;
+            document.getElementById('edit-val').value = val;
+            document.getElementById('edit-role').value = role;
+
+            // Lógica para esconder o select de Cargo se for Sub-Admin
+            const isSub = currentUserData.cargo === 'Sub-Admin';
+            const divRole = document.getElementById('div-edit-role');
+            if (isSub) {
+                divRole.style.display = 'none';
+            } else {
+                divRole.style.display = 'block';
+            }
+
+            document.getElementById('msg-edit').innerText = '';
+            document.getElementById('modal-edit').classList.add('show');
+        }
+
+        async function salvarEdicao() {
+            const btn = document.getElementById('btn-save-edit');
+            const msg = document.getElementById('msg-edit');
+            const novaSenha = document.getElementById('edit-pass').value.trim();
+            
+            const payload = {
+                userOriginal: userEditing,
+                pass: novaSenha, 
+                date: document.getElementById('edit-date').value,
+                wa: document.getElementById('edit-wa').value,
+                val: document.getElementById('edit-val').value,
+                cargo: document.getElementById('edit-role').value
+            };
+            btn.disabled = true;
+            btn.innerText = "Atualizando...";
+            try {
+                const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'edit_user', user: currentUserData.user, pass: currentUserData.pass, dadosEditados: payload }) });
+                const res = await req.json();
+                if(res.success) { alert("Atualizado!"); fecharModal('modal-edit'); abrirAdminPanel(); } else { msg.innerText = res.msg; }
+            } catch(e) { msg.innerText = "Erro."; } finally { btn.disabled = false; btn.innerText = "💾 Atualizar Dados"; }
+        }
+
+        function parsePtBrDate(str) {
+            if(!str) return null;
+            let parts = str.split(' ');
+            let datePart = parts[0].split('/');
+            let timePart = parts.length > 1 ? parts[1].split(':') : ['00', '00'];
+            return new Date(datePart[2], datePart[1]-1, datePart[0], timePart[0], timePart[1]);
+        }
+
+        async function abrirAdminPanel() { 
+            document.getElementById('modal-admin').classList.add('show'); 
+            const lista = document.getElementById('admin-users-list'); 
+            lista.innerHTML = '<div class="loader" style="display:block; border-color:#ccc; border-top-color:#333; margin-top: 20px;"></div>'; 
+            const isSub = currentUserData.cargo === 'Sub-Admin'; 
+            document.getElementById('upload-section-geral').style.display = isSub ? 'none' : 'block'; 
+            document.getElementById('upload-section-teste').style.display = isSub ? 'none' : 'block'; 
+            document.getElementById('admin-msg-area').style.display = isSub ? 'none' : 'block'; 
+            
+            try { 
+                const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'admin_list', user: currentUserData.user, pass: currentUserData.pass }) }); 
+                const res = await req.json(); 
+                
+                if(res.success && Array.isArray(res.list)) { 
+                    const headers = res.headers || []; 
+                    const dados = res.list; 
+                    const hoje = new Date(); hoje.setHours(0,0,0,0); 
+                    if(dados.length === 0) { lista.innerHTML = '<p style="text-align:center; color:#666;">Nenhum usuário.</p>'; return; } 
+                    
+                    const hiddenCols = ['pass', 'senha', 'valor', 'criador', 'pix', 'cargo', 'cadastro', 'volor revenda', 'valor revenda'];
+                    
+                    let html = `<div class="table-responsive"><table class="admin-table"><thead><tr><th style="width: 50px;">Status</th>`; 
+                    
+                    headers.forEach(h => { 
+                        const isHidden = hiddenCols.includes(String(h).toLowerCase());
+                        const hiddenClass = isHidden ? 'class="col-extra"' : '';
+                        html += `<th ${hiddenClass}>${h}</th>`; 
+                    }); 
+                    
+                    html += `<th style="width: 140px;">Ações</th></tr></thead><tbody>`; 
+                    
+                    const isSubAdmin = currentUserData.cargo === 'Sub-Admin'; 
+                    dados.forEach((row) => { 
+                        const uUser = row[0] || ""; 
+                        const uPass = row[1] || "";
+                        const uDate = row[2] || "";
+                        const uWa   = row[3] || "";
+                        const uVal  = row[4] || "";
+                        const uRole = row[5] || "";
+                        const uPix  = row[6] || "";
+                        const uStatus = row[7] || "Ativo";
+                        const uCreator = row[8] || "";
+                        
+                        let statusText = ""; let displayStatusDot = "status-active"; let statusBtn = '';
+                        const statusIcon = uStatus === 'Pendente' ? '⏳' : (uStatus === 'Bloqueado' ? '🚫' : (uStatus === 'Expirado' ? '🛑' : '✅')); 
+                        
+                        if (uRole === 'Teste') { 
+                            let isExpired = false;
+                            if (uStatus === 'Expirado') isExpired = true;
+                            else {
+                                const dTeste = parsePtBrDate(uDate);
+                                const agora = new Date();
+                                if (dTeste && dTeste < agora) isExpired = true;
+                            }
+                            if (isExpired) { displayStatusDot = "status-expired"; statusText = "Vencido"; } 
+                            else { displayStatusDot = "status-test"; statusText = "Teste"; } 
+                        } 
+                        else if (uDate === 'Vitalício') {
+                             displayStatusDot = "status-active"; statusText = "Vitalício";
+                        }
+                        else { 
+                            if (uStatus === 'Expirado') { displayStatusDot = "status-expired"; statusText = "Expirado"; } 
+                            else { 
+                                const dV = formatarData(uDate); dV.setHours(0,0,0,0); 
+                                const diff = Math.ceil((dV - hoje) / 86400000); 
+                                if (isNaN(diff)) { statusText = "-"; } 
+                                else { 
+                                    if (diff < 0) { displayStatusDot = "status-expired"; statusText = "Expirado"; } 
+                                    else { displayStatusDot = "status-active"; statusText = `${diff}d`; } 
+                                } 
+                            } 
+                        } 
+                        
+                        if (isSubAdmin) { statusBtn = `<button class="status-btn btn-auto" style="width:35px; height:35px; padding:0; font-size:16px; cursor: not-allowed; opacity: 0.6;" title="Status: ${uStatus}">${statusIcon}</button>`; } 
+                        else { statusBtn = `<button class="status-btn btn-auto" style="width:35px; height:35px; padding:0; font-size:16px;" title="Alterar Status (${uStatus})" onclick="alterarStatus('${uUser}')">${statusIcon}</button>`; } 
+                        const renewBtn = `<button class="renew-btn btn-auto" style="width:35px; height:35px; padding:0; font-size:16px;" title="Renovar" onclick="clickRenovar('${uUser}')">📅</button>`; 
+                        
+                        html += `<tr><td><span class="status-dot ${displayStatusDot}" title="${statusText}"></span><small>${statusText}</small></td>`; 
+                        
+                        row.forEach((cell, index) => { 
+                            const hName = headers[index] || "";
+                            const isHidden = hiddenCols.includes(String(hName).toLowerCase());
+                            const hiddenClass = isHidden ? 'class="col-extra"' : '';
+                            html += `<td ${hiddenClass}>${cell}</td>`; 
+                        }); 
+                        
+                        html += `<td><div style="display:flex; gap:5px;">${statusBtn}${renewBtn}<button class="chat-btn btn-auto" style="width:35px; height:35px; padding:0; font-size:16px;" title="Chat" onclick="window.open('https://wa.me/55${String(uWa).replace(/\D/g,'')}')">💬</button><button class="vip-btn btn-auto" style="width:35px; height:35px; padding:0; font-size:16px;" title="Enviar Dados" onclick="prepararEnvioWhatsApp('${uUser}','******','${uWa}','${uDate}','${uVal}')">📨</button><button class="edit-btn btn-auto" style="width:35px; height:35px; padding:0; font-size:16px;" title="Editar" onclick="abrirModalEdit('${uUser}','${uDate}','${uWa}','${uVal}', '${uRole}')">✏️</button></div></td></tr>`; 
+                    }); 
+                    html += `</tbody></table></div>`; lista.innerHTML = html; 
+                    
+                    toggleDetalhes();
+                    
+                } else { lista.innerHTML = '<p style="text-align:center; color:red">Erro.</p>'; } 
+            } catch(e) { lista.innerHTML = '<p style="text-align:center; color:red">Erro.</p>'; } 
+        }
+
+        function baixarArquivoGeral() { if(currentFileUrl) { const link = document.createElement("a"); link.href = currentFileUrl; link.setAttribute("download", ""); link.setAttribute("target", "_blank"); document.body.appendChild(link); link.click(); document.body.removeChild(link); } }
+        function abrirModalCreate() { document.getElementById('new-user').value = ''; document.getElementById('new-pass').value = ''; document.getElementById('new-days').value = '30'; document.getElementById('new-wa').value = ''; document.getElementById('new-val').value = ''; const roleSelect = document.getElementById('new-role'); roleSelect.innerHTML = ''; const optUser = document.createElement('option'); optUser.value = 'User'; optUser.innerText = 'Usuário Comum'; roleSelect.appendChild(optUser); const optTest = document.createElement('option'); optTest.value = 'Teste'; optTest.innerText = 'Teste (1 Hora)'; roleSelect.appendChild(optTest); if (currentUserData.cargo === 'Sub-Admin') { document.getElementById('new-pix').value = ''; } else { const optSub = document.createElement('option'); optSub.value = 'Sub-Admin'; optSub.innerText = 'Sub-Admin'; roleSelect.appendChild(optSub); const optAdmin = document.createElement('option'); optAdmin.value = 'Admin'; optAdmin.innerText = 'Admin Master'; roleSelect.appendChild(optAdmin); document.getElementById('new-pix').value = currentUserData.pix || ''; } document.getElementById('role-container').style.display = 'block'; document.getElementById('days-container').style.display = 'flex'; document.getElementById('msg-create').innerText = ''; document.getElementById('modal-create').classList.add('show'); }
+        async function salvarNovoUsuario() { const btn = document.getElementById('btn-save-user'); const msg = document.getElementById('msg-create'); const u = document.getElementById('new-user').value; const p = document.getElementById('new-pass').value; const d = parseInt(document.getElementById('new-days').value); const w = document.getElementById('new-wa').value; const v = document.getElementById('new-val').value; const x = document.getElementById('new-pix').value; const cargo = document.getElementById('new-role').value; if(!u || !p || (!d && cargo !== 'Teste')) { msg.innerText = "Preencha os campos."; return; } const dataVenc = new Date(); dataVenc.setDate(dataVenc.getDate() + (d||0)); const dia = ("0" + dataVenc.getDate()).slice(-2); const mes = ("0" + (dataVenc.getMonth() + 1)).slice(-2); const ano = dataVenc.getFullYear(); const dataFinal = `${dia}/${mes}/${ano}`; const payload = { user: u, pass: p, date: dataFinal, wa: w, val: v, pix: x, cargo: cargo }; btn.disabled = true; btn.innerText = "Salvando..."; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'create_user', user: currentUserData.user, pass: currentUserData.pass, novoUsuario: payload }) }); const res = await req.json(); if(res.success) { tempUser = u; tempPass = p; tempDate = (cargo === 'Teste' ? "1 Hora (Teste)" : dataFinal); tempWa = w; tempVal = v; fecharModal('modal-create'); document.getElementById('modal-created-success').classList.add('show'); abrirAdminPanel(); } else { msg.innerText = res.msg; } } catch(e) { msg.innerText = "Erro."; } finally { btn.disabled = false; btn.innerText = "💾 Salvar"; } }
+        function fecharModalSucessoCriacao() { document.getElementById('modal-created-success').classList.remove('show'); }
+        function prepararEnvioAposCriacao() { fecharModalSucessoCriacao(); prepararEnvioWhatsApp(tempUser, tempPass, tempWa, tempDate, tempVal); }
+        function prepararEnvioWhatsApp(u, p, w, d, v) { tempUser = u; tempPass = p; tempWa = w; tempDate = d; tempVal = v; document.getElementById('send-dest').innerText = u; const previewHtml = `👤 <b>Usuário:</b> ${u}<br>🔑 <b>Senha:</b> ${p}<br>📅 <b>Vencimento:</b> ${d}<br>🌐 <b>Site:</b> www.gerenciadorwa.com.br`; document.getElementById('preview-msg-content').innerHTML = previewHtml; document.getElementById('whatsapp-extra-msg').value = ""; document.getElementById('modal-send-whatsapp').classList.add('show'); }
+        function finalizarEnvioWhatsApp() { const extra = document.getElementById('whatsapp-extra-msg').value; const quebra = extra ? `\n\n${extra}` : ""; const msg = `🔐 *Seu Acesso Gerenciador |WA|*\n\n👤 *Usuário:* ${tempUser}\n🔑 *Senha:* ${tempPass}\n📅 *Vencimento:* ${tempDate}\n🌐 *Site:* www.gerenciadorwa.com.br${quebra}`; window.open(`https://wa.me/55${String(tempWa).replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`); fecharModal('modal-send-whatsapp'); }
+        function filtrarUsuarios() { const termo = document.getElementById('search-user').value.toLowerCase(); const linhas = document.querySelectorAll('.admin-table tbody tr'); linhas.forEach(tr => { const texto = tr.innerText.toLowerCase(); tr.style.display = texto.includes(termo) ? '' : 'none'; }); }
+        function abrirModalRenovar() { let chave = currentUserData.pix; if (!chave || chave === "undefined") chave = "Chave não cadastrada"; document.getElementById('pix-display').innerText = chave; document.getElementById('modal-renovar').classList.add('show'); }
+        function copiarPixReal() { const t = document.getElementById('pix-display').innerText; if(navigator.clipboard) { navigator.clipboard.writeText(t).then(()=>alert("Copiado!")); } else { const el = document.createElement("input"); el.value = t; document.body.appendChild(el); el.select(); document.execCommand("copy"); document.body.removeChild(el); alert("Copiado!"); } }
+        function baixarSalvos() { const u = currentUserData.user; if(!db[u].salvos.length) return alert("Nada."); const blob = new Blob([db[u].salvos.join('\n')], {type: 'text/plain'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `extraidos.txt`; a.click(); }
+        function limparPendentes() { if(confirm("Apagar?")) { db[currentUserData.user].links = []; pgPend = 0; renderizar(); } }
+        function limparSalvos() { if(confirm("Limpar?")) { db[currentUserData.user].salvos = []; pgSalv = 0; renderizar(); } }
+        function limparDescartados() { if(confirm("Limpar?")) { db[currentUserData.user].naoSalvos = []; pgDesc = 0; renderizar(); } }
+        function resgatarDescartado(idx) { const u = currentUserData.user; const link = db[u].naoSalvos[idx]; db[u].links.push(link); db[u].naoSalvos.splice(idx, 1); renderizar(); }
+        function fecharModal(id){ document.getElementById(id).classList.remove('show'); }
+        function logout(){ localStorage.removeItem(SESSION_KEY); location.reload(); }
+        function lerArquivoSalvos(i) { const r=new FileReader(); r.onload=(e)=>{if(!db[currentUserData.user].salvos) db[currentUserData.user].salvos=[]; const linhas = e.target.result.split('\n'); const novos = linhas.filter(l => l.trim() && !db[currentUserData.user].salvos.includes(l.trim())); db[currentUserData.user].salvos.push(...novos); renderizar();}; r.readAsText(i.files[0]); i.value=''; }
+        function tratarAberturaLink(idx, link) { if (lastOpenedLink) { if(!db[currentUserData.user].naoSalvos) db[currentUserData.user].naoSalvos = []; db[currentUserData.user].naoSalvos.push(lastOpenedLink); } lastOpenedLink = link; if(link.includes('http')) { window.open(link); } else { window.open(`whatsapp://send?phone=55${link.replace(/\D/g,'')}`); } db[currentUserData.user].links.splice(idx, 1); document.getElementById('last-link-opened').innerText = link; document.getElementById('save-prompt').style.display = 'flex'; renderizar(); }
+        function confirmarSalvamento(sim) { const u = currentUserData.user; if(!db[u].salvos) db[u].salvos=[]; if(!db[u].naoSalvos) db[u].naoSalvos=[]; if(sim && lastOpenedLink) { db[u].salvos.push(lastOpenedLink); } else if (!sim && lastOpenedLink) { db[u].naoSalvos.push(lastOpenedLink); } document.getElementById('save-prompt').style.display = 'none'; lastOpenedLink = ""; renderizar(); }
+    </script>
+</body>
+</html>
