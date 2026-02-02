@@ -31,27 +31,33 @@
         button.renew-btn { background: #8b5cf6; color: white; }
         button.vip-btn { background: #fffbeb; color: #b45309; border: 1px solid #fcd34d; }
         .btn-auto { width: auto !important; padding: 8px 16px; font-size: 13px; margin: 3px; flex-shrink: 0; }
+        
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
         .menu-card { background: var(--bg); border: 2px solid #e5e7eb; border-radius: 15px; padding: 20px; text-align: center; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 120px; }
         .menu-card:hover { transform: translateY(-5px); border-color: var(--primary); background: rgba(16, 185, 129, 0.05); }
         .menu-icon { font-size: 40px; margin-bottom: 10px; }
         .menu-title { font-weight: 700; font-size: 14px; color: var(--text); }
+
         .tutorial-btn-orange { background: linear-gradient(135deg, #fb923c, #ea580c); color: white; border: none; padding: 8px 20px; font-size: 12px; border-radius: 25px; box-shadow: 0 4px 10px rgba(234, 88, 12, 0.4); transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .tutorial-btn-orange:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(234, 88, 12, 0.6); filter: brightness(1.1); }
         .autoresponder-btn { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border: none; padding: 5px 15px; font-size: 12px; border-radius: 15px; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4); transition: 0.3s; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 2px; line-height: 1.2; }
         .autoresponder-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(79, 70, 229, 0.6); filter: brightness(1.1); }
+
         .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .card { background: var(--card); border: 1px solid #e5e7eb; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; border-radius: var(--radius); align-items: center; gap: 10px; overflow: hidden; }
         .link-text { flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 13px; min-width: 0; word-break: break-all; }
         .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:none; justify-content:center; align-items:center; z-index:1000; backdrop-filter: blur(4px); padding: 20px; }
         .modal-overlay.show { display:flex; }
         .modal-content { background:var(--card); padding: 20px; border-radius:20px; width: 100%; max-width: 400px; position:relative; color: var(--text); max-height: 80vh; overflow-y: auto; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+        
         @media (min-width: 768px) { #modal-admin .modal-content { max-width: 1400px; width: 98%; } }
+
         .admin-action-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; }
         .admin-toggle-btn { padding: 10px; font-size: 11px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; color: white; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.2s; }
         .section-orange { background: #f97316; } .section-blue { background: #3b82f6; } .section-green { background: #16a34a; }
         .admin-section-hidden { display: none; animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
         .pay-card { text-align: center; border: 2px solid #10b981; border-radius: 15px; padding: 15px; background: rgba(16, 185, 129, 0.1); margin-bottom: 15px; }
         .pay-key { font-family: monospace; font-size: 13px; background: var(--bg); padding: 10px; border-radius: 8px; border: 1px dashed #ccc; margin: 15px 0; word-break: break-all; }
         .table-responsive { overflow-x: auto; border: 1px solid #eee; border-radius: 10px; margin-top: 10px; min-height: 200px; }
@@ -87,13 +93,15 @@
         .wa-link:hover { background: #f0fdf4; }
         .alert-icon { color: #ef4444; font-size: 14px; animation: pulse 1s infinite; margin-left: 5px; }
         
-        /* FILTRO DROPDOWN */
-        .filter-dropdown { position: absolute; top: 100%; left: 0; background: var(--card); border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 10px; z-index: 100; min-width: 150px; display: none; text-align:left;}
+        /* CORREÇÃO DO FILTRO (VISUAL) */
+        .filter-dropdown { position: absolute; top: 100%; left: 0; background: var(--card); border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); padding: 15px; z-index: 9999; min-width: 220px; text-align: left !important; display: none; }
         .filter-dropdown.show { display: block; }
-        .filter-option { display: block; margin-bottom: 5px; font-size: 12px; font-weight: normal; color: var(--text); white-space: nowrap; cursor: pointer; }
-        .filter-option:hover { background: rgba(0,0,0,0.02); }
-        .filter-actions { border-top: 1px solid #eee; margin-top: 5px; padding-top: 5px; display: flex; justify-content: space-between; }
-        .filter-btn-small { font-size: 10px; padding: 3px 8px; width: auto; }
+        .filter-content { max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+        .filter-option { display: flex !important; align-items: center; gap: 10px; font-size: 13px; color: var(--text); cursor: pointer; white-space: nowrap; padding: 5px; border-radius: 5px; }
+        .filter-option:hover { background: rgba(0,0,0,0.05); }
+        .filter-option input { width: 16px; height: 16px; margin: 0; padding: 0; }
+        .filter-actions { border-top: 1px solid #eee; margin-top: 10px; padding-top: 10px; text-align: right; }
+        .filter-btn-small { font-size: 11px; padding: 5px 12px; background: var(--text); color: var(--card); border-radius: 4px; width: auto; display: inline-block;}
 
         @media (max-width: 600px) {
             .custom-table, .custom-table thead, .custom-table tbody, .custom-table th, .custom-table td, .custom-table tr { display: block; }
@@ -256,6 +264,12 @@
             const cli = listaClientes.find(c => c.id === id);
             if(!cli) return;
             if(!cli.whatsapp) return alert("Cliente sem WhatsApp.");
+            
+            // SE TEMPLATE ESTIVER VAZIO, USA UM PADRÃO NA HORA
+            if(!globalWhatsappTemplate || globalWhatsappTemplate === "") {
+                globalWhatsappTemplate = "Olá {nome}! 👋\n\nPassando para lembrar do vencimento do seu acesso *{servidor}*.\n\n🗓️ Vencimento: *{vencimento}*\n💰 Valor: *R$ {valor}*\n\nPodemos renovar? 🚀";
+            }
+
             let msg = globalWhatsappTemplate;
             msg = msg.replace(/{nome}/g, cli.nome || '').replace(/{usuario}/g, cli.usuario || '').replace(/{servidor}/g, cli.servidor || '').replace(/{valor}/g, cli.valor || '').replace(/{vencimento}/g, cli.vencimento || '');
             document.getElementById('msg-final-charge').value = msg;
@@ -279,7 +293,6 @@
         // --- SISTEMA DE FILTROS ---
         function toggleFilter(e, campo) {
             e.stopPropagation();
-            // Fecha outros
             document.querySelectorAll('.filter-dropdown').forEach(el => {
                 if(el.id !== `filter-${campo}`) el.classList.remove('show');
             });
@@ -287,19 +300,18 @@
             const menu = document.getElementById(`filter-${campo}`);
             if(!menu) return;
             
-            // Popula opções
             const contentDiv = menu.querySelector('.filter-content');
             contentDiv.innerHTML = '';
             
             if (campo === 'vencimento') {
                 ['Vencidos', 'Expira em 7 dias'].forEach(op => {
-                    contentDiv.innerHTML += `<label class="filter-option"><input type="checkbox" value="${op}" onchange="atualizarFiltro('${campo}', this)"> ${op}</label>`;
+                    contentDiv.innerHTML += `<label class="filter-option" onclick="event.stopPropagation()"><input type="checkbox" value="${op}" onchange="atualizarFiltro('${campo}', this)"> ${op}</label>`;
                 });
             } else {
-                // Pega valores únicos
                 const unicos = [...new Set(listaClientes.map(item => item[campo]).filter(Boolean))].sort();
+                if(unicos.length === 0) contentDiv.innerHTML = '<small style="color:#999; padding:5px;">Vazio</small>';
                 unicos.forEach(val => {
-                    contentDiv.innerHTML += `<label class="filter-option"><input type="checkbox" value="${val}" onchange="atualizarFiltro('${campo}', this)"> ${val}</label>`;
+                    contentDiv.innerHTML += `<label class="filter-option" onclick="event.stopPropagation()"><input type="checkbox" value="${val}" onchange="atualizarFiltro('${campo}', this)"> ${val}</label>`;
                 });
             }
             menu.classList.toggle('show');
@@ -313,26 +325,22 @@
             } else {
                 filtrosAtivos[campo] = filtrosAtivos[campo].filter(v => v !== checkbox.value);
             }
-            
             aplicarFiltrosERenderizar();
         }
 
         function limparFiltro(campo) {
             filtrosAtivos[campo] = [];
             aplicarFiltrosERenderizar();
-            // Fecha menu
             document.getElementById(`filter-${campo}`).classList.remove('show');
         }
 
         function aplicarFiltrosERenderizar() {
             let filtrados = listaClientes.filter(cli => {
-                // Filtro Texto (Barra de Pesquisa)
                 const termo = document.getElementById('search-client').value.toLowerCase();
                 if(termo && !JSON.stringify(cli).toLowerCase().includes(termo)) return false;
 
-                // Filtros de Coluna
                 for (const [campo, valores] of Object.entries(filtrosAtivos)) {
-                    if (valores.length === 0) continue; // Sem filtro nesse campo
+                    if (valores.length === 0) continue; 
 
                     if (campo === 'vencimento') {
                         const hoje = new Date(); hoje.setHours(0,0,0,0);
