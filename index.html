@@ -6,7 +6,6 @@
     <title>Gerenciador |WA|</title>
     
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%2310b981%22/><text x=%2250%22 y=%2250%22 font-size=%2260%22 text-anchor=%22middle%22 dy=%22.35em%22>⚡</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%2310b981%22/><text x=%2250%22 y=%2250%22 font-size=%2260%22 text-anchor=%22middle%22 dy=%22.35em%22>⚡</text></svg>">
     
     <meta name="theme-color" content="#10b981">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -38,22 +37,22 @@
         .tutorial-btn-orange { background: linear-gradient(135deg, #fb923c, #ea580c); color: white; border: none; padding: 8px 20px; font-size: 12px; border-radius: 25px; box-shadow: 0 4px 10px rgba(234, 88, 12, 0.4); transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .tutorial-btn-orange:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(234, 88, 12, 0.6); filter: brightness(1.1); }
         
-        /* NOVO ESTILO DO BOTÃO DEIXAR */
+        /* BOTÃO AUTORESPONDER */
         .autoresponder-btn { 
             background: linear-gradient(135deg, #6366f1, #4f46e5); 
             color: white; 
             border: none; 
-            padding: 6px 15px; 
+            padding: 5px 15px; 
             font-size: 12px; 
-            border-radius: 12px; 
+            border-radius: 15px; 
             box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4); 
             transition: 0.3s; 
-            display: none; /* OCULTO POR PADRÃO - JS VAI ATIVAR */
-            flex-direction: column; /* TEXTO EM PÉ */
+            display: none; /* Inicia Oculto */
+            flex-direction: column; 
             align-items: center;
             justify-content: center;
             gap: 2px;
-            line-height: 1.1;
+            line-height: 1.2;
         }
         .autoresponder-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(79, 70, 229, 0.6); filter: brightness(1.1); }
 
@@ -148,8 +147,8 @@
                         <button class="tutorial-btn-orange btn-auto" onclick="abrirTutoriais()">📺 Tutoriais</button>
                         
                         <button id="btn-autoresponder" class="autoresponder-btn btn-auto" onclick="window.open('https://drive.google.com/file/d/1KALRwBkxEqhymjNdxqlalBYsdAXH95zB/view?usp=sharing')">
-                            <div style="display:flex; align-items:center; gap:4px; font-weight:700;">⬇ Baixar</div>
-                            <div style="font-size:10px; opacity:0.9;">AutoResponder</div>
+                            <div style="font-weight:700; font-size:13px;">⬇ Baixar</div>
+                            <div style="font-size:10px; opacity:0.9; font-weight:400;">Auto responde</div>
                         </button>
                     </div>
                 </div>
@@ -340,18 +339,14 @@
             if(session) { const s = JSON.parse(session); document.getElementById('user').value = s.user; document.getElementById('pass').value = s.pass; conectarBanco(); }
         };
 
-        // --- FUNÇÃO PARA ABRIR/FECHAR SEÇÕES DO ADMIN ---
         function toggleAdminSection(id) {
             const el = document.getElementById(id);
             if (el.style.display === 'block') {
                 el.style.display = 'none';
             } else {
-                // Fecha as outras para ficar limpo
                 document.getElementById('admin-msg-area').style.display = 'none';
                 document.getElementById('upload-section-geral').style.display = 'none';
                 document.getElementById('upload-section-teste').style.display = 'none';
-                
-                // Abre a clicada
                 el.style.display = 'block';
             }
         }
@@ -423,9 +418,9 @@
                         }
                     }
 
-                    // === LÓGICA DO BOTÃO AUTORESPONDER ===
-                    // SÓ MOSTRA SE O CARGO FOR 'Admin' OU 'User'
+                    // --- LÓGICA DO BOTÃO AUTORESPONDER ---
                     const btnAuto = document.getElementById('btn-autoresponder');
+                    // SÓ MOSTRA SE FOR ADMIN OU USER. (Sub-Admin e Teste NÃO VEEM)
                     if (dados.cargo === 'Admin' || dados.cargo === 'User') {
                         btnAuto.style.display = 'inline-flex';
                     } else {
@@ -546,7 +541,7 @@
         function addLinks(){ const t=document.getElementById('links-input'); const linhas = t.value.split('\n'); processarNovosLinks(linhas); t.value=''; pgPend = 0; }
         function lerArquivo(i) { const r=new FileReader(); r.onload=(e)=>{ const linhas = e.target.result.split('\n'); processarNovosLinks(linhas); }; r.readAsText(i.files[0]); i.value=''; }
         function renderizar() { const u = currentUserData.user; if(!db[u]) db[u] = {links:[], salvos:[], naoSalvos:[]}; if(!db[u].naoSalvos) db[u].naoSalvos = []; const p = document.getElementById('lista-pendentes'); p.innerHTML = ''; const tP = db[u].links.length; document.getElementById('count-pend').innerText = tP; db[u].links.slice(pgPend*ITENS_PAG, (pgPend+1)*ITENS_PAG).forEach((l,i) => { p.innerHTML += `<div class="card"><span class="link-text">${l}</span><button class="btn-auto" onclick="tratarAberturaLink(${pgPend*ITENS_PAG+i},'${l}')">Abrir ↗</button></div>`; }); renderControles('paginacao-pend', tP, pgPend, (n)=> {pgPend=n; renderizar();}); const s = document.getElementById('lista-salvos'); s.innerHTML = ''; const tS = db[u].salvos ? db[u].salvos.length : 0; document.getElementById('count-saved').innerText = tS; if(db[u].salvos) db[u].salvos.slice(pgSalv*ITENS_PAG, (pgSalv+1)*ITENS_PAG).forEach((l,i) => { s.innerHTML += `<div class="card" style="border-left:4px solid var(--primary)"><span class="link-text">${l}</span><button class="danger btn-auto" onclick="db['${u}'].salvos.splice(${pgSalv*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-salv', tS, pgSalv, (n)=> {pgSalv=n; renderizar();}); const d = document.getElementById('lista-descartados'); d.innerHTML = ''; const tD = db[u].naoSalvos ? db[u].naoSalvos.length : 0; document.getElementById('count-discarded').innerText = tD; if(db[u].naoSalvos) db[u].naoSalvos.slice(pgDesc*ITENS_PAG, (pgDesc+1)*ITENS_PAG).forEach((l,i) => { d.innerHTML += `<div class="card card-discarded"><span class="link-text">${l}</span><button class="btn-auto" onclick="resgatarDescartado(${pgDesc*ITENS_PAG+i})">♻️</button><button class="danger btn-auto" onclick="db['${u}'].naoSalvos.splice(${pgDesc*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-desc', tD, pgDesc, (n)=> {pgDesc=n; renderizar();}); localStorage.setItem(DB_KEY, JSON.stringify(db)); }
-        function renderControles(id, total, atual, cb) { const div = document.getElementById(id), max = Math.ceil(total/ITENS_PAG); if(max <= 1) { div.innerHTML = ''; return; } div.innerHTML = `<button class="secondary btn-auto" ${atual===0?'disabled':''} onclick="(${cb})(${atual-1})">«</button><span>${atual+1}/${max}</span><button class="secondary btn-auto" ${atual>=max-1?'disabled':''} onclick="(${cb})(${atual+1})">»</button>`; }
+        function renderControles(id, total, atual, cb) { const div = document.getElementById(id), max = Math.ceil(total/ITENS_PAG); if(max <= 1) { div.innerHTML = ''; return; } div.innerHTML = `<button class="secondary btn-auto" ${atual===0?'disabled':''} onclick="(${cb})(${atual+1})">«</button><span>${atual+1}/${max}</span><button class="secondary btn-auto" ${atual>=max-1?'disabled':''} onclick="(${cb})(${atual+1})">»</button>`; }
         async function alterarStatus(targetUser) { if(!confirm("Deseja alterar o status deste usuário?")) return; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggle_status', user: currentUserData.user, pass: currentUserData.pass, targetUser: targetUser }) }); const res = await req.json(); if(res.success) { alert("Status alterado: " + res.novoStatus); abrirAdminPanel(); } else { alert("Erro: " + res.msg); } } catch(e) { alert("Erro de conexão."); } }
         async function clickRenovar(targetUser) { const dias = prompt("Renovar por quantos dias?", "30"); if (!dias) return; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'renew_user', user: currentUserData.user, pass: currentUserData.pass, targetUser: targetUser, days: dias }) }); const res = await req.json(); if (res.success) { alert("Usuário renovado com sucesso!"); abrirAdminPanel(); } else { alert("Erro: " + res.msg); } } catch(e) { alert("Erro de conexão."); } }
         
@@ -561,7 +556,7 @@
         function abrirModalEdit(user, date, wa, val, role) {
             userEditing = user;
             document.getElementById('edit-user-display').innerText = user;
-            document.getElementById('edit-pass').value = ""; // Senha vazia por segurança
+            document.getElementById('edit-pass').value = ""; 
             document.getElementById('edit-date').value = date;
             document.getElementById('edit-wa').value = wa;
             document.getElementById('edit-val').value = val;
@@ -613,9 +608,17 @@
             document.getElementById('modal-admin').classList.add('show'); 
             const lista = document.getElementById('admin-users-list'); 
             lista.innerHTML = '<div class="loader" style="display:block; border-color:#ccc; border-top-color:#333; margin-top: 20px;"></div>'; 
+            
             const isSub = currentUserData.cargo === 'Sub-Admin'; 
             
-            // ESCONDE SEÇÕES NO CARREGAMENTO INICIAL
+            // --- NOVA LÓGICA DE BOTÕES DO ADMIN ---
+            // Se for Sub-Admin, ESCONDE a barra de botões (Aviso, Geral, Teste)
+            const actionBar = document.querySelector('.admin-action-bar');
+            if(actionBar) {
+                actionBar.style.display = isSub ? 'none' : 'grid';
+            }
+
+            // Garante que as seções comecem fechadas
             document.getElementById('admin-msg-area').style.display = 'none';
             document.getElementById('upload-section-geral').style.display = 'none';
             document.getElementById('upload-section-teste').style.display = 'none';
