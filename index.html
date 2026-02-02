@@ -6,11 +6,9 @@
     <title>Gerenciador |WA|</title>
     
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%2310b981%22/><text x=%2250%22 y=%2250%22 font-size=%2260%22 text-anchor=%22middle%22 dy=%22.35em%22>⚡</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%2310b981%22/><text x=%2250%22 y=%2250%22 font-size=%2260%22 text-anchor=%22middle%22 dy=%22.35em%22>⚡</text></svg>">
     
     <meta name="theme-color" content="#10b981">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -35,7 +33,6 @@
         button.vip-btn { background: #fffbeb; color: #b45309; border: 1px solid #fcd34d; }
         .btn-auto { width: auto !important; padding: 8px 16px; font-size: 13px; margin: 3px; flex-shrink: 0; }
         
-        /* ESTILOS DO DASHBOARD (MENU) */
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
         .menu-card { background: var(--bg); border: 2px solid #e5e7eb; border-radius: 15px; padding: 20px; text-align: center; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 120px; }
         .menu-card:hover { transform: translateY(-5px); border-color: var(--primary); background: rgba(16, 185, 129, 0.05); }
@@ -45,71 +42,34 @@
         .tutorial-btn-orange { background: linear-gradient(135deg, #fb923c, #ea580c); color: white; border: none; padding: 8px 20px; font-size: 12px; border-radius: 25px; box-shadow: 0 4px 10px rgba(234, 88, 12, 0.4); transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .tutorial-btn-orange:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(234, 88, 12, 0.6); filter: brightness(1.1); }
         
-        /* BOTÃO AUTORESPONDER */
-        .autoresponder-btn { 
-            background: linear-gradient(135deg, #6366f1, #4f46e5); 
-            color: white; 
-            border: none; 
-            padding: 5px 15px; 
-            font-size: 12px; 
-            border-radius: 15px; 
-            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4); 
-            transition: 0.3s; 
-            display: none; 
-            flex-direction: column; 
-            align-items: center;
-            justify-content: center;
-            gap: 2px;
-            line-height: 1.2;
-        }
+        .autoresponder-btn { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border: none; padding: 5px 15px; font-size: 12px; border-radius: 15px; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4); transition: 0.3s; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 2px; line-height: 1.2; }
         .autoresponder-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(79, 70, 229, 0.6); filter: brightness(1.1); }
 
-        .tutorial-card { background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05); border-radius: 15px; padding: 15px; margin-bottom: 20px; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        body.dark-mode .tutorial-card { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
-        .tutorial-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-        .tut-title-text { font-weight: 700; color: var(--primary); margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px; }
         .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .card { background: var(--card); border: 1px solid #e5e7eb; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; border-radius: var(--radius); align-items: center; gap: 10px; overflow: hidden; }
         .link-text { flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 13px; min-width: 0; word-break: break-all; }
         .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:none; justify-content:center; align-items:center; z-index:1000; backdrop-filter: blur(4px); padding: 20px; }
         .modal-overlay.show { display:flex; }
-        
         .modal-content { background:var(--card); padding: 20px; border-radius:20px; width: 100%; max-width: 400px; position:relative; color: var(--text); max-height: 80vh; overflow-y: auto; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
         
-        @media (min-width: 768px) {
-            #modal-admin .modal-content {
-                max-width: 1400px; 
-                width: 98%;
-            }
-        }
+        @media (min-width: 768px) { #modal-admin .modal-content { max-width: 1400px; width: 98%; } }
 
         .admin-action-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; }
         .admin-toggle-btn { padding: 10px; font-size: 11px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; color: white; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.2s; }
-        .admin-toggle-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
-        
-        .section-orange { background: #f97316; }
-        .section-blue { background: #3b82f6; }
-        .section-green { background: #16a34a; }
-        
+        .section-orange { background: #f97316; } .section-blue { background: #3b82f6; } .section-green { background: #16a34a; }
         .admin-section-hidden { display: none; animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
         .pay-card { text-align: center; border: 2px solid #10b981; border-radius: 15px; padding: 15px; background: rgba(16, 185, 129, 0.1); margin-bottom: 15px; }
         .pay-key { font-family: monospace; font-size: 13px; background: var(--bg); padding: 10px; border-radius: 8px; border: 1px dashed #ccc; margin: 15px 0; word-break: break-all; }
-        
         .table-responsive { overflow-x: auto; border: 1px solid #eee; border-radius: 10px; margin-top: 10px; }
         .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 700px; }
         .admin-table th { background: #f3f4f6; color: #374151; padding: 12px; text-align: center !important; font-weight: 700; border-bottom: 2px solid #e5e7eb; white-space: nowrap; }
         .admin-table td { padding: 10px; border-bottom: 1px solid #eee; vertical-align: middle; white-space: nowrap; text-align: center !important; }
         .admin-table tr:hover { background: rgba(0,0,0,0.02); }
-        
         .col-extra { display: none; }
-        
         .status-dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; }
-        .status-active { background-color: #10b981; }
-        .status-expired { background-color: #ef4444; }
-        .status-pending { background-color: #f59e0b; }
-        .status-test { background-color: #06b6d4; box-shadow: 0 0 6px #06b6d4; }
+        .status-active { background-color: #10b981; } .status-expired { background-color: #ef4444; } .status-pending { background-color: #f59e0b; } .status-test { background-color: #06b6d4; box-shadow: 0 0 6px #06b6d4; }
         .theme-toggle { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; border-radius: 50%; padding: 0; background: var(--primary); color: white; border: none; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-size: 24px; }
         .save-prompt { background: #eff6ff; color: #1e40af; padding: 10px; border-radius: var(--radius); border: 1px dashed #3b82f6; margin-top: 10px; display: none; align-items: center; justify-content: space-between; gap: 8px; }
         .pagination-ctrl { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 15px; margin-bottom: 20px; font-size: 13px; }
@@ -125,6 +85,14 @@
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
         .timer-badge { background: #ef4444; color: white; padding: 2px 8px; border-radius: 5px; font-size: 12px; font-weight: bold; margin-left: 5px; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+        
+        /* CARD DE CLIENTE */
+        .client-card { background: var(--card); border: 1px solid #e5e7eb; padding: 15px; margin-bottom: 10px; border-radius: 15px; transition:0.2s; position:relative; }
+        .client-card:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .cli-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px; }
+        .cli-label { font-weight:bold; color: var(--gray); }
+        .cli-val { font-weight:bold; color: var(--text); }
+        .cli-name { color: var(--primary); font-size: 15px; font-weight: 800; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -175,7 +143,6 @@
                 </div>
                 <div style="margin-top: 10px; display:flex; flex-wrap:wrap; gap:5px; justify-content: flex-end;">
                     <button class="tutorial-btn-orange btn-auto" onclick="abrirTutoriais()">📺 Tutoriais</button>
-                    
                     <button id="btn-autoresponder" class="autoresponder-btn btn-auto" onclick="window.open('https://drive.google.com/file/d/1KALRwBkxEqhymjNdxqlalBYsdAXH95zB/view?usp=sharing')">
                         <div style="font-weight:700; font-size:13px;">⬇ Baixar</div>
                         <div style="font-size:10px; opacity:0.9; font-weight:400;">Auto responde</div>
@@ -245,14 +212,27 @@
                     <button class="secondary btn-auto" onclick="voltarDashboard()">⬅ Voltar</button>
                     <h3 style="margin:0;">Gestão Clientes</h3>
                 </div>
+                <button class="chat-btn btn-auto" onclick="abrirModalCliente()">➕ Novo Cliente</button>
             </div>
-            <div style="text-align:center; margin-top:50px; opacity:0.7;">
-                <div style="font-size:50px;">🏗️</div>
-                <p>Área de Clientes em Construção...</p>
-                <p style="font-size:12px;">Em breve você poderá gerenciar seus clientes aqui.</p>
-            </div>
+            
+            <input type="text" id="search-client" placeholder="🔍 Buscar cliente..." onkeyup="filtrarClientesUI()" style="margin-bottom:15px;">
+            <div id="client-list-area"><div class="loader" style="display:block; border-color:#ccc; border-top-color:#333;"></div></div>
         </div>
 
+    </div>
+
+    <div id="modal-new-client" class="modal-overlay" style="z-index: 1005;">
+        <div class="modal-content" style="max-width: 350px;">
+            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-new-client')">&times;</span>
+            <h3 style="margin-top:0; color:var(--primary);">Novo Cliente</h3>
+            <input type="text" id="cli-nome" placeholder="Nome do Cliente">
+            <input type="text" id="cli-user" placeholder="Usuário/Login">
+            <input type="text" id="cli-server" placeholder="Servidor">
+            <input type="text" id="cli-wa" placeholder="WhatsApp (só números)">
+            <input type="text" id="cli-val" placeholder="Valor (ex: 20,00)">
+            
+            <button onclick="salvarCliente()" id="btn-save-cli" style="margin-top:15px;">💾 Salvar Cliente</button>
+        </div>
     </div>
 
     <div id="modal-admin" class="modal-overlay">
@@ -390,12 +370,159 @@
             document.getElementById('dashboard-screen').classList.add('hidden');
             document.getElementById('app-screen').classList.add('hidden');
             document.getElementById('clients-screen').classList.remove('hidden');
+            carregarMeusClientes();
         }
 
         function voltarDashboard() {
             document.getElementById('app-screen').classList.add('hidden');
             document.getElementById('clients-screen').classList.add('hidden');
             document.getElementById('dashboard-screen').classList.remove('hidden');
+        }
+
+        // --- LÓGICA DE CLIENTES ---
+        function abrirModalCliente() {
+            document.getElementById('cli-nome').value = '';
+            document.getElementById('cli-user').value = '';
+            document.getElementById('cli-server').value = '';
+            document.getElementById('cli-wa').value = '';
+            document.getElementById('cli-val').value = '';
+            document.getElementById('modal-new-client').classList.add('show');
+        }
+
+        async function salvarCliente() {
+            const btn = document.getElementById('btn-save-cli');
+            const nome = document.getElementById('cli-nome').value;
+            const usuario = document.getElementById('cli-user').value;
+            const servidor = document.getElementById('cli-server').value;
+            const whatsapp = document.getElementById('cli-wa').value;
+            const valor = document.getElementById('cli-val').value;
+
+            if(!nome || !usuario) return alert("Preencha ao menos Nome e Usuário.");
+
+            btn.disabled = true; 
+            btn.innerText = "Salvando...";
+
+            const payload = {
+                nome: nome,
+                usuario: usuario,
+                servidor: servidor,
+                whatsapp: whatsapp,
+                valor: valor
+            };
+
+            try {
+                const req = await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'save_client',
+                        user: currentUserData.user,
+                        pass: currentUserData.pass,
+                        cliente: payload
+                    })
+                });
+                const res = await req.json();
+                if(res.success) {
+                    alert("Cliente salvo!");
+                    fecharModal('modal-new-client');
+                    carregarMeusClientes(); // Recarrega a lista
+                } else {
+                    alert("Erro ao salvar.");
+                }
+            } catch(e) {
+                alert("Erro de conexão.");
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "💾 Salvar Cliente";
+            }
+        }
+
+        async function carregarMeusClientes() {
+            const area = document.getElementById('client-list-area');
+            area.innerHTML = '<div class="loader" style="display:block; border-color:#ccc; border-top-color:#333;"></div>';
+            
+            try {
+                const req = await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'list_clients',
+                        user: currentUserData.user,
+                        pass: currentUserData.pass
+                    })
+                });
+                const res = await req.json();
+                if(res.success) {
+                    renderizarListaClientes(res.lista);
+                } else {
+                    area.innerHTML = '<p style="text-align:center; opacity:0.6">Erro ao carregar.</p>';
+                }
+            } catch(e) {
+                area.innerHTML = '<p style="text-align:center; opacity:0.6">Erro de conexão.</p>';
+            }
+        }
+
+        function renderizarListaClientes(lista) {
+            const area = document.getElementById('client-list-area');
+            area.innerHTML = '';
+            
+            if(lista.length === 0) {
+                area.innerHTML = '<p style="text-align:center; opacity:0.6; margin-top:20px;">Nenhum cliente encontrado.</p>';
+                return;
+            }
+
+            lista.forEach(cli => {
+                let waButton = '';
+                if(cli.whatsapp) {
+                    waButton = `<button class="chat-btn btn-auto" style="position:absolute; top:15px; right:15px; padding:6px 12px; border-radius:50px;" onclick="window.open('https://wa.me/55${cli.whatsapp.replace(/\D/g,'')}')">💬 WhatsApp</button>`;
+                }
+
+                // Se for Admin vendo lista geral, mostra quem criou
+                let criadorTag = '';
+                if (currentUserData.cargo === 'Admin' || currentUserData.cargo === 'Sub-Admin') {
+                    criadorTag = `<div class="cli-row"><span class="cli-label">Criado por:</span> <span class="cli-val" style="color:var(--blue)">${cli.criador}</span></div>`;
+                }
+
+                const card = `
+                    <div class="client-card">
+                        ${waButton}
+                        <div class="cli-name">${cli.nome}</div>
+                        ${criadorTag}
+                        <div class="cli-row"><span class="cli-label">Usuário:</span> <span class="cli-val">${cli.usuario}</span></div>
+                        <div class="cli-row"><span class="cli-label">Servidor:</span> <span class="cli-val">${cli.servidor}</span></div>
+                        <div class="cli-row"><span class="cli-label">Valor:</span> <span class="cli-val" style="color:var(--primary)">R$ ${cli.valor}</span></div>
+                        <div class="cli-row"><span class="cli-label">Cadastro:</span> <span class="cli-val" style="font-size:10px; opacity:0.7">${formatarData(cli.data).toLocaleDateString()}</span></div>
+                        
+                        <div style="margin-top:10px; display:flex; gap:5px;">
+                             <button class="danger btn-auto" style="padding:5px 10px; font-size:11px;" onclick="deletarCliente('${cli.id}')">Excluir</button>
+                        </div>
+                    </div>
+                `;
+                area.innerHTML += card;
+            });
+        }
+
+        async function deletarCliente(id) {
+            if(!confirm("Tem certeza que deseja excluir este cliente?")) return;
+            try {
+                await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'delete_client',
+                        user: currentUserData.user,
+                        pass: currentUserData.pass,
+                        id: id
+                    })
+                });
+                carregarMeusClientes();
+            } catch(e) { alert("Erro ao excluir."); }
+        }
+
+        function filtrarClientesUI() {
+            const termo = document.getElementById('search-client').value.toLowerCase();
+            const cards = document.querySelectorAll('.client-card');
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                card.style.display = text.includes(termo) ? 'block' : 'none';
+            });
         }
 
         function toggleAdminSection(id) {
@@ -468,7 +595,6 @@
                     document.getElementById('dashboard-screen').classList.remove('hidden');
                     document.getElementById('ola-dashboard').innerText = "Olá, " + currentUserData.user;
                     
-                    // Configura infos da Dashboard
                     document.getElementById('ola-user').innerText = "Olá, " + currentUserData.user;
                     
                     if (dados.cargo === 'Teste' && dados.testSeconds) {
@@ -484,7 +610,6 @@
                         }
                     }
 
-                    // --- LÓGICA DO BOTÃO AUTORESPONDER ---
                     const btnAuto = document.getElementById('btn-autoresponder');
                     if (dados.cargo === 'Admin' || dados.cargo === 'User') {
                         btnAuto.style.display = 'inline-flex';
@@ -494,7 +619,7 @@
 
                     if(dados.isMaster) {
                         document.getElementById('btn-open-admin').classList.remove('hidden');
-                        document.getElementById('btn-open-admin-dash').classList.remove('hidden'); // Botão na Dashboard
+                        document.getElementById('btn-open-admin-dash').classList.remove('hidden');
                     }
                     
                     if (dados.file && dados.file.url && dados.cargo !== 'Sub-Admin') {
@@ -715,7 +840,6 @@
                     dados.forEach((row) => { 
                         const uUser = row[0] || ""; 
                         
-                        // --- NOVA LÓGICA: SE FOR SUB-ADMIN, ESCONDE O PRÓPRIO USUÁRIO DA LISTA ---
                         if (isSubAdmin && uUser.toLowerCase() === currentUserData.user.toLowerCase()) {
                             return; 
                         }
