@@ -541,31 +541,18 @@
                 if(uCargo.toLowerCase() === 'administrador') uCargo = "Admin";
                 if(uCargo.toLowerCase() === 'subadministrador') uCargo = "Sub-Admin";
 
-                // LÓGICA DE VENCIMENTO EM TEMPO REAL
+                // LÓGICA DE VENCIMENTO EM TEMPO REAL COM HORA (Para Teste e Normal)
                 let statusDot = "status-active";
                 let statusTexto = uStatus;
 
-                if (uCargo === 'Teste') {
-                    // Teste tem data completa
-                    const dTeste = formatarData(uDate); // tenta converter
-                    if (dTeste.getFullYear() !== 1969) { // Se valido
-                         // Se dTeste tem hora, melhor comparar timestamps
-                         // Simplificação: Se a string tiver hora, parse correto
-                    }
-                    // A data vinda do admin_list já está formatada pelo Backend? 
-                    // Backend manda formatarDataSafe. Se for string complexa, manda string.
-                    // Para simplificar: O Backend já validou login. Aqui é visual.
-                    statusDot = "status-test";
-                } 
-                
-                // CHECAGEM VISUAL DE VALIDADE
                 if (uCargo !== 'Admin' && uCargo !== 'Sub-Admin' && !uDate.includes("Vitalício")) {
-                    const partes = uDate.split('/');
-                    if(partes.length === 3) {
-                        const dataVenc = new Date(partes[2], partes[1]-1, partes[0], 23, 59, 59); // Fim do dia
-                        if (dataVenc < hoje) {
+                    const d = parseData(uDate); // Usa a função inteligente que lê hora
+                    if (d && !isNaN(d.getTime())) {
+                        if (d < hoje) {
                             statusDot = "status-expired";
-                            statusTexto = "Vencido";
+                            statusTexto = (uCargo === 'Teste') ? "Expirado" : "Vencido";
+                        } else if (uCargo === 'Teste') {
+                            statusDot = "status-test";
                         }
                     }
                 }
@@ -582,24 +569,9 @@
                     btns += `<button class="btn-action-master act-renew" title="Renovar" onclick="renovarUser('${uUser}')">📅</button>`;
                 }
 
-                btns += `<button class="btn-action-master act-chat" title="WhatsApp" onclick="window.open('https://wa.me/55${String(uWa).replace(/\D/g,'')}')">💬</button>`;
-                btns += `<button class="btn-action-master act-send" title="Enviar Dados" onclick="prepararEnvioWhatsApp('${uUser}','******','${uWa}','${uDate}','${uVal}')">📩</button>`; // Envia Mascarado por padrão, ou real se quiser
-                btns += `<button class="btn-action-master act-edit" title="Editar" onclick="prepararEdicaoUser('${uUser}')">✏️</button>`;
-
-                // NOTA: Para enviar senha real no whatsapp, precisaria passar uPass. 
-                // Se quiser segurança total, passe uPass. Se quiser ocultar até no envio, passe '******'.
-                // Vou passar uPass para que o botão de envio funcione utilmente.
-                // Mas na tabela visual (HTML) será fixo ******
-                
                 // CORREÇÃO DO BOTÃO ENVIAR (Para funcionar com a senha real no WhatsApp)
                 const btnSendReal = `<button class="btn-action-master act-send" title="Enviar Dados" onclick="prepararEnvioWhatsApp('${uUser}','${uPass}','${uWa}','${uDate}','${uVal}')">📩</button>`;
 
-                // Recriando btns com o send correto
-                btns = '';
-                if (!isSubAdmin) {
-                    btns += `<button class="btn-action-master act-toggle" title="Aprovar/Bloquear" onclick="toggleStatus('${uUser}')">✅</button>`;
-                    btns += `<button class="btn-action-master act-renew" title="Renovar" onclick="renovarUser('${uUser}')">📅</button>`;
-                }
                 btns += `<button class="btn-action-master act-chat" title="WhatsApp" onclick="window.open('https://wa.me/55${String(uWa).replace(/\D/g,'')}')">💬</button>`;
                 btns += btnSendReal;
                 btns += `<button class="btn-action-master act-edit" title="Editar" onclick="prepararEdicaoUser('${uUser}')">✏️</button>`;
@@ -628,6 +600,28 @@
             document.querySelectorAll('.col-detailed').forEach(el => {
                 el.style.display = hide ? 'none' : 'table-cell';
             });
+        }
+        
+        // FUNÇÃO DE PARSE INTELIGENTE (DIA, MES, ANO, HORA, MINUTO)
+        function parseData(v) { 
+            if(!v) return null; 
+            if(v instanceof Date) return v; 
+            if(typeof v==='string'){ 
+                var s=v.trim(); 
+                // Se tem hora (tamanho > 10 ex: "01/01/2026 14:00")
+                if(s.length>10){ 
+                    try {
+                        var parts=s.split(' '); 
+                        var d=parts[0].split('/'); 
+                        var t=parts[1].split(':'); 
+                        return new Date(d[2],d[1]-1,d[0],t[0],t[1]); 
+                    } catch(e) { return null; }
+                } else { 
+                    var d=s.split('/'); 
+                    if(d.length===3) return new Date(d[2],d[1]-1,d[0], 23, 59, 59); // Fim do dia se nao tiver hora
+                } 
+            } 
+            return new Date(v); 
         }
 
         function abrirModalCreate() { 
