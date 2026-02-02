@@ -35,32 +35,14 @@
         button.vip-btn { background: #fffbeb; color: #b45309; border: 1px solid #fcd34d; }
         .btn-auto { width: auto !important; padding: 8px 16px; font-size: 13px; margin: 3px; flex-shrink: 0; }
         
+        /* ESTILOS LINK MANAGER */
         .tutorial-btn-orange { background: linear-gradient(135deg, #fb923c, #ea580c); color: white; border: none; padding: 8px 20px; font-size: 12px; border-radius: 25px; box-shadow: 0 4px 10px rgba(234, 88, 12, 0.4); transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .tutorial-btn-orange:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(234, 88, 12, 0.6); filter: brightness(1.1); }
-        
-        /* BOTÃO AUTORESPONDER */
-        .autoresponder-btn { 
-            background: linear-gradient(135deg, #6366f1, #4f46e5); 
-            color: white; 
-            border: none; 
-            padding: 5px 15px; 
-            font-size: 12px; 
-            border-radius: 15px; 
-            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4); 
-            transition: 0.3s; 
-            display: none; /* Inicia Oculto */
-            flex-direction: column; 
-            align-items: center;
-            justify-content: center;
-            gap: 2px;
-            line-height: 1.2;
-        }
+        .autoresponder-btn { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border: none; padding: 5px 15px; font-size: 12px; border-radius: 15px; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4); transition: 0.3s; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 2px; line-height: 1.2; }
         .autoresponder-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(79, 70, 229, 0.6); filter: brightness(1.1); }
-
         .tutorial-card { background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05); border-radius: 15px; padding: 15px; margin-bottom: 20px; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        body.dark-mode .tutorial-card { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
-        .tutorial-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         .tut-title-text { font-weight: 700; color: var(--primary); margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+        
         .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .card { background: var(--card); border: 1px solid #e5e7eb; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; border-radius: var(--radius); align-items: center; gap: 10px; overflow: hidden; }
         .link-text { flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 13px; min-width: 0; word-break: break-all; }
@@ -68,41 +50,57 @@
         .modal-overlay.show { display:flex; }
         
         .modal-content { background:var(--card); padding: 20px; border-radius:20px; width: 100%; max-width: 400px; position:relative; color: var(--text); max-height: 80vh; overflow-y: auto; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
-        
-        @media (min-width: 768px) {
-            #modal-admin .modal-content {
-                max-width: 1400px; 
-                width: 98%;
-            }
-        }
+        @media (min-width: 768px) { #modal-admin .modal-content { max-width: 1400px; width: 98%; } }
 
         .admin-action-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; }
         .admin-toggle-btn { padding: 10px; font-size: 11px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; color: white; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.2s; }
-        .admin-toggle-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
-        
-        .section-orange { background: #f97316; }
-        .section-blue { background: #3b82f6; }
-        .section-green { background: #16a34a; }
-        
+        .section-orange { background: #f97316; } .section-blue { background: #3b82f6; } .section-green { background: #16a34a; }
         .admin-section-hidden { display: none; animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-
+        
         .pay-card { text-align: center; border: 2px solid #10b981; border-radius: 15px; padding: 15px; background: rgba(16, 185, 129, 0.1); margin-bottom: 15px; }
         .pay-key { font-family: monospace; font-size: 13px; background: var(--bg); padding: 10px; border-radius: 8px; border: 1px dashed #ccc; margin: 15px 0; word-break: break-all; }
         
         .table-responsive { overflow-x: auto; border: 1px solid #eee; border-radius: 10px; margin-top: 10px; padding-bottom: 80px; }
-        .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 700px; }
-        .admin-table th { background: #f3f4f6; color: #374151; padding: 12px; text-align: center !important; font-weight: 700; border-bottom: 2px solid #e5e7eb; white-space: nowrap; }
-        .admin-table td { padding: 10px; border-bottom: 1px solid #eee; vertical-align: middle; white-space: nowrap; text-align: center !important; }
+        .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px; } /* Largura maior para caber colunas */
+        .admin-table th { background: #f4f6f8; color: #374151; padding: 12px; text-align: center !important; font-weight: 700; border-bottom: 2px solid #e5e7eb; white-space: nowrap; text-transform: uppercase; font-size: 12px; }
+        .admin-table td { padding: 10px; border-bottom: 1px solid #eee; vertical-align: middle; white-space: nowrap; text-align: center !important; font-size: 12px; }
         .admin-table tr:hover { background: rgba(0,0,0,0.02); }
         
-        .col-extra { display: none; }
-        
+        /* STATUS DOT */
         .status-dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; }
         .status-active { background-color: #10b981; }
         .status-expired { background-color: #ef4444; }
         .status-pending { background-color: #f59e0b; }
         .status-test { background-color: #06b6d4; box-shadow: 0 0 6px #06b6d4; }
+
+        /* NOVOS BOTÕES DE AÇÃO - MODELO FOTO 2 */
+        .btn-action {
+            width: 32px; height: 32px; 
+            border-radius: 8px; 
+            border: none;
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin: 0 2px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.2s;
+            color: #fff;
+        }
+        .btn-action:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        
+        .btn-toggle { background-color: #f59e0b; border: 1px solid #d97706; border-radius: 50%; } /* Laranja Check */
+        .btn-renew { background-color: #8b5cf6; border-radius: 8px; } /* Roxo Calendar */
+        .btn-chat { background-color: #25d366; border-radius: 50%; } /* Verde Chat */
+        .btn-send { background-color: #fffbeb; color: #b45309; border: 1px solid #fcd34d; border-radius: 8px; font-size: 14px; } /* Amarelo Envelope */
+        .btn-edit { background-color: #3b82f6; border-radius: 50%; } /* Azul Edit */
+
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .menu-card { background: var(--bg); border: 2px solid #e5e7eb; border-radius: 15px; padding: 20px; text-align: center; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 120px; }
+        .menu-card:hover { transform: translateY(-5px); border-color: var(--primary); background: rgba(16, 185, 129, 0.05); }
+        .menu-icon { font-size: 40px; margin-bottom: 10px; }
+        .menu-title { font-weight: 700; font-size: 14px; color: var(--text); }
+
         .theme-toggle { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; border-radius: 50%; padding: 0; background: var(--primary); color: white; border: none; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-size: 24px; }
         .save-prompt { background: #eff6ff; color: #1e40af; padding: 10px; border-radius: var(--radius); border: 1px dashed #3b82f6; margin-top: 10px; display: none; align-items: center; justify-content: space-between; gap: 8px; }
         .pagination-ctrl { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 15px; margin-bottom: 20px; font-size: 13px; }
@@ -119,7 +117,7 @@
         .timer-badge { background: #ef4444; color: white; padding: 2px 8px; border-radius: 5px; font-size: 12px; font-weight: bold; margin-left: 5px; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
 
-        /* ESTILOS DA TABELA DE CLIENTES (MANTIDA) */
+        /* TELA CLIENTES - MANTIDA */
         .custom-table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--card); border-radius: 10px; overflow: visible !important; }
         .custom-table thead { background: var(--bg); border-bottom: 2px solid #e5e7eb; position: sticky; top: 0; z-index: 50; }
         .custom-table th { padding: 12px; text-align: left; color: var(--primary); font-weight: 700; cursor: pointer; position: relative; }
@@ -138,25 +136,6 @@
         .filter-option input { width: 14px; height: 14px; margin: 0; cursor: pointer; }
         .filter-actions { border-top: 1px solid #eee; margin-top: 8px; padding-top: 8px; text-align: right; }
         .filter-btn-small { font-size: 10px; padding: 4px 10px; background: var(--text); color: var(--card); border-radius: 4px; width: auto; display: inline-block; cursor: pointer;}
-
-        /* CSS BOTÕES REDONDOS DO ADMIN (IGUAL A FOTO 2) */
-        .btn-circle {
-            width: 32px; height: 32px; 
-            border-radius: 50%; 
-            border: none;
-            display: inline-flex; 
-            align-items: center; 
-            justify-content: center; 
-            margin: 0 2px;
-            cursor: pointer;
-            transition: transform 0.2s;
-            font-size: 14px;
-            color: white;
-        }
-        .btn-circle:hover { transform: scale(1.1); filter: brightness(1.1); }
-        .btn-edit-round { background-color: #3b82f6; } /* Azul */
-        .btn-block-round { background-color: #f59e0b; } /* Laranja */
-        .btn-renew-round { background-color: #8b5cf6; } /* Roxo */
 
         @media (max-width: 600px) {
             .custom-table, .custom-table thead, .custom-table tbody, .custom-table th, .custom-table td, .custom-table tr { display: block; }
@@ -177,10 +156,7 @@
             <h2 style="font-weight: 700;">Gerenciador <span>|WA|</span></h2>
             <input type="text" id="user" placeholder="Usuário">
             <input type="password" id="pass" placeholder="Senha">
-            <button onclick="conectarBanco()" id="btn-login">
-                <span id="txt-login">Entrar</span>
-                <div class="loader" id="loader-login"></div>
-            </button>
+            <button onclick="conectarBanco()" id="btn-login"><span id="txt-login">Entrar</span><div class="loader" id="loader-login"></div></button>
             <p id="msg-login" style="color: red; font-size: 14px; margin-top: 10px; font-weight: 600;"></p>
             <button onclick="window.open('https://wa.me/5521970458286')" class="secondary btn-auto" style="margin-top:20px;">💬 Suporte Técnico</button>
             <div style="margin-top: 40px; font-size: 11px; opacity: 0.6; color: var(--text);"><p style="margin:0;">&copy; 2026 Gerenciador |WA|</p><p style="margin:2px 0 0 0;">Dev: <b>Gabriel Martins</b></p></div>
@@ -293,48 +269,16 @@
                     <thead>
                         <tr>
                             <th onclick="tabelaSort('nome')">Nome ↕</th>
-                            
-                            <th id="th-criador" style="display:none;" onclick="toggleFilter(event, 'criador')">
-                                Criador ▾ 
-                                <div id="filter-criador" class="filter-dropdown">
-                                    <div class="filter-content"></div>
-                                    <div class="filter-actions"><button class="secondary filter-btn-small" onclick="limparFiltro('criador')">Limpar</button></div>
-                                </div>
-                            </th>
-
+                            <th id="th-criador" style="display:none;" onclick="toggleFilter(event, 'criador')">Criador ▾<div id="filter-criador" class="filter-dropdown"><div class="filter-content"></div><div class="filter-actions"><button class="secondary filter-btn-small" onclick="limparFiltro('criador')">Limpar</button></div></div></th>
                             <th onclick="tabelaSort('usuario')">Usuário ↕</th>
-                            
-                            <th onclick="toggleFilter(event, 'servidor')">
-                                Servidor ▾ 
-                                <div id="filter-servidor" class="filter-dropdown">
-                                    <div class="filter-content"></div>
-                                    <div class="filter-actions"><button class="secondary filter-btn-small" onclick="limparFiltro('servidor')">Limpar</button></div>
-                                </div>
-                            </th>
-
+                            <th onclick="toggleFilter(event, 'servidor')">Servidor ▾<div id="filter-servidor" class="filter-dropdown"><div class="filter-content"></div><div class="filter-actions"><button class="secondary filter-btn-small" onclick="limparFiltro('servidor')">Limpar</button></div></div></th>
                             <th onclick="tabelaSort('whatsapp')">WhatsApp ↕</th>
-                            
-                            <th onclick="toggleFilter(event, 'vencimento')">
-                                Vencimento ▾ 
-                                <div id="filter-vencimento" class="filter-dropdown">
-                                    <div class="filter-content"></div>
-                                    <div class="filter-actions"><button class="secondary filter-btn-small" onclick="limparFiltro('vencimento')">Limpar</button></div>
-                                </div>
-                            </th>
-
-                            <th onclick="toggleFilter(event, 'valor')">
-                                Valor ▾ 
-                                <div id="filter-valor" class="filter-dropdown">
-                                    <div class="filter-content"></div>
-                                    <div class="filter-actions"><button class="secondary filter-btn-small" onclick="limparFiltro('valor')">Limpar</button></div>
-                                </div>
-                            </th>
-
+                            <th onclick="toggleFilter(event, 'vencimento')">Vencimento ▾<div id="filter-vencimento" class="filter-dropdown"><div class="filter-content"></div><div class="filter-actions"><button class="secondary filter-btn-small" onclick="limparFiltro('vencimento')">Limpar</button></div></div></th>
+                            <th onclick="toggleFilter(event, 'valor')">Valor ▾<div id="filter-valor" class="filter-dropdown"><div class="filter-content"></div><div class="filter-actions"><button class="secondary filter-btn-small" onclick="limparFiltro('valor')">Limpar</button></div></div></th>
                             <th style="width: 100px;">Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="tabela-corpo">
-                        </tbody>
+                    <tbody id="tabela-corpo"></tbody>
                 </table>
                 <div id="loader-clientes" class="loader" style="display:none; border-color:#ccc; border-top-color:#333; margin-top:20px;"></div>
                 <p id="msg-sem-clientes" style="text-align:center; opacity:0.6; margin-top:20px; display:none;">Nenhum cliente encontrado.</p>
@@ -345,131 +289,41 @@
     <div id="modal-admin" class="modal-overlay">
         <div class="modal-content">
             <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold; color:var(--text);" onclick="fecharModal('modal-admin')">&times;</span>
-            
             <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom:15px;">
                 <h2 style="color: var(--dark); font-size: 20px; margin:0;">⚙️ Gestão Master</h2>
                 <div style="display:flex; gap:8px;"><button class="secondary btn-auto" onclick="abrirAdminPanel()">🔄</button><button class="chat-btn btn-auto" onclick="abrirModalCreate()">➕ Novo</button></div>
             </div>
-            
             <div class="admin-action-bar">
                 <button class="admin-toggle-btn section-orange" onclick="toggleAdminSection('admin-msg-area')"><span style="font-size:18px">🔔</span> Aviso</button>
                 <button class="admin-toggle-btn section-blue" onclick="toggleAdminSection('upload-section-geral')"><span style="font-size:18px">📁</span> Geral</button>
                 <button class="admin-toggle-btn section-green" onclick="toggleAdminSection('upload-section-teste')"><span style="font-size:18px">🧪</span> Teste</button>
             </div>
-            
             <div id="admin-msg-area" class="admin-section-hidden" style="background:#fff7ed; border:1px dashed #f97316; padding:15px; border-radius:8px; margin-bottom:10px;">
                 <div style="font-size:12px; font-weight:bold; margin-bottom:8px; color:#c2410c;">🔔 Mensagem Global (Popup)</div>
                 <textarea id="global-msg-input" rows="2" placeholder="Escreva um aviso para todos os usuários..." style="margin-bottom:5px; font-size:12px;"></textarea>
                 <button class="btn-auto" style="background:#f97316; width:100% !important;" onclick="salvarMensagem()">Enviar Aviso</button>
             </div>
-
             <div id="upload-section-geral" class="admin-section-hidden" style="background:#f9fafb; border:1px dashed #ccc; padding:15px; border-radius:8px; margin-bottom:10px;">
                 <div style="font-size:12px; font-weight:bold; margin-bottom:8px; color:#333;">📁 Arquivo OFICIAL (Todos)</div>
                 <div style="display:flex; gap:8px;"><input type="file" id="admin-file-upload" style="margin:0; padding:8px; font-size:12px; color:#333; width: 100%;"><button class="btn-auto" onclick="fazerUploadArquivo('geral')">Enviar</button></div>
             </div>
-
             <div id="upload-section-teste" class="admin-section-hidden" style="background:#f0fdf4; border:1px dashed #16a34a; padding:15px; border-radius:8px; margin-bottom:20px;">
                 <div style="font-size:12px; font-weight:bold; margin-bottom:8px; color:#15803d;">🧪 Arquivo TESTE (Apenas Testes)</div>
                 <div style="display:flex; gap:8px;"><input type="file" id="admin-file-test" style="margin:0; padding:8px; font-size:12px; color:#333; width: 100%;"><button class="btn-auto" style="background:#16a34a;" onclick="fazerUploadArquivo('teste')">Enviar</button></div>
             </div>
-            
             <div id="upload-status" style="font-size:11px; color:#666; margin-bottom:10px;"></div>
             
-            <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
-                <input type="checkbox" id="toggle-details" onchange="toggleDetalhes()">
-                <label for="toggle-details" style="font-size:13px; cursor:pointer;">👁️ Mostrar Detalhes (Senha, Pix, etc)</label>
-            </div>
-
             <input type="text" id="search-user" placeholder="🔍 Pesquisar usuário..." onkeyup="filtrarUsuarios()" style="margin-bottom: 15px;">
             <div id="admin-users-list"></div>
         </div>
     </div>
 
-    <div id="modal-new-client" class="modal-overlay" style="z-index: 1005;">
-        <div class="modal-content" style="max-width: 350px;">
-            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-new-client')">&times;</span>
-            <h3 id="modal-cli-title" style="margin-top:0; color:var(--primary);">Novo Cliente</h3>
-            <input type="text" id="cli-nome" placeholder="Nome do Cliente">
-            <input type="text" id="cli-user" placeholder="Usuário/Login">
-            <input type="text" id="cli-server" placeholder="Servidor">
-            <input type="text" id="cli-wa" placeholder="WhatsApp (só números)">
-            <input type="text" id="cli-val" placeholder="Valor (ex: 20,00)">
-            <label style="display:block; text-align:left; font-size:12px; font-weight:bold; margin-bottom:5px; color:#333;">Data de Vencimento:</label>
-            <input type="date" id="cli-venc">
-            <button onclick="salvarCliente()" id="btn-save-cli" style="margin-top:15px;">💾 Salvar Cliente</button>
-        </div>
-    </div>
-    
-    <div id="modal-config-msg" class="modal-overlay" style="z-index: 1006;">
-        <div class="modal-content" style="max-width: 400px;">
-            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-config-msg')">&times;</span>
-            <h3 style="margin-top:0; color:var(--primary);">Configurar Mensagem</h3>
-            <p style="font-size:12px; color:#666; margin-bottom:10px;">Use: {nome}, {usuario}, {servidor}, {valor}, {vencimento}</p>
-            <textarea id="config-msg-input" class="msg-box" style="height:120px;"></textarea>
-            <button onclick="salvarTemplateMsg()">💾 Salvar Padrão</button>
-        </div>
-    </div>
-    
-    <div id="modal-send-charge" class="modal-overlay" style="z-index: 1007;">
-        <div class="modal-content" style="max-width: 400px;">
-            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-send-charge')">&times;</span>
-            <h3 style="margin-top:0; color:#25d366;">Enviar Cobrança</h3>
-            <textarea id="msg-final-charge" class="msg-box" style="height:150px;"></textarea>
-            <input type="hidden" id="wa-dest-charge">
-            <button onclick="enviarCobrancaReal()" class="chat-btn">🚀 Enviar WhatsApp</button>
-        </div>
-    </div>
-
-    <div id="modal-tutorials" class="modal-overlay" style="z-index: 1500;">
-        <div class="modal-content">
-            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold;" onclick="fecharModal('modal-tutorials')">&times;</span>
-            <h3 style="margin-top:0; color:var(--primary); font-size: 20px;">📺 Central de Ajuda</h3>
-            <div id="admin-tutorial-area" style="background:#fff7ed; padding:10px; border-radius:10px; margin-bottom:15px; border:1px dashed #f97316; display:none;">
-                <h4 style="margin:0 0 10px 0; font-size:12px; color:#c2410c;">➕ Adicionar Vídeo (Admin)</h4>
-                <input type="text" id="tut-title" placeholder="Título do Vídeo" style="font-size:12px; padding:8px;">
-                <input type="text" id="tut-link" placeholder="Link do YouTube/Drive" style="font-size:12px; padding:8px;">
-                <button onclick="salvarTutorial()" class="btn-auto" style="background:#f97316; width:100% !important;">Salvar Vídeo</button>
-            </div>
-            <div id="tutorials-list" style="text-align:left; padding-bottom: 10px;"><p style="text-align:center; color:#666; font-size:13px;">Carregando...</p></div>
-        </div>
-    </div>
-
-    <div id="modal-create" class="modal-overlay" style="z-index: 1001;"> 
-        <div class="modal-content" style="max-width: 400px;"> 
-            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold; color:var(--text);" onclick="fecharModal('modal-create')">&times;</span> 
-            <h3 style="margin-top:0;">Novo Acesso</h3> 
-            <div class="form-grid"> <input type="text" id="new-user" placeholder="Usuário"> <input type="text" id="new-pass" placeholder="Senha"> <div class="full-width" id="days-container" style="display:flex; gap:5px; align-items:center;"><input type="number" id="new-days" placeholder="Dias" style="width: 80px; margin:0"><span style="font-size:12px; color:#666">dias de validade</span></div> <div class="full-width" id="role-container"><label style="font-size:12px; font-weight:bold; color:#333;">Tipo de Acesso:</label><select id="new-role" onchange="checkRole()"></select></div> <input type="text" id="new-wa" placeholder="WhatsApp (só números)" class="full-width"> <input type="text" id="new-val" placeholder="Valor (ex: 30,00)"> <input type="text" id="new-pix" placeholder="Chave PIX (opcional)"> </div> <button onclick="salvarNovoUsuario()" id="btn-save-user" style="margin-top:15px;">💾 Salvar</button> <p id="msg-create" style="color:red; font-size:12px; text-align:center; margin-top:5px;"></p> 
-        </div> 
-    </div>
-    
-    <div id="modal-edit" class="modal-overlay" style="z-index: 1002;"> 
-        <div class="modal-content" style="max-width: 400px;"> 
-            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold; color:var(--text);" onclick="fecharModal('modal-edit')">&times;</span> 
-            <h3 style="margin-top:0; color:#3b82f6">Editar: <span id="edit-user-display"></span></h3> 
-            <div class="form-grid"> 
-                <div class="full-width">
-                    <label style="font-size:11px; font-weight:bold;">Senha (Deixe vazio para não alterar):</label>
-                    <input type="text" id="edit-pass" placeholder="Redefinir senha...">
-                </div> 
-                <div class="full-width"><label style="font-size:11px; font-weight:bold;">Vencimento:</label><input type="text" id="edit-date" placeholder="DD/MM/AAAA"></div> 
-                <div class="full-width"><label style="font-size:11px; font-weight:bold;">WhatsApp:</label><input type="text" id="edit-wa"></div> 
-                <div class="full-width"><label style="font-size:11px; font-weight:bold;">Valor:</label><input type="text" id="edit-val"></div> 
-                
-                <div class="full-width" id="div-edit-role">
-                    <label style="font-size:11px; font-weight:bold;">Função (Cargo):</label>
-                    <select id="edit-role">
-                        <option value="User">Usuário</option>
-                        <option value="Teste">Teste</option>
-                        <option value="Sub-Admin">Sub-Admin</option>
-                        <option value="Admin">Admin</option>
-                    </select>
-                </div>
-            </div> 
-            <button onclick="salvarEdicao()" id="btn-save-edit" class="edit-btn" style="margin-top:15px;">💾 Atualizar Dados</button> 
-            <p id="msg-edit" style="color:red; font-size:12px; text-align:center; margin-top:5px;"></p> 
-        </div> 
-    </div>
-
+    <div id="modal-new-client" class="modal-overlay" style="z-index: 1005;"> <div class="modal-content" style="max-width: 350px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-new-client')">&times;</span> <h3 id="modal-cli-title" style="margin-top:0; color:var(--primary);">Novo Cliente</h3> <input type="text" id="cli-nome" placeholder="Nome do Cliente"> <input type="text" id="cli-user" placeholder="Usuário/Login"> <input type="text" id="cli-server" placeholder="Servidor"> <input type="text" id="cli-wa" placeholder="WhatsApp (só números)"> <input type="text" id="cli-val" placeholder="Valor (ex: 20,00)"> <label style="display:block; text-align:left; font-size:12px; font-weight:bold; margin-bottom:5px; color:#333;">Data de Vencimento:</label> <input type="date" id="cli-venc"> <button onclick="salvarCliente()" id="btn-save-cli" style="margin-top:15px;">💾 Salvar Cliente</button> </div> </div>
+    <div id="modal-config-msg" class="modal-overlay" style="z-index: 1006;"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-config-msg')">&times;</span> <h3 style="margin-top:0; color:var(--primary);">Configurar Mensagem</h3> <p style="font-size:12px; color:#666; margin-bottom:10px;">Use: {nome}, {usuario}, {servidor}, {valor}, {vencimento}</p> <textarea id="config-msg-input" class="msg-box" style="height:120px;"></textarea> <button onclick="salvarTemplateMsg()">💾 Salvar Padrão</button> </div> </div>
+    <div id="modal-send-charge" class="modal-overlay" style="z-index: 1007;"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-send-charge')">&times;</span> <h3 style="margin-top:0; color:#25d366;">Enviar Cobrança</h3> <textarea id="msg-final-charge" class="msg-box" style="height:150px;"></textarea> <input type="hidden" id="wa-dest-charge"> <button onclick="enviarCobrancaReal()" class="chat-btn">🚀 Enviar WhatsApp</button> </div> </div>
+    <div id="modal-tutorials" class="modal-overlay" style="z-index: 1500;"><div class="modal-content"><span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold;" onclick="fecharModal('modal-tutorials')">&times;</span><h3 style="margin-top:0; color:var(--primary); font-size: 20px;">📺 Central de Ajuda</h3><div id="admin-tutorial-area" style="background:#fff7ed; padding:10px; border-radius:10px; margin-bottom:15px; border:1px dashed #f97316; display:none;"><h4 style="margin:0 0 10px 0; font-size:12px; color:#c2410c;">➕ Adicionar Vídeo (Admin)</h4><input type="text" id="tut-title" placeholder="Título do Vídeo" style="font-size:12px; padding:8px;"><input type="text" id="tut-link" placeholder="Link do YouTube/Drive" style="font-size:12px; padding:8px;"><button onclick="salvarTutorial()" class="btn-auto" style="background:#f97316; width:100% !important;">Salvar Vídeo</button></div><div id="tutorials-list" style="text-align:left; padding-bottom: 10px;"><p style="text-align:center; color:#666; font-size:13px;">Carregando...</p></div></div></div>
+    <div id="modal-create" class="modal-overlay" style="z-index: 1001;"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold; color:var(--text);" onclick="fecharModal('modal-create')">&times;</span> <h3 style="margin-top:0;">Novo Acesso</h3> <div class="form-grid"> <input type="text" id="new-user" placeholder="Usuário"> <input type="text" id="new-pass" placeholder="Senha"> <div class="full-width" id="days-container" style="display:flex; gap:5px; align-items:center;"><input type="number" id="new-days" placeholder="Dias" style="width: 80px; margin:0"><span style="font-size:12px; color:#666">dias de validade</span></div> <div class="full-width" id="role-container"><label style="font-size:12px; font-weight:bold; color:#333;">Tipo de Acesso:</label><select id="new-role" onchange="checkRole()"></select></div> <input type="text" id="new-wa" placeholder="WhatsApp (só números)" class="full-width"> <input type="text" id="new-val" placeholder="Valor (ex: 30,00)"> <input type="text" id="new-pix" placeholder="Chave PIX (opcional)"> </div> <button onclick="salvarNovoUsuario()" id="btn-save-user" style="margin-top:15px;">💾 Salvar</button> <p id="msg-create" style="color:red; font-size:12px; text-align:center; margin-top:5px;"></p> </div> </div>
+    <div id="modal-edit" class="modal-overlay" style="z-index: 1002;"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold; color:var(--text);" onclick="fecharModal('modal-edit')">&times;</span> <h3 style="margin-top:0; color:#3b82f6">Editar: <span id="edit-user-display"></span></h3> <div class="form-grid"> <div class="full-width"><label style="font-size:11px; font-weight:bold;">Senha (Deixe vazio para não alterar):</label><input type="text" id="edit-pass" placeholder="Redefinir senha..."></div> <div class="full-width"><label style="font-size:11px; font-weight:bold;">Vencimento:</label><input type="text" id="edit-date" placeholder="DD/MM/AAAA"></div> <div class="full-width"><label style="font-size:11px; font-weight:bold;">WhatsApp:</label><input type="text" id="edit-wa"></div> <div class="full-width"><label style="font-size:11px; font-weight:bold;">Valor:</label><input type="text" id="edit-val"></div> <div class="full-width" id="div-edit-role"><label style="font-size:11px; font-weight:bold;">Função (Cargo):</label><select id="edit-role"><option value="User">Usuário</option><option value="Teste">Teste</option><option value="Sub-Admin">Sub-Admin</option><option value="Admin">Admin</option></select></div></div> <button onclick="salvarEdicao()" id="btn-save-edit" class="edit-btn" style="margin-top:15px;">💾 Atualizar Dados</button> <p id="msg-edit" style="color:red; font-size:12px; text-align:center; margin-top:5px;"></p> </div> </div>
     <div id="modal-renovar" class="modal-overlay"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-renovar')">&times;</span> <h3 style="text-align: center; color: var(--primary);">💎 Renovar Acesso</h3> <div class="pay-card"> <div style="font-size: 12px; font-weight: bold;">PIX PARA PAGAMENTO</div> <div class="pay-key" id="pix-display" style="font-size:16px; padding:15px;">...</div> </div> <button onclick="copiarPixReal()" class="chat-btn" style="border-radius: 50px; width:100%">📋 Copiar Chave PIX</button> </div> </div>
     <div id="modal-install-tutorial" class="modal-overlay" style="z-index: 9999;"> <div class="modal-content" style="max-width: 350px;"> <div style="text-align:center; margin-bottom:20px;"> <div style="font-size:50px; margin-bottom:10px;">⚡</div> <h3 style="margin-top:0; font-size: 20px; font-weight: 700;">Instalar App</h3> <p style="font-size:14px; color: var(--text); line-height: 1.5;">Para a melhor experiência, adicione este app à sua tela inicial.</p> </div> <button id="btn-android-install" class="hidden" style="width:100% !important; margin-bottom:15px; font-size: 16px; padding: 15px;" onclick="instalarAndroid()">📲 Instalar Agora</button> <div id="tutorial-ios" class="hidden"><div class="tutorial-step">1. Toque no botão <b>Compartilhar</b> <span style="font-size:18px;">⎋</span> abaixo.</div><div class="tutorial-step">2. Role e selecione <b>Adicionar à Tela de Início</b> <span style="font-size:18px;">⊞</span>.</div></div> <div id="tutorial-android" class="hidden"><div class="tutorial-step">1. Toque nos <b>3 pontinhos</b> <span style="font-size:18px;">⋮</span> no topo do navegador.</div><div class="tutorial-step">2. Selecione <b>Adicionar à tela inicial</b> ou <b>Instalar app</b>.</div></div> <button class="secondary btn-auto" style="width:100% !important; margin-top:15px;" onclick="fecharInstallModal()">Agora não</button> </div> </div>
     <div id="modal-global-msg" class="modal-overlay" style="z-index: 1100;"> <div class="modal-content" style="max-width: 400px; text-align: center;"> <div style="font-size: 40px; margin-bottom: 10px;">🔔</div> <h3 style="margin-top:0; color: var(--primary);">Comunicado</h3> <p id="msg-text" style="font-size: 14px; color: #333 !important; background: #f3f4f6; padding: 15px; border-radius: 10px;"></p> <button onclick="marcarMensagemLida()" class="btn-auto" style="margin-top: 15px; width: 100% !important;">Entendi</button> </div> </div>
@@ -483,7 +337,7 @@
         let currentUserData = null; let lastOpenedLink = ""; let pgPend = 0, pgSalv = 0, pgDesc = 0; const ITENS_PAG = 5;
         let autoTimer = null; let countdownRef = null; let userEditing = null; let currentFileUrl = ""; let deferredPrompt; let tempUser="", tempPass="", tempWa="", tempDate="", tempVal=""; let timerInterval = null;
         let listaClientes = []; let clienteEditandoId = null; let globalWhatsappTemplate = "";
-        let filtrosAtivos = {}; // { criador: 'Gabriel', servidor: 'ZoomPlay' ... }
+        let filtrosAtivos = {}; 
 
         window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
         window.onload = () => {
@@ -491,20 +345,10 @@
             setTimeout(verificarInstalacaoApp, 1000);
             const session = localStorage.getItem(SESSION_KEY);
             if(session) { const s = JSON.parse(session); document.getElementById('user').value = s.user; document.getElementById('pass').value = s.pass; conectarBanco(); }
-            
-            // Fecha dropdown ao clicar fora
-            document.addEventListener('click', (e) => {
-                if(!e.target.closest('th')) {
-                    document.querySelectorAll('.filter-dropdown').forEach(el => el.classList.remove('show'));
-                }
-            });
+            document.addEventListener('click', (e) => { if(!e.target.closest('th')) { document.querySelectorAll('.filter-dropdown').forEach(el => el.classList.remove('show')); } });
         };
 
-        function toggleAdminSection(id) {
-            const el = document.getElementById(id);
-            if (el.style.display === 'block') { el.style.display = 'none'; } else { document.getElementById('admin-msg-area').style.display = 'none'; document.getElementById('upload-section-geral').style.display = 'none'; document.getElementById('upload-section-teste').style.display = 'none'; el.style.display = 'block'; }
-        }
-
+        function toggleAdminSection(id) { const el = document.getElementById(id); if (el.style.display === 'block') { el.style.display = 'none'; } else { document.getElementById('admin-msg-area').style.display = 'none'; document.getElementById('upload-section-geral').style.display = 'none'; document.getElementById('upload-section-teste').style.display = 'none'; el.style.display = 'block'; } }
         function abrirZapFlow() { document.getElementById('dashboard-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.add('hidden'); document.getElementById('app-screen').classList.remove('hidden'); }
         function abrirClientes() { document.getElementById('dashboard-screen').classList.add('hidden'); document.getElementById('app-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.remove('hidden'); carregarMeusClientes(); }
         function voltarDashboard() { document.getElementById('app-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.add('hidden'); document.getElementById('dashboard-screen').classList.remove('hidden'); }
@@ -517,11 +361,7 @@
             const cli = listaClientes.find(c => String(c.id) === String(id));
             if(!cli) { console.error("Cliente nao encontrado", id); return; }
             if(!cli.whatsapp) return alert("Cliente sem WhatsApp.");
-            
-            if(!globalWhatsappTemplate || globalWhatsappTemplate === "") {
-                globalWhatsappTemplate = "Olá {nome}! 👋\n\nPassando para lembrar do vencimento do seu acesso *{servidor}*.\n\n🗓️ Vencimento: *{vencimento}*\n💰 Valor: *R$ {valor}*\n\nPodemos renovar? 🚀";
-            }
-
+            if(!globalWhatsappTemplate || globalWhatsappTemplate === "") { globalWhatsappTemplate = "Olá {nome}! 👋\n\nPassando para lembrar do vencimento do seu acesso *{servidor}*.\n\n🗓️ Vencimento: *{vencimento}*\n💰 Valor: *R$ {valor}*\n\nPodemos renovar? 🚀"; }
             let msg = globalWhatsappTemplate;
             msg = msg.replace(/{nome}/g, cli.nome || '').replace(/{usuario}/g, cli.usuario || '').replace(/{servidor}/g, cli.servidor || '').replace(/{valor}/g, cli.valor || '').replace(/{vencimento}/g, cli.vencimento || '');
             document.getElementById('msg-final-charge').value = msg;
@@ -543,9 +383,6 @@
             clienteEditandoId = id; 
             document.getElementById('modal-cli-title').innerText = "Editar Cliente"; document.getElementById('cli-nome').value = cli.nome; document.getElementById('cli-user').value = cli.usuario; document.getElementById('cli-server').value = cli.servidor; document.getElementById('cli-wa').value = cli.whatsapp ? cli.whatsapp.replace(/\D/g,'') : ''; document.getElementById('cli-val').value = cli.valor; 
             if(cli.vencimento && cli.vencimento.includes('/')) { const parts = cli.vencimento.split('/'); document.getElementById('cli-venc').value = `${parts[2]}-${parts[1]}-${parts[0]}`; } else { document.getElementById('cli-venc').value = ''; } 
-            
-            // Sub-Admin restriction handled in HTML layout via CSS/JS? 
-            // Better to handle here if needed, but current requirement is visual.
             document.getElementById('modal-new-client').classList.add('show'); 
         }
         async function salvarCliente() { const btn = document.getElementById('btn-save-cli'); const nome = document.getElementById('cli-nome').value; const usuario = document.getElementById('cli-user').value; const servidor = document.getElementById('cli-server').value; const whatsapp = document.getElementById('cli-wa').value; const valor = document.getElementById('cli-val').value; const vencInput = document.getElementById('cli-venc').value; if(!nome || !usuario) return alert("Preencha ao menos Nome e Usuário."); let vencFormatado = "-"; if(vencInput) { const partes = vencInput.split('-'); vencFormatado = `${partes[2]}/${partes[1]}/${partes[0]}`; } btn.disabled = true; btn.innerText = "Salvando..."; const payload = { id: clienteEditandoId, nome: nome, usuario: usuario, servidor: servidor, whatsapp: whatsapp, valor: valor, vencimento: vencFormatado }; const acao = clienteEditandoId ? 'edit_client' : 'save_client'; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: acao, user: currentUserData.user, pass: currentUserData.pass, cliente: payload }) }); const res = await req.json(); if(res.success) { alert("Salvo!"); fecharModal('modal-new-client'); carregarMeusClientes(); } else { alert("Erro ao salvar."); } } catch(e) { alert("Erro de conexão."); } finally { btn.disabled = false; btn.innerText = "💾 Salvar Cliente"; } }
@@ -556,76 +393,35 @@
             loader.style.display = 'block';
             msgEmpty.style.display = 'none';
             corpo.innerHTML = '';
-            
             try { 
                 const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'list_clients', user: currentUserData.user, pass: currentUserData.pass }) }); 
                 const res = await req.json(); 
-                if(res.success) { 
-                    listaClientes = res.lista; 
-                    popularFiltros(); // Atualiza as opções dos filtros
-                    aplicarFiltrosERenderizar(); 
-                } else { 
-                    msgEmpty.innerText = "Erro ao carregar."; msgEmpty.style.display = 'block';
-                } 
-            } catch(e) { 
-                msgEmpty.innerText = "Erro de conexão."; msgEmpty.style.display = 'block';
-            } finally {
-                loader.style.display = 'none';
-            }
+                if(res.success) { listaClientes = res.lista; popularFiltros(); aplicarFiltrosERenderizar(); } else { msgEmpty.innerText = "Erro ao carregar."; msgEmpty.style.display = 'block'; } 
+            } catch(e) { msgEmpty.innerText = "Erro de conexão."; msgEmpty.style.display = 'block'; } finally { loader.style.display = 'none'; }
         }
         async function deletarCliente(id) { if(!confirm("Excluir?")) return; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'delete_client', user: currentUserData.user, pass: currentUserData.pass, id: id }) }); carregarMeusClientes(); } catch(e) { alert("Erro."); } }
 
-        // --- SISTEMA DE FILTROS ---
-        function toggleFilter(e, campo) {
-            e.stopPropagation();
-            document.querySelectorAll('.filter-dropdown').forEach(el => {
-                if(el.id !== `filter-${campo}`) el.classList.remove('show');
-            });
-            const menu = document.getElementById(`filter-${campo}`);
-            if(menu) menu.classList.toggle('show');
-        }
-
+        function toggleFilter(e, campo) { e.stopPropagation(); document.querySelectorAll('.filter-dropdown').forEach(el => { if(el.id !== `filter-${campo}`) el.classList.remove('show'); }); const menu = document.getElementById(`filter-${campo}`); if(menu) menu.classList.toggle('show'); }
         function popularFiltros() {
-            // Popula os checkboxes dinamicamente com base nos dados carregados
             ['criador', 'servidor', 'vencimento', 'valor'].forEach(campo => {
                 const contentDiv = document.querySelector(`#filter-${campo} .filter-content`);
                 if(!contentDiv) return;
                 contentDiv.innerHTML = '';
-
                 if (campo === 'vencimento') {
-                    ['Vencidos', 'Expira em 7 dias'].forEach(op => {
-                        contentDiv.innerHTML += `<label class="filter-option" onclick="event.stopPropagation()"><input type="checkbox" value="${op}" onchange="atualizarFiltro('${campo}', this)"> ${op}</label>`;
-                    });
+                    ['Vencidos', 'Expira em 7 dias'].forEach(op => { contentDiv.innerHTML += `<label class="filter-option" onclick="event.stopPropagation()"><input type="checkbox" value="${op}" onchange="atualizarFiltro('${campo}', this)"> ${op}</label>`; });
                 } else {
                     const unicos = [...new Set(listaClientes.map(item => item[campo]).filter(Boolean))].sort();
                     if(unicos.length === 0) contentDiv.innerHTML = '<small style="color:#999; padding:5px;">Vazio</small>';
-                    unicos.forEach(val => {
-                        contentDiv.innerHTML += `<label class="filter-option" onclick="event.stopPropagation()"><input type="checkbox" value="${val}" onchange="atualizarFiltro('${campo}', this)"> ${val}</label>`;
-                    });
+                    unicos.forEach(val => { contentDiv.innerHTML += `<label class="filter-option" onclick="event.stopPropagation()"><input type="checkbox" value="${val}" onchange="atualizarFiltro('${campo}', this)"> ${val}</label>`; });
                 }
             });
         }
-
-        function atualizarFiltro(campo, checkbox) {
-            if(!filtrosAtivos[campo]) filtrosAtivos[campo] = [];
-            if(checkbox.checked) { filtrosAtivos[campo].push(checkbox.value); } else { filtrosAtivos[campo] = filtrosAtivos[campo].filter(v => v !== checkbox.value); }
-            aplicarFiltrosERenderizar();
-        }
-
-        function limparFiltro(campo) {
-            filtrosAtivos[campo] = [];
-            // Desmarca checkboxes visuais
-            const inputs = document.querySelectorAll(`#filter-${campo} input`);
-            inputs.forEach(i => i.checked = false);
-            aplicarFiltrosERenderizar();
-            document.getElementById(`filter-${campo}`).classList.remove('show');
-        }
-
+        function atualizarFiltro(campo, checkbox) { if(!filtrosAtivos[campo]) filtrosAtivos[campo] = []; if(checkbox.checked) { filtrosAtivos[campo].push(checkbox.value); } else { filtrosAtivos[campo] = filtrosAtivos[campo].filter(v => v !== checkbox.value); } aplicarFiltrosERenderizar(); }
+        function limparFiltro(campo) { filtrosAtivos[campo] = []; const inputs = document.querySelectorAll(`#filter-${campo} input`); inputs.forEach(i => i.checked = false); aplicarFiltrosERenderizar(); document.getElementById(`filter-${campo}`).classList.remove('show'); }
         function aplicarFiltrosERenderizar() {
             let filtrados = listaClientes.filter(cli => {
                 const termo = document.getElementById('search-client').value.toLowerCase();
                 if(termo && !JSON.stringify(cli).toLowerCase().includes(termo)) return false;
-
                 for (const [campo, valores] of Object.entries(filtrosAtivos)) {
                     if (valores.length === 0) continue; 
                     if (campo === 'vencimento') {
@@ -637,77 +433,32 @@
                         if(valores.includes('Vencidos') && diff < 0) match = true;
                         if(valores.includes('Expira em 7 dias') && diff >= 0 && diff <= 7) match = true;
                         if(!match) return false;
-                    } else {
-                        if (!valores.includes(cli[campo])) return false;
-                    }
+                    } else { if (!valores.includes(cli[campo])) return false; }
                 }
                 return true;
             });
-
-            // Ordenação Padrão: Vencimento Crescente
-            filtrados.sort((a,b) => {
-                function d(str) { if(!str || str==='-') return new Date(9999,0,1); const p = str.split('/'); return new Date(p[2], p[1]-1, p[0]); }
-                return d(a.vencimento) - d(b.vencimento);
-            });
-
+            filtrados.sort((a,b) => { function d(str) { if(!str || str==='-') return new Date(9999,0,1); const p = str.split('/'); return new Date(p[2], p[1]-1, p[0]); } return d(a.vencimento) - d(b.vencimento); });
             renderizarLinhas(filtrados);
         }
-
         function filtrarClientesUI() { aplicarFiltrosERenderizar(); } 
-
         function renderizarLinhas(lista) {
             const corpo = document.getElementById('tabela-corpo');
             const msgEmpty = document.getElementById('msg-sem-clientes');
             corpo.innerHTML = '';
-            
-            if(lista.length === 0) { 
-                msgEmpty.style.display = 'block'; 
-                return; 
-            } else {
-                msgEmpty.style.display = 'none';
-            }
-
+            if(lista.length === 0) { msgEmpty.style.display = 'block'; return; } else { msgEmpty.style.display = 'none'; }
             const isAdmin = (currentUserData.cargo === 'Admin' || currentUserData.cargo === 'Sub-Admin');
             const thCriador = document.getElementById('th-criador');
             if(thCriador) thCriador.style.display = isAdmin ? 'table-cell' : 'none';
-
             const hoje = new Date(); hoje.setHours(0,0,0,0);
-
             lista.forEach(cli => {
-                let waLink = '-';
-                if(cli.whatsapp) {
-                    waLink = `<button onclick="prepararCobranca('${cli.id}')" class="wa-link">📱 Cobrar</button>`;
-                }
-
-                let alerta = "";
-                let corVenc = "#333";
+                let waLink = '-'; if(cli.whatsapp) { waLink = `<button onclick="prepararCobranca('${cli.id}')" class="wa-link">📱 Cobrar</button>`; }
+                let alerta = ""; let corVenc = "#333";
                 if (cli.vencimento && cli.vencimento.includes('/')) {
-                    const parts = cli.vencimento.split('/');
-                    const dataVenc = new Date(parts[2], parts[1]-1, parts[0]);
-                    const diffDias = (dataVenc - hoje) / (1000 * 60 * 60 * 24);
-                    if (diffDias < 0) { alerta = "<span class='alert-icon'>⚠</span>"; corVenc = "red"; }
-                    else if (diffDias <= 3) { alerta = "<span class='alert-icon'>⚠</span>"; corVenc = "#d97706"; }
+                    const parts = cli.vencimento.split('/'); const dataVenc = new Date(parts[2], parts[1]-1, parts[0]); const diffDias = (dataVenc - hoje) / (1000 * 60 * 60 * 24);
+                    if (diffDias < 0) { alerta = "<span class='alert-icon'>⚠</span>"; corVenc = "red"; } else if (diffDias <= 3) { alerta = "<span class='alert-icon'>⚠</span>"; corVenc = "#d97706"; }
                 }
-
                 let criadorCell = isAdmin ? `<td data-label="Criador" style="color:var(--blue); font-weight:bold;">${cli.criador}</td>` : '';
-
-                corpo.innerHTML += `
-                    <tr>
-                        <td data-label="Nome"><b>${cli.nome}</b></td>
-                        ${criadorCell}
-                        <td data-label="Usuário">${cli.usuario}</td>
-                        <td data-label="Servidor">${cli.servidor}</td>
-                        <td data-label="WhatsApp">${waLink}</td>
-                        <td data-label="Vencimento" style="color:${corVenc}; font-weight:bold;">${cli.vencimento || '-'} ${alerta}</td>
-                        <td data-label="Valor" style="color:var(--primary); font-weight:bold;">R$ ${cli.valor}</td>
-                        <td data-label="Ações">
-                            <div style="display:flex; gap:5px;">
-                                <button class="edit-btn btn-auto" style="padding:6px 10px;" onclick="prepararEdicaoCliente('${cli.id}')">✏️</button>
-                                <button class="danger btn-auto" style="padding:6px 10px;" onclick="deletarCliente('${cli.id}')">🗑️</button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
+                corpo.innerHTML += `<tr><td data-label="Nome"><b>${cli.nome}</b></td>${criadorCell}<td data-label="Usuário">${cli.usuario}</td><td data-label="Servidor">${cli.servidor}</td><td data-label="WhatsApp">${waLink}</td><td data-label="Vencimento" style="color:${corVenc}; font-weight:bold;">${cli.vencimento || '-'} ${alerta}</td><td data-label="Valor" style="color:var(--primary); font-weight:bold;">R$ ${cli.valor}</td><td data-label="Ações"><div style="display:flex; gap:5px;"><button class="edit-btn btn-auto" style="padding:6px 10px;" onclick="prepararEdicaoCliente('${cli.id}')">✏️</button><button class="danger btn-auto" style="padding:6px 10px;" onclick="deletarCliente('${cli.id}')">🗑️</button></div></td></tr>`;
             });
         }
 
@@ -724,24 +475,18 @@
             try {
                 const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'admin_list', user: currentUserData.user, pass: currentUserData.pass }) });
                 const res = await req.json();
-                if (res.success) { renderAdminUsers(res.list, res.headers); } else { listDiv.innerHTML = '<p style="text-align:center; color:red">Erro ao carregar.</p>'; }
+                if (res.success) { renderAdminUsers(res.list); } else { listDiv.innerHTML = '<p style="text-align:center; color:red">Erro ao carregar.</p>'; }
             } catch (e) { listDiv.innerHTML = '<p style="text-align:center; color:red">Erro de conexão.</p>'; }
         }
 
-        function renderAdminUsers(list, headers) {
+        function renderAdminUsers(list) {
             const listDiv = document.getElementById('admin-users-list');
             if (!list || list.length === 0) { listDiv.innerHTML = '<p style="text-align:center">Vazio.</p>'; return; }
             
-            const hiddenCols = ['pass', 'senha', 'valor', 'criador', 'pix', 'cargo', 'cadastro', 'volor revenda', 'valor revenda'];
-            let html = '<div class="table-responsive"><table class="admin-table"><thead><tr><th style="width: 50px;">Status</th>';
-            
-            // Generate Headers dynamically
-            headers.forEach(h => {
-                const isHidden = hiddenCols.includes(String(h).toLowerCase());
-                const hiddenClass = isHidden ? 'class="col-extra"' : '';
-                html += `<th ${hiddenClass}>${h}</th>`;
-            });
-            html += '<th style="width: 140px;">Ações</th></tr></thead><tbody>';
+            // COLUNAS SOLICITADAS: Status, User, Pass, Validade, WA, Valor, Cargo, Pix, Cadastro, Criador, V.Revenda, Ações
+            let html = '<div class="table-responsive"><table class="admin-table"><thead><tr>';
+            html += '<th>Status</th><th>User</th><th>Pass</th><th>Validade</th><th>WhatsApp</th><th>Valor</th><th>Cargo</th><th>Pix</th><th>Cadastro</th><th>Criador</th><th>Valor Revenda</th><th>Ações</th>';
+            html += '</tr></thead><tbody>';
 
             const isSubAdmin = currentUserData.cargo === 'Sub-Admin';
 
@@ -749,46 +494,51 @@
                 const uUser = row[0] || "";
                 if (isSubAdmin && uUser.toLowerCase() === currentUserData.user.toLowerCase()) return;
 
+                const uPass = row[1];
                 const uDate = row[2] || "";
-                const userRole = row[5];
+                const uWa = row[3] || "";
+                const uVal = row[4] || "";
+                let uCargo = row[5] || "";
+                const uPix = row[6] || "";
                 const uStatus = row[7] || "Ativo";
-                
-                let statusText = ""; 
-                let displayStatusDot = "status-active"; 
-                
-                // Status Logic
-                if (userRole === 'Teste') {
-                    displayStatusDot = "status-test"; statusText = "Teste";
-                } else if (uDate === 'Vitalício') {
-                    displayStatusDot = "status-active"; statusText = "Vitalício";
-                } else {
-                    if (String(uStatus).includes('Bloq')) { displayStatusDot = "status-expired"; statusText = "Bloqueado"; }
-                    else { displayStatusDot = "status-active"; statusText = "Ativo"; }
-                }
+                const uCriador = row[8] || "-";
+                // Assumindo que cadastro é data de hoje se não houver coluna na planilha, ou em branco
+                const uCadastro = "-"; 
+                const uRevenda = "0"; 
 
-                // Row Start
-                html += `<tr><td><span class="status-dot ${displayStatusDot}" title="${statusText}"></span><small>${statusText}</small></td>`;
-                
-                // Cells
-                row.forEach((cell, index) => {
-                    const hName = headers[index] || "";
-                    const isHidden = hiddenCols.includes(String(hName).toLowerCase());
-                    const hiddenClass = isHidden ? 'class="col-extra"' : '';
-                    html += `<td ${hiddenClass}>${cell}</td>`;
-                });
+                // Lógica de "Subadministrador" -> "Sub-Admin"
+                if(uCargo.toLowerCase().includes('sub')) uCargo = "Sub-Admin";
 
-                // Actions - ROUND BUTTONS (Foto 2)
-                html += `<td>
-                    <div style="display:flex; justify-content:center; gap:5px;">
-                        <button class="btn-circle btn-edit-round" title="Editar" onclick="prepararEdicaoUser('${uUser}')">✏️</button>
-                        <button class="btn-circle btn-block-round" title="Bloquear/Desbloquear" onclick="toggleStatus('${uUser}')">🚫</button>
-                        <button class="btn-circle btn-renew-round" title="Renovar" onclick="renovarUser('${uUser}')">🔄</button>
-                    </div>
-                </td></tr>`;
+                let statusDot = "status-active"; 
+                if (uCargo === 'Teste') statusDot = "status-test";
+                else if (String(uStatus).includes('Bloq')) statusDot = "status-expired";
+                else if (String(uStatus).includes('Expirado')) statusDot = "status-expired";
+
+                html += `<tr>
+                    <td><span class="status-dot ${statusDot}"></span>${uStatus}</td>
+                    <td><b>${uUser}</b></td>
+                    <td>******</td>
+                    <td>${uDate}</td>
+                    <td>${uWa}</td>
+                    <td>${uVal}</td>
+                    <td>${uCargo}</td>
+                    <td>${uPix}</td>
+                    <td>${uCadastro}</td>
+                    <td>${uCriador}</td>
+                    <td>${uRevenda}</td>
+                    <td>
+                        <div style="display:flex; justify-content:center; gap:3px;">
+                            <button class="btn-action btn-toggle" title="Ativar/Bloquear" onclick="toggleStatus('${uUser}')">✅</button>
+                            <button class="btn-action btn-renew" title="Renovar" onclick="renovarUser('${uUser}')">📅</button>
+                            <button class="btn-action btn-chat" title="WhatsApp" onclick="window.open('https://wa.me/55${String(uWa).replace(/\D/g,'')}')">💬</button>
+                            <button class="btn-action btn-send" title="Enviar Dados" onclick="prepararEnvioWhatsApp('${uUser}','******','${uWa}','${uDate}','${uVal}')">📨</button>
+                            <button class="btn-action btn-edit" title="Editar" onclick="prepararEdicaoUser('${uUser}')">✏️</button>
+                        </div>
+                    </td>
+                </tr>`;
             });
             html += '</tbody></table></div>';
             listDiv.innerHTML = html;
-            toggleDetalhes();
         }
 
         function abrirModalCreate() { 
@@ -850,10 +600,8 @@
         }
         
         function prepararEdicaoUser(uName) { userEditing = uName; document.getElementById('edit-user-display').innerText = uName; document.getElementById('edit-pass').value = ''; document.getElementById('edit-date').value = ''; document.getElementById('edit-wa').value = ''; document.getElementById('edit-val').value = ''; 
-            
             const isSub = currentUserData.cargo === 'Sub-Admin';
             document.getElementById('div-edit-role').style.display = isSub ? 'none' : 'block';
-            
             document.getElementById('modal-edit').classList.add('show'); 
         }
         
@@ -866,16 +614,13 @@
         
         async function renovarUser(target) { const d = prompt("Quantos dias adicionar?", "30"); if (!d) return; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'renew_user', user: currentUserData.user, pass: currentUserData.pass, targetUser: target, days: d }) }); alert("Renovado!"); abrirAdminPanel(); } catch (e) { alert("Erro."); } }
         async function toggleStatus(target) { if (!confirm("Alterar status?")) return; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggle_status', user: currentUserData.user, pass: currentUserData.pass, targetUser: target }) }); abrirAdminPanel(); } catch (e) { alert("Erro."); } }
-        function toggleDetalhes() { document.querySelectorAll('.col-extra').forEach(el => el.style.display = document.getElementById('toggle-details').checked ? 'table-cell' : 'none'); }
         async function fazerUploadArquivo(modo) { const input = (modo === 'teste') ? document.getElementById('admin-file-test') : document.getElementById('admin-file-upload'); if (input.files.length === 0) return alert("Selecione um arquivo."); const file = input.files[0]; const reader = new FileReader(); reader.onload = async function(e) { const base64 = e.target.result.split(',')[1]; document.getElementById('upload-status').innerText = "Enviando..."; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'upload_file', user: currentUserData.user, pass: currentUserData.pass, fileData: base64, fileName: file.name, fileType: file.type, mode: modo }) }); const res = await req.json(); if (res.success) { alert("Arquivo enviado!"); document.getElementById('upload-status').innerText = ""; } else { alert("Erro no envio."); } } catch (err) { alert("Erro de conexão."); } }; reader.readAsDataURL(file); }
         async function salvarMensagem() { const m = document.getElementById('global-msg-input').value; if (!m) return alert("Digite algo."); try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'save_message', user: currentUserData.user, pass: currentUserData.pass, message: m }) }); alert("Mensagem salva!"); } catch (e) { alert("Erro."); } }
         
-        // --- TUTORIAIS ---
         async function abrirTutoriais() { document.getElementById('modal-tutorials').classList.add('show'); const area = document.getElementById('tutorials-list'); area.innerHTML = 'Carregando...'; if(currentUserData.isMaster) document.getElementById('admin-tutorial-area').style.display = 'block'; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'get_tutorials' }) }); const res = await req.json(); if(res.success && res.list.length > 0) { area.innerHTML = ''; res.list.forEach(t => { let embed = t.link; if(t.link.includes('youtu')) { const vidId = t.link.split('v=')[1] || t.link.split('/').pop(); embed = `https://www.youtube.com/embed/${vidId}`; } area.innerHTML += `<div class="tutorial-card"><div class="tut-title-text">📺 ${t.title} ${currentUserData.isMaster ? `<button class="danger btn-auto" style="padding:2px 5px; font-size:10px;" onclick="apagarTutorial(${t.id})">X</button>` : ''}</div><div class="video-container"><iframe src="${embed}" frameborder="0" allowfullscreen></iframe></div></div>`; }); } else { area.innerHTML = '<p>Nenhum tutorial disponível.</p>'; } } catch(e) { area.innerHTML = 'Erro ao carregar.'; } }
         async function salvarTutorial() { const t = document.getElementById('tut-title').value; const l = document.getElementById('tut-link').value; if(!t || !l) return alert("Preencha tudo."); try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'save_tutorial', title: t, link: l }) }); alert("Adicionado!"); abrirTutoriais(); } catch(e){ alert("Erro."); } }
         async function apagarTutorial(id) { if(!confirm("Apagar?")) return; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'delete_tutorial', id: id }) }); abrirTutoriais(); } catch(e){ alert("Erro."); } }
 
-        // --- LEGADO & UTIL ---
         function verificarInstalacaoApp() { if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) return; const bannerFechadoEm = localStorage.getItem('install_banner_closed'); if (bannerFechadoEm && (new Date().getTime() - parseInt(bannerFechadoEm) < 86400000)) return; abrirTutorialInstall(); }
         function abrirTutorialInstall() { const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream; if (deferredPrompt) { document.getElementById('btn-android-install').classList.remove('hidden'); document.getElementById('tutorial-android').classList.add('hidden'); document.getElementById('tutorial-ios').classList.add('hidden'); } else if (isIOS) { document.getElementById('btn-android-install').classList.add('hidden'); document.getElementById('tutorial-ios').classList.remove('hidden'); document.getElementById('tutorial-android').classList.add('hidden'); } else { document.getElementById('btn-android-install').classList.add('hidden'); document.getElementById('tutorial-ios').classList.add('hidden'); document.getElementById('tutorial-android').classList.remove('hidden'); } document.getElementById('modal-install-tutorial').classList.add('show'); }
         async function instalarAndroid() { if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') fecharInstallModal(); deferredPrompt = null; } }
@@ -896,10 +641,8 @@
         function copiarPixReal() { const t = document.getElementById('pix-display').innerText; if(navigator.clipboard) { navigator.clipboard.writeText(t).then(()=>alert("Copiado!")); } else { const el = document.createElement("input"); el.value = t; document.body.appendChild(el); el.select(); document.execCommand("copy"); document.body.removeChild(el); alert("Copiado!"); } }
         function baixarSalvos() { const u = currentUserData.user; if(!db[u].salvos.length) return alert("Nada."); const blob = new Blob([db[u].salvos.join('\n')], {type: 'text/plain'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `extraidos.txt`; a.click(); }
         function lerArquivo(i) { const r=new FileReader(); r.onload=(e)=>{ const linhas = e.target.result.split('\n'); processarNovosLinks(linhas); }; r.readAsText(i.files[0]); i.value=''; }
-        
         function processarNovosLinks(listaBruta) { const u = currentUserData.user; if (!db[u]) db[u] = { links: [], salvos: [], naoSalvos: [] }; if (!db[u].salvos) db[u].salvos = []; if (!db[u].naoSalvos) db[u].naoSalvos = []; const jaExistem = new Set([...db[u].links, ...db[u].salvos, ...db[u].naoSalvos]); let adicionados = 0; let duplicados = 0; listaBruta.forEach(link => { const l = link.trim(); if (l) { if (jaExistem.has(l)) { duplicados++; } else { db[u].links.push(l); jaExistem.add(l); adicionados++; } } }); if (duplicados > 0) alert(`Filtrado: ${adicionados} novos adicionados. ${duplicados} repetidos removidos.`); renderizar(); }
         function addLinks(){ const t=document.getElementById('links-input'); const linhas = t.value.split('\n'); processarNovosLinks(linhas); t.value=''; pgPend = 0; }
-
         function renderizar() { const u = currentUserData.user; if(!db[u]) db[u] = {links:[], salvos:[], naoSalvos:[]}; if(!db[u].naoSalvos) db[u].naoSalvos = []; const p = document.getElementById('lista-pendentes'); p.innerHTML = ''; const tP = db[u].links.length; document.getElementById('count-pend').innerText = tP; db[u].links.slice(pgPend*ITENS_PAG, (pgPend+1)*ITENS_PAG).forEach((l,i) => { p.innerHTML += `<div class="card"><span class="link-text">${l}</span><button class="btn-auto" onclick="tratarAberturaLink(${pgPend*ITENS_PAG+i},'${l}')">Abrir ↗</button></div>`; }); renderControles('paginacao-pend', tP, pgPend, (n)=> {pgPend=n; renderizar();}); const s = document.getElementById('lista-salvos'); s.innerHTML = ''; const tS = db[u].salvos ? db[u].salvos.length : 0; document.getElementById('count-saved').innerText = tS; if(db[u].salvos) db[u].salvos.slice(pgSalv*ITENS_PAG, (pgSalv+1)*ITENS_PAG).forEach((l,i) => { s.innerHTML += `<div class="card" style="border-left:4px solid var(--primary)"><span class="link-text">${l}</span><button class="danger btn-auto" onclick="db['${u}'].salvos.splice(${pgSalv*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-salv', tS, pgSalv, (n)=> {pgSalv=n; renderizar();}); const d = document.getElementById('lista-descartados'); d.innerHTML = ''; const tD = db[u].naoSalvos ? db[u].naoSalvos.length : 0; document.getElementById('count-discarded').innerText = tD; if(db[u].naoSalvos) db[u].naoSalvos.slice(pgDesc*ITENS_PAG, (pgDesc+1)*ITENS_PAG).forEach((l,i) => { d.innerHTML += `<div class="card card-discarded"><span class="link-text">${l}</span><button class="btn-auto" onclick="resgatarDescartado(${pgDesc*ITENS_PAG+i})">♻️</button><button class="danger btn-auto" onclick="db['${u}'].naoSalvos.splice(${pgDesc*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-desc', tD, pgDesc, (n)=> {pgDesc=n; renderizar();}); localStorage.setItem(DB_KEY, JSON.stringify(db)); }
         function renderControles(id, total, atual, cb) { const div = document.getElementById(id), max = Math.ceil(total/ITENS_PAG); if(max <= 1) { div.innerHTML = ''; return; } div.innerHTML = `<button class="secondary btn-auto" ${atual===0?'disabled':''} onclick="(${cb})(${atual-1})">«</button><span>${atual+1}/${max}</span><button class="secondary btn-auto" ${atual>=max-1?'disabled':''} onclick="(${cb})(${atual+1})">»</button>`; }
         
@@ -913,33 +656,23 @@
             if (timerInterval) clearInterval(timerInterval);
             let remaining = seconds;
             function update() {
-                if (remaining <= 0) {
-                    display.innerText = "EXPIRADO"; display.style.color = "red"; clearInterval(timerInterval); alert("Seu tempo de teste acabou!"); logout(); return;
-                }
+                if (remaining <= 0) { display.innerText = "EXPIRADO"; display.style.color = "red"; clearInterval(timerInterval); alert("Seu tempo de teste acabou!"); logout(); return; }
                 const m = Math.floor(remaining / 60); const s = remaining % 60;
-                display.innerHTML = `Expira em: <span class="timer-badge">${m}:${s < 10 ? '0'+s : s}</span>`;
-                remaining--;
+                display.innerHTML = `Expira em: <span class="timer-badge">${m}:${s < 10 ? '0'+s : s}</span>`; remaining--;
             }
             update(); timerInterval = setInterval(update, 1000);
         }
         function marcarMensagemLida() { const msg = document.getElementById('msg-text').innerText; localStorage.setItem('zapflow_last_msg_' + currentUserData.user, msg); fecharModal('modal-global-msg'); }
 
         async function conectarBanco() { const u = document.getElementById('user').value.trim(); const p = document.getElementById('pass').value.trim(); const msg = document.getElementById('msg-login'); const btn = document.getElementById('btn-login'); const txt = document.getElementById('txt-login'); const loader = document.getElementById('loader-login'); if(!u || !p) return msg.innerText = "Preencha todos os campos."; btn.disabled = true; txt.style.display = 'none'; loader.style.display = 'block'; msg.innerText = ""; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'login', user: u, pass: p }) }); const res = await req.json(); if (res.success) { const dados = res.data; let diff = 0; if (dados.cargo !== 'Teste' && dados.date !== 'Vitalício') { const dV = formatarData(dados.date); dV.setHours(0,0,0,0); const hoje = new Date(); hoje.setHours(0,0,0,0); diff = Math.ceil((dV - hoje) / 86400000); if(diff < 0 && !dados.isMaster) { msg.innerText = "Acesso expirado."; localStorage.removeItem(SESSION_KEY); btn.disabled = false; txt.style.display = 'block'; loader.style.display = 'none'; return; } } currentUserData = dados; if(dados.waTemplate) globalWhatsappTemplate = dados.waTemplate; if(dados.pass) { currentUserData.pass = dados.pass; localStorage.setItem(SESSION_KEY, JSON.stringify({user: u, pass: dados.pass})); } else { currentUserData.pass = p; localStorage.setItem(SESSION_KEY, JSON.stringify({user: u, pass: p})); } if(!db[u]) db[u] = {links:[], salvos:[], naoSalvos: []}; document.getElementById('login-screen').classList.add('hidden'); 
-        // Lógica de Tela
-        // Se a tela app-screen estiver oculta, assume dashboard. Se não, app-screen
         document.getElementById('dashboard-screen').classList.remove('hidden'); 
-        
         document.getElementById('ola-dashboard').innerText = "Olá, " + currentUserData.user; 
-        
-        // Mapeando dados para o layout do seu código (Gerenciador de Links)
         if(document.getElementById('ola-user')) document.getElementById('ola-user').innerText = "Olá, " + currentUserData.user;
         if(document.getElementById('status-acesso')) document.getElementById('status-acesso').innerText = "Vence: " + currentUserData.date;
-        
         if(currentUserData.cargo === 'Admin') {
              document.getElementById('ola-dashboard').innerText = "Olá, Admin"; 
              if(document.getElementById('ola-user')) document.getElementById('ola-user').innerText = "Olá, Admin";
         }
-
         if (dados.cargo === 'Teste' && dados.testSeconds) { iniciarTimerTeste(dados.testSeconds); document.getElementById('status-dashboard').innerText = "Modo Teste"; } else { document.getElementById('status-dashboard').innerText = "Vence: " + currentUserData.date; if(diff <= 5 && !dados.isMaster && dados.date !== 'Vitalício') { document.getElementById('vencimento-alert').style.display = 'block'; document.getElementById('dias-restantes-alerta').innerText = diff < 0 ? 0 : diff; } } const btnAuto = document.getElementById('btn-autoresponder'); if (dados.cargo === 'Admin' || dados.cargo === 'User') { btnAuto.style.display = 'inline-flex'; } else { btnAuto.style.display = 'none'; } if(dados.isMaster) { document.getElementById('btn-open-admin').classList.remove('hidden'); } if (dados.file && dados.file.url && dados.cargo !== 'Sub-Admin') { document.getElementById('file-download-card').style.display = 'flex'; document.getElementById('file-date').innerText = dados.file.time; document.getElementById('file-title').innerText = (dados.cargo === 'Teste') ? "Arquivo Teste (1h)" : "Arquivo Geral"; currentFileUrl = dados.file.url; document.getElementById('btn-download-file').style.display = 'block'; } else { document.getElementById('file-download-card').style.display = 'none'; } if(dados.message && dados.message.trim() !== "") { const savedMsg = localStorage.getItem('zapflow_last_msg_' + currentUserData.user); if (savedMsg !== dados.message) { document.getElementById('msg-text').innerText = dados.message; document.getElementById('modal-global-msg').classList.add('show'); } } renderizar(); } else { msg.innerText = res.msg || "Dados incorretos."; localStorage.removeItem(SESSION_KEY); } } catch(e) { console.error(e); msg.innerText = "Erro ao conectar. Verifique internet."; } finally { btn.disabled = false; txt.style.display = 'block'; loader.style.display = 'none'; } }
     </script>
 </body>
