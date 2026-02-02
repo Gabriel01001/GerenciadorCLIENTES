@@ -37,8 +37,10 @@
         
         .tutorial-btn-orange { background: linear-gradient(135deg, #fb923c, #ea580c); color: white; border: none; padding: 8px 20px; font-size: 12px; border-radius: 25px; box-shadow: 0 4px 10px rgba(234, 88, 12, 0.4); transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .tutorial-btn-orange:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(234, 88, 12, 0.6); filter: brightness(1.1); }
+        
         .autoresponder-btn { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border: none; padding: 5px 15px; font-size: 12px; border-radius: 15px; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4); transition: 0.3s; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 2px; line-height: 1.2; }
         .autoresponder-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(79, 70, 229, 0.6); filter: brightness(1.1); }
+
         .tutorial-card { background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05); border-radius: 15px; padding: 15px; margin-bottom: 20px; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .tut-title-text { font-weight: 700; color: var(--primary); margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px; }
         
@@ -512,7 +514,7 @@
             const listDiv = document.getElementById('admin-users-list');
             if (!list || list.length === 0) { listDiv.innerHTML = '<p style="text-align:center">Vazio.</p>'; return; }
             
-            // COLUNAS CORRIGIDAS: Status, User, Pass, Validade, WhatsApp, Valor, Cargo, Pix, Cadastro, Criador, Valor Revenda, Ações
+            // COLUNAS CORRIGIDAS VISUALMENTE PARA O PORTUGUÊS DA FOTO + REVENDA
             let html = '<div class="table-responsive"><table class="admin-table"><thead><tr>';
             html += '<th>Status</th><th>User</th><th>Pass</th><th>Validade</th><th>WhatsApp</th><th>Valor</th><th>Cargo</th><th>Pix</th><th>Cadastro</th><th>Criador</th><th>Valor Revenda</th><th>Ações</th>';
             html += '</tr></thead><tbody>';
@@ -531,11 +533,14 @@
                 const uPix = row[6] || "";
                 const uStatus = row[7] || "Ativo";
                 const uCriador = row[8] || "-";
-                // Assumindo valores padrão se não existirem
-                const uCadastro = row[9] || "-"; 
+                // AQUI AJUSTAMOS OS ÍNDICES:
+                // row[9] é MENSAGEM (PULA)
+                // row[10] é REVENDA (MOSTRA)
+                // Como não temos uma coluna "Cadastro" salva, usamos a data atual se estiver em branco ou um traço.
+                const uCadastro = "-"; 
                 const uRevenda = row[10] || "0"; 
 
-                // RENOMEAR CARGOS
+                // RENOMEAR CARGOS NA VISUALIZAÇÃO
                 if(uCargo.toLowerCase() === 'administrador') uCargo = "Admin";
                 if(uCargo.toLowerCase() === 'subadministrador') uCargo = "Sub-Admin";
 
@@ -569,7 +574,7 @@
             });
             html += '</tbody></table></div>';
             listDiv.innerHTML = html;
-            toggleDetalhes(); // Aplica blur inicial se checkbox estiver desmarcado
+            toggleDetalhes();
         }
 
         function toggleDetalhes() {
