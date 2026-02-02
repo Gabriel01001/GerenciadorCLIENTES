@@ -56,7 +56,6 @@
             }
         }
 
-        /* --- ESTILOS NOVOS PARA O ADMIN COMPACTO --- */
         .admin-action-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; }
         .admin-toggle-btn { padding: 10px; font-size: 11px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; color: white; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.2s; }
         .admin-toggle-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
@@ -194,22 +193,17 @@
 
     <div id="modal-admin" class="modal-overlay">
         <div class="modal-content">
-            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:28px;" onclick="fecharModal('modal-admin')">&times;</span>
+            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold; color:var(--text);" onclick="fecharModal('modal-admin')">&times;</span>
+            
             <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom:15px;">
                 <h2 style="color: var(--dark); font-size: 20px; margin:0;">⚙️ Gestão Master</h2>
                 <div style="display:flex; gap:8px;"><button class="secondary btn-auto" onclick="abrirAdminPanel()">🔄</button><button class="chat-btn btn-auto" onclick="abrirModalCreate()">➕ Novo</button></div>
             </div>
             
             <div class="admin-action-bar">
-                <button class="admin-toggle-btn section-orange" onclick="toggleAdminSection('admin-msg-area')">
-                    <span style="font-size:18px">🔔</span> Aviso
-                </button>
-                <button class="admin-toggle-btn section-blue" onclick="toggleAdminSection('upload-section-geral')">
-                    <span style="font-size:18px">📁</span> Geral
-                </button>
-                <button class="admin-toggle-btn section-green" onclick="toggleAdminSection('upload-section-teste')">
-                    <span style="font-size:18px">🧪</span> Teste
-                </button>
+                <button class="admin-toggle-btn section-orange" onclick="toggleAdminSection('admin-msg-area')"><span style="font-size:18px">🔔</span> Aviso</button>
+                <button class="admin-toggle-btn section-blue" onclick="toggleAdminSection('upload-section-geral')"><span style="font-size:18px">📁</span> Geral</button>
+                <button class="admin-toggle-btn section-green" onclick="toggleAdminSection('upload-section-teste')"><span style="font-size:18px">🧪</span> Teste</button>
             </div>
             
             <div id="admin-msg-area" class="admin-section-hidden" style="background:#fff7ed; border:1px dashed #f97316; padding:15px; border-radius:8px; margin-bottom:10px;">
@@ -242,7 +236,7 @@
 
     <div id="modal-tutorials" class="modal-overlay" style="z-index: 1500;">
         <div class="modal-content">
-            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:28px;" onclick="fecharModal('modal-tutorials')">&times;</span>
+            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold;" onclick="fecharModal('modal-tutorials')">&times;</span>
             <h3 style="margin-top:0; color:var(--primary); font-size: 20px;">📺 Central de Ajuda</h3>
             <div id="admin-tutorial-area" style="background:#fff7ed; padding:10px; border-radius:10px; margin-bottom:15px; border:1px dashed #f97316; display:none;">
                 <h4 style="margin:0 0 10px 0; font-size:12px; color:#c2410c;">➕ Adicionar Vídeo (Admin)</h4>
@@ -254,11 +248,17 @@
         </div>
     </div>
 
-    <div id="modal-create" class="modal-overlay" style="z-index: 1001;"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:28px;" onclick="fecharModal('modal-create')">&times;</span> <h3 style="margin-top:0;">Novo Acesso</h3> <div class="form-grid"> <input type="text" id="new-user" placeholder="Usuário"> <input type="text" id="new-pass" placeholder="Senha"> <div class="full-width" id="days-container" style="display:flex; gap:5px; align-items:center;"><input type="number" id="new-days" placeholder="Dias" style="width: 80px; margin:0"><span style="font-size:12px; color:#666">dias de validade</span></div> <div class="full-width" id="role-container"><label style="font-size:12px; font-weight:bold; color:#333;">Tipo de Acesso:</label><select id="new-role" onchange="checkRole()"></select></div> <input type="text" id="new-wa" placeholder="WhatsApp (só números)" class="full-width"> <input type="text" id="new-val" placeholder="Valor (ex: 30,00)"> <input type="text" id="new-pix" placeholder="Chave PIX (opcional)"> </div> <button onclick="salvarNovoUsuario()" id="btn-save-user" style="margin-top:15px;">💾 Salvar</button> <p id="msg-create" style="color:red; font-size:12px; text-align:center; margin-top:5px;"></p> </div> </div>
+    <div id="modal-create" class="modal-overlay" style="z-index: 1001;"> 
+        <div class="modal-content" style="max-width: 400px;"> 
+            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold; color:var(--text);" onclick="fecharModal('modal-create')">&times;</span> 
+            <h3 style="margin-top:0;">Novo Acesso</h3> 
+            <div class="form-grid"> <input type="text" id="new-user" placeholder="Usuário"> <input type="text" id="new-pass" placeholder="Senha"> <div class="full-width" id="days-container" style="display:flex; gap:5px; align-items:center;"><input type="number" id="new-days" placeholder="Dias" style="width: 80px; margin:0"><span style="font-size:12px; color:#666">dias de validade</span></div> <div class="full-width" id="role-container"><label style="font-size:12px; font-weight:bold; color:#333;">Tipo de Acesso:</label><select id="new-role" onchange="checkRole()"></select></div> <input type="text" id="new-wa" placeholder="WhatsApp (só números)" class="full-width"> <input type="text" id="new-val" placeholder="Valor (ex: 30,00)"> <input type="text" id="new-pix" placeholder="Chave PIX (opcional)"> </div> <button onclick="salvarNovoUsuario()" id="btn-save-user" style="margin-top:15px;">💾 Salvar</button> <p id="msg-create" style="color:red; font-size:12px; text-align:center; margin-top:5px;"></p> 
+        </div> 
+    </div>
     
     <div id="modal-edit" class="modal-overlay" style="z-index: 1002;"> 
         <div class="modal-content" style="max-width: 400px;"> 
-            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:28px;" onclick="fecharModal('modal-edit')">&times;</span> 
+            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold; color:var(--text);" onclick="fecharModal('modal-edit')">&times;</span> 
             <h3 style="margin-top:0; color:#3b82f6">Editar: <span id="edit-user-display"></span></h3> 
             <div class="form-grid"> 
                 <div class="full-width">
@@ -284,15 +284,15 @@
         </div> 
     </div>
 
-    <div id="modal-renovar" class="modal-overlay"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer;" onclick="fecharModal('modal-renovar')">&times;</span> <h3 style="text-align: center; color: var(--primary);">💎 Renovar Acesso</h3> <div class="pay-card"> <div style="font-size: 12px; font-weight: bold;">PIX PARA PAGAMENTO</div> <div class="pay-key" id="pix-display" style="font-size:16px; padding:15px;">...</div> </div> <button onclick="copiarPixReal()" class="chat-btn" style="border-radius: 50px; width:100%">📋 Copiar Chave PIX</button> </div> </div>
+    <div id="modal-renovar" class="modal-overlay"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-renovar')">&times;</span> <h3 style="text-align: center; color: var(--primary);">💎 Renovar Acesso</h3> <div class="pay-card"> <div style="font-size: 12px; font-weight: bold;">PIX PARA PAGAMENTO</div> <div class="pay-key" id="pix-display" style="font-size:16px; padding:15px;">...</div> </div> <button onclick="copiarPixReal()" class="chat-btn" style="border-radius: 50px; width:100%">📋 Copiar Chave PIX</button> </div> </div>
     <div id="modal-install-tutorial" class="modal-overlay" style="z-index: 9999;"> <div class="modal-content" style="max-width: 350px;"> <div style="text-align:center; margin-bottom:20px;"> <div style="font-size:50px; margin-bottom:10px;">⚡</div> <h3 style="margin-top:0; font-size: 20px; font-weight: 700;">Instalar App</h3> <p style="font-size:14px; color: var(--text); line-height: 1.5;">Para a melhor experiência, adicione este app à sua tela inicial.</p> </div> <button id="btn-android-install" class="hidden" style="width:100% !important; margin-bottom:15px; font-size: 16px; padding: 15px;" onclick="instalarAndroid()">📲 Instalar Agora</button> <div id="tutorial-ios" class="hidden"><div class="tutorial-step">1. Toque no botão <b>Compartilhar</b> <span style="font-size:18px;">⎋</span> abaixo.</div><div class="tutorial-step">2. Role e selecione <b>Adicionar à Tela de Início</b> <span style="font-size:18px;">⊞</span>.</div></div> <div id="tutorial-android" class="hidden"><div class="tutorial-step">1. Toque nos <b>3 pontinhos</b> <span style="font-size:18px;">⋮</span> no topo do navegador.</div><div class="tutorial-step">2. Selecione <b>Adicionar à tela inicial</b> ou <b>Instalar app</b>.</div></div> <button class="secondary btn-auto" style="width:100% !important; margin-top:15px;" onclick="fecharInstallModal()">Agora não</button> </div> </div>
     <div id="modal-global-msg" class="modal-overlay" style="z-index: 1100;"> <div class="modal-content" style="max-width: 400px; text-align: center;"> <div style="font-size: 40px; margin-bottom: 10px;">🔔</div> <h3 style="margin-top:0; color: var(--primary);">Comunicado</h3> <p id="msg-text" style="font-size: 14px; color: #333 !important; background: #f3f4f6; padding: 15px; border-radius: 10px;"></p> <button onclick="marcarMensagemLida()" class="btn-auto" style="margin-top: 15px; width: 100% !important;">Entendi</button> </div> </div>
-    <div id="modal-send-whatsapp" class="modal-overlay" style="z-index: 1200;"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:28px;" onclick="fecharModal('modal-send-whatsapp')">&times;</span> <h3 style="margin-top:0; color: #25d366;">📲 Enviar Acesso</h3> <p style="font-size:12px; margin:0 0 10px 0;">Para: <b id="send-dest">...</b></p> <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:10px; margin-bottom:15px; font-size:12px; color:#166534;"><div style="font-weight:bold; margin-bottom:5px;">📋 Dados que serão enviados:</div><div id="preview-msg-content" style="font-family:monospace; line-height:1.4;"></div></div> <label style="font-size:12px; font-weight:bold;">Mensagem Complementar (Opcional):</label> <textarea id="whatsapp-extra-msg" class="msg-box" placeholder="Ex: 'Aproveite sua tela!', 'Pagamento Confirmado', etc."></textarea> <button class="chat-btn" onclick="finalizarEnvioWhatsApp()">🚀 Enviar via WhatsApp</button> </div> </div>
+    <div id="modal-send-whatsapp" class="modal-overlay" style="z-index: 1200;"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-send-whatsapp')">&times;</span> <h3 style="margin-top:0; color: #25d366;">📲 Enviar Acesso</h3> <p style="font-size:12px; margin:0 0 10px 0;">Para: <b id="send-dest">...</b></p> <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:10px; margin-bottom:15px; font-size:12px; color:#166534;"><div style="font-weight:bold; margin-bottom:5px;">📋 Dados que serão enviados:</div><div id="preview-msg-content" style="font-family:monospace; line-height:1.4;"></div></div> <label style="font-size:12px; font-weight:bold;">Mensagem Complementar (Opcional):</label> <textarea id="whatsapp-extra-msg" class="msg-box" placeholder="Ex: 'Aproveite sua tela!', 'Pagamento Confirmado', etc."></textarea> <button class="chat-btn" onclick="finalizarEnvioWhatsApp()">🚀 Enviar via WhatsApp</button> </div> </div>
     <div id="modal-created-success" class="modal-overlay" style="z-index: 1300;"> <div class="modal-content" style="max-width: 350px; text-align:center;"> <div style="font-size: 50px;">✅</div> <h3 style="margin-top:0; color:var(--primary);">Usuário Criado!</h3> <p style="font-size:13px; color:#666; margin-bottom:20px;">O que deseja fazer agora?</p> <div style="display:flex; flex-direction:column; gap:10px;"><button class="chat-btn" onclick="prepararEnvioAposCriacao()">📲 Enviar Acesso</button><button class="secondary" onclick="fecharModalSucessoCriacao()">❌ Fechar</button></div> </div> </div>
 
     <script>
         // === URL DA SUA API ===
-        const API_URL = 'https://script.google.com/macros/s/AKfycbzh5LpH26j4OyfMINRHP0XXikBZwFHKFYseMv8eXyJKP5X4cJKbij37wNJS3wg3YUUm/exec';
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwtMMYq6gHWUX33Ie05iyjbVKPzWtzd9vebIInLe607nqN57GteOeOGE1a8dMI05Cpw/exec';
 
         const DB_KEY = 'zapflow_v36';
         const SESSION_KEY = 'zapflow_session_v36';
@@ -688,6 +688,21 @@
         function prepararEnvioWhatsApp(u, p, w, d, v) { tempUser = u; tempPass = p; tempWa = w; tempDate = d; tempVal = v; document.getElementById('send-dest').innerText = u; const previewHtml = `👤 <b>Usuário:</b> ${u}<br>🔑 <b>Senha:</b> ${p}<br>📅 <b>Vencimento:</b> ${d}<br>🌐 <b>Site:</b> www.gerenciadorwa.com.br`; document.getElementById('preview-msg-content').innerHTML = previewHtml; document.getElementById('whatsapp-extra-msg').value = ""; document.getElementById('modal-send-whatsapp').classList.add('show'); }
         function finalizarEnvioWhatsApp() { const extra = document.getElementById('whatsapp-extra-msg').value; const quebra = extra ? `\n\n${extra}` : ""; const msg = `🔐 *Seu Acesso Gerenciador |WA|*\n\n👤 *Usuário:* ${tempUser}\n🔑 *Senha:* ${tempPass}\n📅 *Vencimento:* ${tempDate}\n🌐 *Site:* www.gerenciadorwa.com.br${quebra}`; window.open(`https://wa.me/55${String(tempWa).replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`); fecharModal('modal-send-whatsapp'); }
         function toggleAuto() { /* ... */ }
+        function fecharModal(id){ document.getElementById(id).classList.remove('show'); }
+        function logout(){ localStorage.removeItem(SESSION_KEY); location.reload(); }
+        function lerArquivoSalvos(i) { const r=new FileReader(); r.onload=(e)=>{if(!db[currentUserData.user].salvos) db[currentUserData.user].salvos=[]; const linhas = e.target.result.split('\n'); const novos = linhas.filter(l => l.trim() && !db[currentUserData.user].salvos.includes(l.trim())); db[currentUserData.user].salvos.push(...novos); renderizar();}; r.readAsText(i.files[0]); i.value=''; }
+        function tratarAberturaLink(idx, link) { if (lastOpenedLink) { if(!db[currentUserData.user].naoSalvos) db[currentUserData.user].naoSalvos = []; db[currentUserData.user].naoSalvos.push(lastOpenedLink); } lastOpenedLink = link; if(link.includes('http')) { window.open(link); } else { window.open(`whatsapp://send?phone=55${link.replace(/\D/g,'')}`); } db[currentUserData.user].links.splice(idx, 1); document.getElementById('last-link-opened').innerText = link; document.getElementById('save-prompt').style.display = 'flex'; renderizar(); }
+        function confirmarSalvamento(sim) { const u = currentUserData.user; if(!db[u].salvos) db[u].salvos=[]; if(!db[u].naoSalvos) db[u].naoSalvos=[]; if(sim && lastOpenedLink) { db[u].salvos.push(lastOpenedLink); } else if (!sim && lastOpenedLink) { db[u].naoSalvos.push(lastOpenedLink); } document.getElementById('save-prompt').style.display = 'none'; lastOpenedLink = ""; renderizar(); }
+        function limparPendentes() { if(confirm("Apagar?")) { db[currentUserData.user].links = []; pgPend = 0; renderizar(); } }
+        function limparSalvos() { if(confirm("Limpar?")) { db[currentUserData.user].salvos = []; pgSalv = 0; renderizar(); } }
+        function limparDescartados() { if(confirm("Limpar?")) { db[currentUserData.user].naoSalvos = []; pgDesc = 0; renderizar(); } }
+        function resgatarDescartado(idx) { const u = currentUserData.user; const link = db[u].naoSalvos[idx]; db[u].links.push(link); db[u].naoSalvos.splice(idx, 1); renderizar(); }
+        function fecharModal(id){ document.getElementById(id).classList.remove('show'); }
+        function filtrarUsuarios() { const termo = document.getElementById('search-user').value.toLowerCase(); const linhas = document.querySelectorAll('.admin-table tbody tr'); linhas.forEach(tr => { const texto = tr.innerText.toLowerCase(); tr.style.display = texto.includes(termo) ? '' : 'none'; }); }
+        function abrirModalRenovar() { let chave = currentUserData.pix; if (!chave || chave === "undefined") chave = "Chave não cadastrada"; document.getElementById('pix-display').innerText = chave; document.getElementById('modal-renovar').classList.add('show'); }
+        function copiarPixReal() { const t = document.getElementById('pix-display').innerText; if(navigator.clipboard) { navigator.clipboard.writeText(t).then(()=>alert("Copiado!")); } else { const el = document.createElement("input"); el.value = t; document.body.appendChild(el); el.select(); document.execCommand("copy"); document.body.removeChild(el); alert("Copiado!"); } }
+        function baixarSalvos() { const u = currentUserData.user; if(!db[u].salvos.length) return alert("Nada."); const blob = new Blob([db[u].salvos.join('\n')], {type: 'text/plain'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `extraidos.txt`; a.click(); }
+        function lerArquivo(i) { const r=new FileReader(); r.onload=(e)=>{ const linhas = e.target.result.split('\n'); processarNovosLinks(linhas); }; r.readAsText(i.files[0]); i.value=''; }
     </script>
 </body>
 </html>
