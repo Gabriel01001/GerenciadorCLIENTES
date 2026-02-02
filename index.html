@@ -35,11 +35,12 @@
         button.vip-btn { background: #fffbeb; color: #b45309; border: 1px solid #fcd34d; }
         .btn-auto { width: auto !important; padding: 8px 16px; font-size: 13px; margin: 3px; flex-shrink: 0; }
         
-        /* ESTILOS LINK MANAGER */
         .tutorial-btn-orange { background: linear-gradient(135deg, #fb923c, #ea580c); color: white; border: none; padding: 8px 20px; font-size: 12px; border-radius: 25px; box-shadow: 0 4px 10px rgba(234, 88, 12, 0.4); transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .tutorial-btn-orange:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(234, 88, 12, 0.6); filter: brightness(1.1); }
+        
         .autoresponder-btn { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border: none; padding: 5px 15px; font-size: 12px; border-radius: 15px; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4); transition: 0.3s; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 2px; line-height: 1.2; }
         .autoresponder-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(79, 70, 229, 0.6); filter: brightness(1.1); }
+
         .tutorial-card { background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05); border-radius: 15px; padding: 15px; margin-bottom: 20px; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .tut-title-text { font-weight: 700; color: var(--primary); margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px; }
         
@@ -61,39 +62,28 @@
         .pay-key { font-family: monospace; font-size: 13px; background: var(--bg); padding: 10px; border-radius: 8px; border: 1px dashed #ccc; margin: 15px 0; word-break: break-all; }
         
         .table-responsive { overflow-x: auto; border: 1px solid #eee; border-radius: 10px; margin-top: 10px; padding-bottom: 80px; }
-        .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px; } /* Largura maior para caber colunas */
+        .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px; }
         .admin-table th { background: #f4f6f8; color: #374151; padding: 12px; text-align: center !important; font-weight: 700; border-bottom: 2px solid #e5e7eb; white-space: nowrap; text-transform: uppercase; font-size: 12px; }
         .admin-table td { padding: 10px; border-bottom: 1px solid #eee; vertical-align: middle; white-space: nowrap; text-align: center !important; font-size: 12px; }
         .admin-table tr:hover { background: rgba(0,0,0,0.02); }
         
         /* STATUS DOT */
         .status-dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; }
-        .status-active { background-color: #10b981; }
-        .status-expired { background-color: #ef4444; }
-        .status-pending { background-color: #f59e0b; }
-        .status-test { background-color: #06b6d4; box-shadow: 0 0 6px #06b6d4; }
+        .status-active { background-color: #10b981; } .status-expired { background-color: #ef4444; } .status-pending { background-color: #f59e0b; } .status-test { background-color: #06b6d4; box-shadow: 0 0 6px #06b6d4; }
 
-        /* NOVOS BOTÕES DE AÇÃO - MODELO FOTO 2 */
-        .btn-action {
-            width: 32px; height: 32px; 
-            border-radius: 8px; 
-            border: none;
-            display: inline-flex; 
-            align-items: center; 
-            justify-content: center; 
-            margin: 0 2px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: 0.2s;
-            color: #fff;
-        }
-        .btn-action:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        /* ESTILOS DE DADOS SENSÍVEIS (OCULTAR/MOSTRAR) */
+        .sensitive-blur { filter: blur(4px); user-select: none; opacity: 0.6; transition: 0.3s; }
+        .sensitive-visible { filter: none; opacity: 1; }
+
+        /* 5 BOTOES DE AÇÃO (MASTER) - IDÊNTICO A FOTO */
+        .btn-action-master { width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); cursor: pointer; transition: 0.2s; font-size: 14px; margin: 0 2px; }
+        .btn-action-master:hover { transform: translateY(-2px); filter: brightness(1.1); }
         
-        .btn-toggle { background-color: #f59e0b; border: 1px solid #d97706; border-radius: 50%; } /* Laranja Check */
-        .btn-renew { background-color: #8b5cf6; border-radius: 8px; } /* Roxo Calendar */
-        .btn-chat { background-color: #25d366; border-radius: 50%; } /* Verde Chat */
-        .btn-send { background-color: #fffbeb; color: #b45309; border: 1px solid #fcd34d; border-radius: 8px; font-size: 14px; } /* Amarelo Envelope */
-        .btn-edit { background-color: #3b82f6; border-radius: 50%; } /* Azul Edit */
+        .act-toggle { background: #f59e0b; color: white; border-radius: 50%; } /* Laranja Check */
+        .act-renew { background: #8b5cf6; color: white; border-radius: 8px; } /* Roxo Calendar */
+        .act-chat { background: #25d366; color: white; border-radius: 50%; } /* Verde Chat */
+        .act-send { background: #fffbeb; color: #b45309; border: 1px solid #fcd34d; border-radius: 8px; font-size: 12px; } /* Amarelo Envelope */
+        .act-edit { background: #3b82f6; color: white; border-radius: 50%; } /* Azul Lapis */
 
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
         .menu-card { background: var(--bg); border: 2px solid #e5e7eb; border-radius: 15px; padding: 20px; text-align: center; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 120px; }
@@ -313,6 +303,11 @@
             </div>
             <div id="upload-status" style="font-size:11px; color:#666; margin-bottom:10px;"></div>
             
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:15px;">
+                <input type="checkbox" id="toggle-sensitive" onchange="toggleDetalhes()">
+                <label for="toggle-sensitive" style="font-size:13px; cursor:pointer;">👁️ Mostrar Detalhes (Senha, Pix)</label>
+            </div>
+
             <input type="text" id="search-user" placeholder="🔍 Pesquisar usuário..." onkeyup="filtrarUsuarios()" style="margin-bottom: 15px;">
             <div id="admin-users-list"></div>
         </div>
@@ -323,7 +318,43 @@
     <div id="modal-send-charge" class="modal-overlay" style="z-index: 1007;"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-send-charge')">&times;</span> <h3 style="margin-top:0; color:#25d366;">Enviar Cobrança</h3> <textarea id="msg-final-charge" class="msg-box" style="height:150px;"></textarea> <input type="hidden" id="wa-dest-charge"> <button onclick="enviarCobrancaReal()" class="chat-btn">🚀 Enviar WhatsApp</button> </div> </div>
     <div id="modal-tutorials" class="modal-overlay" style="z-index: 1500;"><div class="modal-content"><span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold;" onclick="fecharModal('modal-tutorials')">&times;</span><h3 style="margin-top:0; color:var(--primary); font-size: 20px;">📺 Central de Ajuda</h3><div id="admin-tutorial-area" style="background:#fff7ed; padding:10px; border-radius:10px; margin-bottom:15px; border:1px dashed #f97316; display:none;"><h4 style="margin:0 0 10px 0; font-size:12px; color:#c2410c;">➕ Adicionar Vídeo (Admin)</h4><input type="text" id="tut-title" placeholder="Título do Vídeo" style="font-size:12px; padding:8px;"><input type="text" id="tut-link" placeholder="Link do YouTube/Drive" style="font-size:12px; padding:8px;"><button onclick="salvarTutorial()" class="btn-auto" style="background:#f97316; width:100% !important;">Salvar Vídeo</button></div><div id="tutorials-list" style="text-align:left; padding-bottom: 10px;"><p style="text-align:center; color:#666; font-size:13px;">Carregando...</p></div></div></div>
     <div id="modal-create" class="modal-overlay" style="z-index: 1001;"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold; color:var(--text);" onclick="fecharModal('modal-create')">&times;</span> <h3 style="margin-top:0;">Novo Acesso</h3> <div class="form-grid"> <input type="text" id="new-user" placeholder="Usuário"> <input type="text" id="new-pass" placeholder="Senha"> <div class="full-width" id="days-container" style="display:flex; gap:5px; align-items:center;"><input type="number" id="new-days" placeholder="Dias" style="width: 80px; margin:0"><span style="font-size:12px; color:#666">dias de validade</span></div> <div class="full-width" id="role-container"><label style="font-size:12px; font-weight:bold; color:#333;">Tipo de Acesso:</label><select id="new-role" onchange="checkRole()"></select></div> <input type="text" id="new-wa" placeholder="WhatsApp (só números)" class="full-width"> <input type="text" id="new-val" placeholder="Valor (ex: 30,00)"> <input type="text" id="new-pix" placeholder="Chave PIX (opcional)"> </div> <button onclick="salvarNovoUsuario()" id="btn-save-user" style="margin-top:15px;">💾 Salvar</button> <p id="msg-create" style="color:red; font-size:12px; text-align:center; margin-top:5px;"></p> </div> </div>
-    <div id="modal-edit" class="modal-overlay" style="z-index: 1002;"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold; color:var(--text);" onclick="fecharModal('modal-edit')">&times;</span> <h3 style="margin-top:0; color:#3b82f6">Editar: <span id="edit-user-display"></span></h3> <div class="form-grid"> <div class="full-width"><label style="font-size:11px; font-weight:bold;">Senha (Deixe vazio para não alterar):</label><input type="text" id="edit-pass" placeholder="Redefinir senha..."></div> <div class="full-width"><label style="font-size:11px; font-weight:bold;">Vencimento:</label><input type="text" id="edit-date" placeholder="DD/MM/AAAA"></div> <div class="full-width"><label style="font-size:11px; font-weight:bold;">WhatsApp:</label><input type="text" id="edit-wa"></div> <div class="full-width"><label style="font-size:11px; font-weight:bold;">Valor:</label><input type="text" id="edit-val"></div> <div class="full-width" id="div-edit-role"><label style="font-size:11px; font-weight:bold;">Função (Cargo):</label><select id="edit-role"><option value="User">Usuário</option><option value="Teste">Teste</option><option value="Sub-Admin">Sub-Admin</option><option value="Admin">Admin</option></select></div></div> <button onclick="salvarEdicao()" id="btn-save-edit" class="edit-btn" style="margin-top:15px;">💾 Atualizar Dados</button> <p id="msg-edit" style="color:red; font-size:12px; text-align:center; margin-top:5px;"></p> </div> </div>
+    
+    <div id="modal-edit" class="modal-overlay" style="z-index: 1002;"> 
+        <div class="modal-content" style="max-width: 400px;"> 
+            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:24px; z-index:1000; font-weight:bold; color:var(--text);" onclick="fecharModal('modal-edit')">&times;</span> 
+            <h3 style="margin-top:0; color:#3b82f6; text-align: center; font-size: 18px;">Editar: <span id="edit-user-display"></span></h3> 
+            <div class="form-grid" style="display: flex; flex-direction: column; gap: 12px;"> 
+                <div class="full-width">
+                    <label style="font-size:12px; font-weight:bold; margin-bottom: 4px; display: block;">Senha (Deixe vazio para não alterar):</label>
+                    <input type="text" id="edit-pass" placeholder="Redefinir senha..." style="border-radius: 8px; border: 1px solid #ddd;">
+                </div> 
+                <div class="full-width">
+                    <label style="font-size:12px; font-weight:bold; margin-bottom: 4px; display: block;">Vencimento:</label>
+                    <input type="text" id="edit-date" placeholder="DD/MM/AAAA" style="border-radius: 8px; border: 1px solid #ddd;">
+                </div> 
+                <div class="full-width">
+                    <label style="font-size:12px; font-weight:bold; margin-bottom: 4px; display: block;">WhatsApp:</label>
+                    <input type="text" id="edit-wa" style="border-radius: 8px; border: 1px solid #ddd;">
+                </div> 
+                <div class="full-width">
+                    <label style="font-size:12px; font-weight:bold; margin-bottom: 4px; display: block;">Valor:</label>
+                    <input type="text" id="edit-val" style="border-radius: 8px; border: 1px solid #ddd;">
+                </div> 
+                <div class="full-width" id="div-edit-role">
+                    <label style="font-size:12px; font-weight:bold; margin-bottom: 4px; display: block;">Função (Cargo):</label>
+                    <select id="edit-role" style="border-radius: 8px; border: 1px solid #ddd;">
+                        <option value="User">Usuário</option>
+                        <option value="Teste">Teste</option>
+                        <option value="Sub-Admin">Sub-Admin</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+            </div> 
+            <button onclick="salvarEdicao()" id="btn-save-edit" class="edit-btn" style="margin-top:20px; border-radius: 20px;">💾 Atualizar Dados</button> 
+            <p id="msg-edit" style="color:red; font-size:12px; text-align:center; margin-top:5px;"></p> 
+        </div> 
+    </div>
+
     <div id="modal-renovar" class="modal-overlay"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-renovar')">&times;</span> <h3 style="text-align: center; color: var(--primary);">💎 Renovar Acesso</h3> <div class="pay-card"> <div style="font-size: 12px; font-weight: bold;">PIX PARA PAGAMENTO</div> <div class="pay-key" id="pix-display" style="font-size:16px; padding:15px;">...</div> </div> <button onclick="copiarPixReal()" class="chat-btn" style="border-radius: 50px; width:100%">📋 Copiar Chave PIX</button> </div> </div>
     <div id="modal-install-tutorial" class="modal-overlay" style="z-index: 9999;"> <div class="modal-content" style="max-width: 350px;"> <div style="text-align:center; margin-bottom:20px;"> <div style="font-size:50px; margin-bottom:10px;">⚡</div> <h3 style="margin-top:0; font-size: 20px; font-weight: 700;">Instalar App</h3> <p style="font-size:14px; color: var(--text); line-height: 1.5;">Para a melhor experiência, adicione este app à sua tela inicial.</p> </div> <button id="btn-android-install" class="hidden" style="width:100% !important; margin-bottom:15px; font-size: 16px; padding: 15px;" onclick="instalarAndroid()">📲 Instalar Agora</button> <div id="tutorial-ios" class="hidden"><div class="tutorial-step">1. Toque no botão <b>Compartilhar</b> <span style="font-size:18px;">⎋</span> abaixo.</div><div class="tutorial-step">2. Role e selecione <b>Adicionar à Tela de Início</b> <span style="font-size:18px;">⊞</span>.</div></div> <div id="tutorial-android" class="hidden"><div class="tutorial-step">1. Toque nos <b>3 pontinhos</b> <span style="font-size:18px;">⋮</span> no topo do navegador.</div><div class="tutorial-step">2. Selecione <b>Adicionar à tela inicial</b> ou <b>Instalar app</b>.</div></div> <button class="secondary btn-auto" style="width:100% !important; margin-top:15px;" onclick="fecharInstallModal()">Agora não</button> </div> </div>
     <div id="modal-global-msg" class="modal-overlay" style="z-index: 1100;"> <div class="modal-content" style="max-width: 400px; text-align: center;"> <div style="font-size: 40px; margin-bottom: 10px;">🔔</div> <h3 style="margin-top:0; color: var(--primary);">Comunicado</h3> <p id="msg-text" style="font-size: 14px; color: #333 !important; background: #f3f4f6; padding: 15px; border-radius: 10px;"></p> <button onclick="marcarMensagemLida()" class="btn-auto" style="margin-top: 15px; width: 100% !important;">Entendi</button> </div> </div>
@@ -483,7 +514,7 @@
             const listDiv = document.getElementById('admin-users-list');
             if (!list || list.length === 0) { listDiv.innerHTML = '<p style="text-align:center">Vazio.</p>'; return; }
             
-            // COLUNAS SOLICITADAS: Status, User, Pass, Validade, WA, Valor, Cargo, Pix, Cadastro, Criador, V.Revenda, Ações
+            // COLUNAS: Status, User, Pass, Validade, WA, Valor, Cargo, Pix, Cadastro, Criador, V.Revenda, Ações
             let html = '<div class="table-responsive"><table class="admin-table"><thead><tr>';
             html += '<th>Status</th><th>User</th><th>Pass</th><th>Validade</th><th>WhatsApp</th><th>Valor</th><th>Cargo</th><th>Pix</th><th>Cadastro</th><th>Criador</th><th>Valor Revenda</th><th>Ações</th>';
             html += '</tr></thead><tbody>';
@@ -502,12 +533,12 @@
                 const uPix = row[6] || "";
                 const uStatus = row[7] || "Ativo";
                 const uCriador = row[8] || "-";
-                // Assumindo que cadastro é data de hoje se não houver coluna na planilha, ou em branco
                 const uCadastro = "-"; 
                 const uRevenda = "0"; 
 
-                // Lógica de "Subadministrador" -> "Sub-Admin"
-                if(uCargo.toLowerCase().includes('sub')) uCargo = "Sub-Admin";
+                // RENOMEAR CARGOS
+                if(uCargo.toLowerCase() === 'administrador') uCargo = "Admin";
+                if(uCargo.toLowerCase() === 'subadministrador') uCargo = "Sub-Admin";
 
                 let statusDot = "status-active"; 
                 if (uCargo === 'Teste') statusDot = "status-test";
@@ -517,28 +548,37 @@
                 html += `<tr>
                     <td><span class="status-dot ${statusDot}"></span>${uStatus}</td>
                     <td><b>${uUser}</b></td>
-                    <td>******</td>
+                    <td class="sensitive-blur">${uPass}</td>
                     <td>${uDate}</td>
                     <td>${uWa}</td>
                     <td>${uVal}</td>
                     <td>${uCargo}</td>
-                    <td>${uPix}</td>
+                    <td class="sensitive-blur">${uPix}</td>
                     <td>${uCadastro}</td>
                     <td>${uCriador}</td>
                     <td>${uRevenda}</td>
                     <td>
-                        <div style="display:flex; justify-content:center; gap:3px;">
-                            <button class="btn-action btn-toggle" title="Ativar/Bloquear" onclick="toggleStatus('${uUser}')">✅</button>
-                            <button class="btn-action btn-renew" title="Renovar" onclick="renovarUser('${uUser}')">📅</button>
-                            <button class="btn-action btn-chat" title="WhatsApp" onclick="window.open('https://wa.me/55${String(uWa).replace(/\D/g,'')}')">💬</button>
-                            <button class="btn-action btn-send" title="Enviar Dados" onclick="prepararEnvioWhatsApp('${uUser}','******','${uWa}','${uDate}','${uVal}')">📨</button>
-                            <button class="btn-action btn-edit" title="Editar" onclick="prepararEdicaoUser('${uUser}')">✏️</button>
+                        <div style="display:flex; justify-content:center; gap:4px;">
+                            <button class="btn-action-master act-toggle" title="Ativar/Bloquear" onclick="toggleStatus('${uUser}')">✅</button>
+                            <button class="btn-action-master act-renew" title="Renovar" onclick="renovarUser('${uUser}')">📅</button>
+                            <button class="btn-action-master act-chat" title="WhatsApp" onclick="window.open('https://wa.me/55${String(uWa).replace(/\D/g,'')}')">💬</button>
+                            <button class="btn-action-master act-send" title="Enviar Dados" onclick="prepararEnvioWhatsApp('${uUser}','${uPass}','${uWa}','${uDate}','${uVal}')">📩</button>
+                            <button class="btn-action-master act-edit" title="Editar" onclick="prepararEdicaoUser('${uUser}')">✏️</button>
                         </div>
                     </td>
                 </tr>`;
             });
             html += '</tbody></table></div>';
             listDiv.innerHTML = html;
+            toggleDetalhes();
+        }
+
+        function toggleDetalhes() {
+            const show = document.getElementById('toggle-sensitive').checked;
+            document.querySelectorAll('.sensitive-blur').forEach(el => {
+                if(show) { el.classList.remove('sensitive-blur'); el.classList.add('sensitive-visible'); }
+                else { el.classList.add('sensitive-blur'); el.classList.remove('sensitive-visible'); }
+            });
         }
 
         function abrirModalCreate() { 
