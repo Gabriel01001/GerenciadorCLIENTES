@@ -71,9 +71,9 @@
         .status-dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; }
         .status-active { background-color: #10b981; } .status-expired { background-color: #ef4444; } .status-pending { background-color: #f59e0b; } .status-test { background-color: #06b6d4; box-shadow: 0 0 6px #06b6d4; }
 
-        /* SENSITIVE BLUR */
-        .sensitive-blur { filter: blur(4px); user-select: none; opacity: 0.6; transition: 0.3s; }
-        .sensitive-visible { filter: none; opacity: 1; }
+        /* ESTILOS DE COLUNAS DETALHADAS */
+        .col-detailed { transition: 0.2s; } 
+        /* Classe para ocultar colunas no modo compacto */
 
         /* 5 BOTOES DE AÇÃO (MASTER) */
         .btn-action-master { width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); cursor: pointer; transition: 0.2s; font-size: 14px; margin: 0 2px; }
@@ -303,8 +303,8 @@
             <div id="upload-status" style="font-size:11px; color:#666; margin-bottom:10px;"></div>
             
             <div style="display:flex; align-items:center; gap:8px; margin-bottom:15px;">
-                <input type="checkbox" id="toggle-sensitive" onchange="toggleDetalhes()">
-                <label for="toggle-sensitive" style="font-size:13px; cursor:pointer;">👁️ Mostrar Detalhes (Senha, Pix)</label>
+                <input type="checkbox" id="toggle-compact" onchange="toggleCompactMode()">
+                <label for="toggle-compact" style="font-size:13px; cursor:pointer; font-weight:bold; color:var(--primary);">👁️ Modo Compacto (Ocultar Detalhes)</label>
             </div>
 
             <input type="text" id="search-user" placeholder="🔍 Pesquisar usuário..." onkeyup="filtrarUsuarios()" style="margin-bottom: 15px;">
@@ -514,9 +514,9 @@
             const listDiv = document.getElementById('admin-users-list');
             if (!list || list.length === 0) { listDiv.innerHTML = '<p style="text-align:center">Vazio.</p>'; return; }
             
-            // COLUNAS CORRIGIDAS VISUALMENTE PARA O PORTUGUÊS DA FOTO + REVENDA
+            // COLUNAS COM CLASSE 'col-detailed' PARA OCULTAR
             let html = '<div class="table-responsive"><table class="admin-table"><thead><tr>';
-            html += '<th>Status</th><th>User</th><th>Pass</th><th>Validade</th><th>WhatsApp</th><th>Valor</th><th>Cargo</th><th>Pix</th><th>Cadastro</th><th>Criador</th><th>Valor Revenda</th><th>Ações</th>';
+            html += '<th>Status</th><th>User</th><th class="col-detailed">Pass</th><th>Validade</th><th>WhatsApp</th><th class="col-detailed">Valor</th><th class="col-detailed">Cargo</th><th class="col-detailed">Pix</th><th class="col-detailed">Cadastro</th><th class="col-detailed">Criador</th><th class="col-detailed">Valor Revenda</th><th>Ações</th>';
             html += '</tr></thead><tbody>';
 
             const isSubAdmin = currentUserData.cargo === 'Sub-Admin';
@@ -533,14 +533,11 @@
                 const uPix = row[6] || "";
                 const uStatus = row[7] || "Ativo";
                 const uCriador = row[8] || "-";
-                // AQUI AJUSTAMOS OS ÍNDICES:
-                // row[9] é MENSAGEM (PULA)
-                // row[10] é REVENDA (MOSTRA)
-                // Como não temos uma coluna "Cadastro" salva, usamos a data atual se estiver em branco ou um traço.
+                // Indices ajustados da tabela V108: Col 9 é Msg (Ignorada), Col 10 é Revenda
                 const uCadastro = "-"; 
                 const uRevenda = row[10] || "0"; 
 
-                // RENOMEAR CARGOS NA VISUALIZAÇÃO
+                // RENOMEAR CARGOS
                 if(uCargo.toLowerCase() === 'administrador') uCargo = "Admin";
                 if(uCargo.toLowerCase() === 'subadministrador') uCargo = "Sub-Admin";
 
@@ -552,15 +549,14 @@
                 html += `<tr>
                     <td><span class="status-dot ${statusDot}"></span>${uStatus}</td>
                     <td><b>${uUser}</b></td>
-                    <td class="sensitive-blur">${uPass}</td>
-                    <td>${uDate}</td>
+                    <td class="col-detailed">******</td> <td>${uDate}</td>
                     <td>${uWa}</td>
-                    <td>${uVal}</td>
-                    <td>${uCargo}</td>
-                    <td class="sensitive-blur">${uPix}</td>
-                    <td>${uCadastro}</td>
-                    <td>${uCriador}</td>
-                    <td>${uRevenda}</td>
+                    <td class="col-detailed">${uVal}</td>
+                    <td class="col-detailed">${uCargo}</td>
+                    <td class="col-detailed">${uPix}</td>
+                    <td class="col-detailed">${uCadastro}</td>
+                    <td class="col-detailed">${uCriador}</td>
+                    <td class="col-detailed">${uRevenda}</td>
                     <td>
                         <div style="display:flex; justify-content:center; gap:4px;">
                             <button class="btn-action-master act-toggle" title="Ativar/Bloquear" onclick="toggleStatus('${uUser}')">✅</button>
@@ -574,14 +570,13 @@
             });
             html += '</tbody></table></div>';
             listDiv.innerHTML = html;
-            toggleDetalhes();
+            toggleCompactMode(); // Aplica estado inicial do checkbox
         }
 
-        function toggleDetalhes() {
-            const show = document.getElementById('toggle-sensitive').checked;
-            document.querySelectorAll('.sensitive-blur, .sensitive-visible').forEach(el => {
-                if(show) { el.classList.remove('sensitive-blur'); el.classList.add('sensitive-visible'); }
-                else { el.classList.add('sensitive-blur'); el.classList.remove('sensitive-visible'); }
+        function toggleCompactMode() {
+            const hide = document.getElementById('toggle-compact').checked;
+            document.querySelectorAll('.col-detailed').forEach(el => {
+                el.style.display = hide ? 'none' : 'table-cell';
             });
         }
 
