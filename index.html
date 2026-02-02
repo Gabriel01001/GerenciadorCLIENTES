@@ -86,12 +86,24 @@
         .timer-badge { background: #ef4444; color: white; padding: 2px 8px; border-radius: 5px; font-size: 12px; font-weight: bold; margin-left: 5px; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
         
-        .client-card { background: var(--card); border: 1px solid #e5e7eb; padding: 15px; margin-bottom: 10px; border-radius: 15px; transition:0.2s; position:relative; }
-        .client-card:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .cli-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px; }
-        .cli-label { font-weight:bold; color: var(--gray); }
-        .cli-val { font-weight:bold; color: var(--text); }
-        .cli-name { color: var(--primary); font-size: 15px; font-weight: 800; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        /* ESTILOS DA TABELA DE CLIENTES */
+        .custom-table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--card); border-radius: 10px; overflow: hidden; }
+        .custom-table thead { background: var(--bg); border-bottom: 2px solid #e5e7eb; }
+        .custom-table th { padding: 12px; text-align: left; color: var(--primary); font-weight: 700; }
+        .custom-table td { padding: 12px; border-bottom: 1px solid #f3f4f6; color: var(--text); }
+        .custom-table tr:hover { background: rgba(0,0,0,0.02); }
+        .wa-link { color: #25d366; font-weight: bold; text-decoration: none; display: flex; align-items: center; gap: 4px; }
+        .wa-link:hover { text-decoration: underline; }
+        
+        @media (max-width: 600px) {
+            .custom-table, .custom-table thead, .custom-table tbody, .custom-table th, .custom-table td, .custom-table tr { 
+                display: block; 
+            }
+            .custom-table thead tr { position: absolute; top: -9999px; left: -9999px; }
+            .custom-table tr { border: 1px solid #eee; border-radius: 10px; margin-bottom: 10px; background: var(--card); }
+            .custom-table td { position: relative; padding-left: 50%; border: none; border-bottom: 1px solid #eee; }
+            .custom-table td:before { position: absolute; top: 12px; left: 10px; width: 45%; padding-right: 10px; white-space: nowrap; font-weight: bold; content: attr(data-label); color: var(--gray); }
+        }
     </style>
 </head>
 <body>
@@ -214,7 +226,7 @@
                 <button class="chat-btn btn-auto" onclick="abrirModalCliente()">➕ Novo Cliente</button>
             </div>
             
-            <input type="text" id="search-client" placeholder="🔍 Buscar cliente..." onkeyup="filtrarClientesUI()" style="margin-bottom:15px;">
+            <input type="text" id="search-client" placeholder="🔍 Buscar por nome, usuário ou criador..." onkeyup="filtrarClientesUI()" style="margin-bottom:15px;">
             <div id="client-list-area"><div class="loader" style="display:block; border-color:#ccc; border-top-color:#333;"></div></div>
         </div>
 
@@ -479,34 +491,51 @@
                 return;
             }
 
+            // Verifica se é Admin/Sub-Admin para mostrar a coluna Criador
+            const isAdmin = (currentUserData.cargo === 'Admin' || currentUserData.cargo === 'Sub-Admin');
+            
+            let htmlTable = `
+                <div class="table-responsive">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                ${isAdmin ? '<th>Criador</th>' : ''}
+                                <th>Usuário</th>
+                                <th>Servidor</th>
+                                <th>WhatsApp</th>
+                                <th>Vencimento</th>
+                                <th>Valor</th>
+                                <th style="width: 80px;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
             lista.forEach(cli => {
-                let waButton = '';
+                let waLink = '-';
                 if(cli.whatsapp) {
-                    waButton = `<button class="chat-btn btn-auto" style="position:absolute; top:15px; right:15px; padding:6px 12px; border-radius:50px;" onclick="window.open('https://wa.me/55${cli.whatsapp.replace(/\D/g,'')}')">💬 WhatsApp</button>`;
+                    waLink = `<a href="https://wa.me/55${cli.whatsapp.replace(/\D/g,'')}" target="_blank" class="wa-link">📱 Abrir</a>`;
                 }
 
-                let criadorTag = '';
-                if (currentUserData.cargo === 'Admin' || currentUserData.cargo === 'Sub-Admin') {
-                    criadorTag = `<div class="cli-row"><span class="cli-label">Criado por:</span> <span class="cli-val" style="color:var(--blue)">${cli.criador}</span></div>`;
-                }
-
-                const card = `
-                    <div class="client-card">
-                        ${waButton}
-                        <div class="cli-name">${cli.nome}</div>
-                        ${criadorTag}
-                        <div class="cli-row"><span class="cli-label">Usuário:</span> <span class="cli-val">${cli.usuario}</span></div>
-                        <div class="cli-row"><span class="cli-label">Servidor:</span> <span class="cli-val">${cli.servidor}</span></div>
-                        <div class="cli-row"><span class="cli-label">Valor:</span> <span class="cli-val" style="color:var(--primary)">R$ ${cli.valor}</span></div>
-                        <div class="cli-row"><span class="cli-label">Vencimento:</span> <span class="cli-val" style="color:#d97706">${cli.vencimento || '-'}</span></div>
-                        
-                        <div style="margin-top:10px; display:flex; gap:5px;">
-                             <button class="danger btn-auto" style="padding:5px 10px; font-size:11px;" onclick="deletarCliente('${cli.id}')">Excluir</button>
-                        </div>
-                    </div>
+                htmlTable += `
+                    <tr>
+                        <td data-label="Nome"><b>${cli.nome}</b></td>
+                        ${isAdmin ? `<td data-label="Criador" style="color:var(--blue); font-weight:bold;">${cli.criador}</td>` : ''}
+                        <td data-label="Usuário">${cli.usuario}</td>
+                        <td data-label="Servidor">${cli.servidor}</td>
+                        <td data-label="WhatsApp">${waLink}</td>
+                        <td data-label="Vencimento" style="color:#d97706; font-weight:bold;">${cli.vencimento || '-'}</td>
+                        <td data-label="Valor" style="color:var(--primary); font-weight:bold;">R$ ${cli.valor}</td>
+                        <td data-label="Ações">
+                            <button class="danger btn-auto" style="padding:6px 10px; font-size:11px;" onclick="deletarCliente('${cli.id}')">Excluir</button>
+                        </td>
+                    </tr>
                 `;
-                area.innerHTML += card;
             });
+
+            htmlTable += `</tbody></table></div>`;
+            area.innerHTML = htmlTable;
         }
 
         async function deletarCliente(id) {
@@ -527,10 +556,10 @@
 
         function filtrarClientesUI() {
             const termo = document.getElementById('search-client').value.toLowerCase();
-            const cards = document.querySelectorAll('.client-card');
-            cards.forEach(card => {
-                const text = card.innerText.toLowerCase();
-                card.style.display = text.includes(termo) ? 'block' : 'none';
+            const rows = document.querySelectorAll('.custom-table tbody tr');
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(termo) ? '' : 'none';
             });
         }
 
