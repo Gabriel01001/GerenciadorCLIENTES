@@ -6,6 +6,7 @@
     <title>Gerenciador |WA|</title>
     
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%2310b981%22/><text x=%2250%22 y=%2250%22 font-size=%2260%22 text-anchor=%22middle%22 dy=%22.35em%22>⚡</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%2310b981%22/><text x=%2250%22 y=%2250%22 font-size=%2260%22 text-anchor=%22middle%22 dy=%22.35em%22>⚡</text></svg>">
     
     <meta name="theme-color" content="#10b981">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -553,15 +554,17 @@
             });
         }
 
+        // --- FUNÇÃO DE ABRIR EDIÇÃO (SEM MOSTRAR SENHA e SEM MOSTRAR CARGO P/ SUB) ---
         function abrirModalEdit(user, date, wa, val, role) {
             userEditing = user;
             document.getElementById('edit-user-display').innerText = user;
-            document.getElementById('edit-pass').value = ""; 
+            document.getElementById('edit-pass').value = ""; // Senha vazia por segurança
             document.getElementById('edit-date').value = date;
             document.getElementById('edit-wa').value = wa;
             document.getElementById('edit-val').value = val;
             document.getElementById('edit-role').value = role;
 
+            // Lógica para esconder o select de Cargo se for Sub-Admin
             const isSub = currentUserData.cargo === 'Sub-Admin';
             const divRole = document.getElementById('div-edit-role');
             if (isSub) {
@@ -647,10 +650,17 @@
                     
                     const isSubAdmin = currentUserData.cargo === 'Sub-Admin'; 
                     dados.forEach((row) => { 
+                        const uUser = row[0] || ""; 
+                        
+                        // --- NOVA LÓGICA: PULA O PRÓPRIO USUÁRIO SE FOR SUB-ADMIN ---
+                        if (isSubAdmin && uUser.toLowerCase() === currentUserData.user.toLowerCase()) {
+                            return; // Pula essa iteração do loop
+                        }
+
                         const dateVal = row[2]; 
                         const userRole = row[5]; 
                         let statusText = ""; let displayStatusDot = "status-active"; let statusBtn = ''; 
-                        const uUser = row[0] || ""; const uPass = row[1] || ""; const uDate = row[2] || ""; const uWa = row[3] || ""; const uVal = row[4] || ""; const uPix = row[6] || ""; const uStatus = row[7] || "Ativo";
+                        const uPass = row[1] || ""; const uDate = row[2] || ""; const uWa = row[3] || ""; const uVal = row[4] || ""; const uPix = row[6] || ""; const uStatus = row[7] || "Ativo";
                         
                         const statusIcon = uStatus === 'Pendente' ? '⏳' : (uStatus === 'Bloqueado' ? '🚫' : (uStatus === 'Expirado' ? '🛑' : '✅')); 
                         
