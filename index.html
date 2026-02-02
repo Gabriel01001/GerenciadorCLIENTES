@@ -86,7 +86,6 @@
         .timer-badge { background: #ef4444; color: white; padding: 2px 8px; border-radius: 5px; font-size: 12px; font-weight: bold; margin-left: 5px; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
         
-        /* CARD DE CLIENTE */
         .client-card { background: var(--card); border: 1px solid #e5e7eb; padding: 15px; margin-bottom: 10px; border-radius: 15px; transition:0.2s; position:relative; }
         .client-card:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .cli-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px; }
@@ -231,6 +230,9 @@
             <input type="text" id="cli-wa" placeholder="WhatsApp (só números)">
             <input type="text" id="cli-val" placeholder="Valor (ex: 20,00)">
             
+            <label style="display:block; text-align:left; font-size:12px; font-weight:bold; margin-bottom:5px; color:#333;">Data de Vencimento:</label>
+            <input type="date" id="cli-venc">
+            
             <button onclick="salvarCliente()" id="btn-save-cli" style="margin-top:15px;">💾 Salvar Cliente</button>
         </div>
     </div>
@@ -359,7 +361,6 @@
             if(session) { const s = JSON.parse(session); document.getElementById('user').value = s.user; document.getElementById('pass').value = s.pass; conectarBanco(); }
         };
 
-        // --- NAVEGAÇÃO ENTRE TELAS ---
         function abrirZapFlow() {
             document.getElementById('dashboard-screen').classList.add('hidden');
             document.getElementById('clients-screen').classList.add('hidden');
@@ -379,13 +380,13 @@
             document.getElementById('dashboard-screen').classList.remove('hidden');
         }
 
-        // --- LÓGICA DE CLIENTES ---
         function abrirModalCliente() {
             document.getElementById('cli-nome').value = '';
             document.getElementById('cli-user').value = '';
             document.getElementById('cli-server').value = '';
             document.getElementById('cli-wa').value = '';
             document.getElementById('cli-val').value = '';
+            document.getElementById('cli-venc').value = ''; // Limpa a data
             document.getElementById('modal-new-client').classList.add('show');
         }
 
@@ -396,8 +397,16 @@
             const servidor = document.getElementById('cli-server').value;
             const whatsapp = document.getElementById('cli-wa').value;
             const valor = document.getElementById('cli-val').value;
+            const vencInput = document.getElementById('cli-venc').value; // Formato YYYY-MM-DD
 
             if(!nome || !usuario) return alert("Preencha ao menos Nome e Usuário.");
+
+            // Formata a data para PT-BR
+            let vencFormatado = "-";
+            if(vencInput) {
+                const partes = vencInput.split('-'); // [2026, 02, 01]
+                vencFormatado = `${partes[2]}/${partes[1]}/${partes[0]}`;
+            }
 
             btn.disabled = true; 
             btn.innerText = "Salvando...";
@@ -407,7 +416,8 @@
                 usuario: usuario,
                 servidor: servidor,
                 whatsapp: whatsapp,
-                valor: valor
+                valor: valor,
+                vencimento: vencFormatado
             };
 
             try {
@@ -424,7 +434,7 @@
                 if(res.success) {
                     alert("Cliente salvo!");
                     fecharModal('modal-new-client');
-                    carregarMeusClientes(); // Recarrega a lista
+                    carregarMeusClientes(); 
                 } else {
                     alert("Erro ao salvar.");
                 }
@@ -475,7 +485,6 @@
                     waButton = `<button class="chat-btn btn-auto" style="position:absolute; top:15px; right:15px; padding:6px 12px; border-radius:50px;" onclick="window.open('https://wa.me/55${cli.whatsapp.replace(/\D/g,'')}')">💬 WhatsApp</button>`;
                 }
 
-                // Se for Admin vendo lista geral, mostra quem criou
                 let criadorTag = '';
                 if (currentUserData.cargo === 'Admin' || currentUserData.cargo === 'Sub-Admin') {
                     criadorTag = `<div class="cli-row"><span class="cli-label">Criado por:</span> <span class="cli-val" style="color:var(--blue)">${cli.criador}</span></div>`;
@@ -489,7 +498,7 @@
                         <div class="cli-row"><span class="cli-label">Usuário:</span> <span class="cli-val">${cli.usuario}</span></div>
                         <div class="cli-row"><span class="cli-label">Servidor:</span> <span class="cli-val">${cli.servidor}</span></div>
                         <div class="cli-row"><span class="cli-label">Valor:</span> <span class="cli-val" style="color:var(--primary)">R$ ${cli.valor}</span></div>
-                        <div class="cli-row"><span class="cli-label">Cadastro:</span> <span class="cli-val" style="font-size:10px; opacity:0.7">${formatarData(cli.data).toLocaleDateString()}</span></div>
+                        <div class="cli-row"><span class="cli-label">Vencimento:</span> <span class="cli-val" style="color:#d97706">${cli.vencimento || '-'}</span></div>
                         
                         <div style="margin-top:10px; display:flex; gap:5px;">
                              <button class="danger btn-auto" style="padding:5px 10px; font-size:11px;" onclick="deletarCliente('${cli.id}')">Excluir</button>
@@ -590,7 +599,6 @@
 
                     if(!db[u]) db[u] = {links:[], salvos:[], naoSalvos: []};
                     
-                    // LOGIN SUCESSO: VAI PRO DASHBOARD AGORA
                     document.getElementById('login-screen').classList.add('hidden');
                     document.getElementById('dashboard-screen').classList.remove('hidden');
                     document.getElementById('ola-dashboard').innerText = "Olá, " + currentUserData.user;
