@@ -35,6 +35,13 @@
         button.vip-btn { background: #fffbeb; color: #b45309; border: 1px solid #fcd34d; }
         .btn-auto { width: auto !important; padding: 8px 16px; font-size: 13px; margin: 3px; flex-shrink: 0; }
         
+        /* ESTILOS DO DASHBOARD (MENU) */
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .menu-card { background: var(--bg); border: 2px solid #e5e7eb; border-radius: 15px; padding: 20px; text-align: center; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 120px; }
+        .menu-card:hover { transform: translateY(-5px); border-color: var(--primary); background: rgba(16, 185, 129, 0.05); }
+        .menu-icon { font-size: 40px; margin-bottom: 10px; }
+        .menu-title { font-weight: 700; font-size: 14px; color: var(--text); }
+
         .tutorial-btn-orange { background: linear-gradient(135deg, #fb923c, #ea580c); color: white; border: none; padding: 8px 20px; font-size: 12px; border-radius: 25px; box-shadow: 0 4px 10px rgba(234, 88, 12, 0.4); transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .tutorial-btn-orange:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(234, 88, 12, 0.6); filter: brightness(1.1); }
         
@@ -48,7 +55,7 @@
             border-radius: 15px; 
             box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4); 
             transition: 0.3s; 
-            display: none; /* Inicia Oculto */
+            display: none; 
             flex-direction: column; 
             align-items: center;
             justify-content: center;
@@ -139,23 +146,40 @@
             <div style="margin-top: 40px; font-size: 11px; opacity: 0.6; color: var(--text);"><p style="margin:0;">&copy; 2026 Gerenciador |WA|</p><p style="margin:2px 0 0 0;">Dev: <b>Gabriel Martins</b></p></div>
         </div>
 
+        <div id="dashboard-screen" class="hidden">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <h3 id="ola-dashboard" style="margin:0; font-size:20px;">Olá, Usuário</h3>
+                <button onclick="logout()" class="danger btn-auto">Sair</button>
+            </div>
+            <small id="status-dashboard" style="display:block; margin-bottom:20px; color:var(--primary); font-weight:bold;"></small>
+            
+            <div class="dashboard-grid">
+                <div class="menu-card" onclick="abrirZapFlow()">
+                    <div class="menu-icon">⚡</div>
+                    <div class="menu-title">Gerenciador Links</div>
+                </div>
+                <div class="menu-card" onclick="abrirClientes()">
+                    <div class="menu-icon">👥</div>
+                    <div class="menu-title">Gestão Clientes</div>
+                </div>
+            </div>
+
+            <button id="btn-open-admin-dash" class="admin-btn hidden" style="margin-top:20px;" onclick="abrirAdminPanel()">⚙️ Painel Master</button>
+        </div>
+
         <div id="app-screen" class="hidden">
             <div class="header">
-                <div style="max-width: 70%;">
-                    <h3 id="ola-user" style="margin:0; font-size: 18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">...</h3>
-                    <small id="status-acesso"></small>
-                    <div style="margin-top: 10px; display:flex; flex-wrap:wrap; gap:5px;">
-                        <button class="tutorial-btn-orange btn-auto" onclick="abrirTutoriais()">📺 Tutoriais</button>
-                        
-                        <button id="btn-autoresponder" class="autoresponder-btn btn-auto" onclick="window.open('https://drive.google.com/file/d/1KALRwBkxEqhymjNdxqlalBYsdAXH95zB/view?usp=sharing')">
-                            <div style="font-weight:700; font-size:13px;">⬇ Baixar</div>
-                            <div style="font-size:10px; opacity:0.9; font-weight:400;">Auto responde</div>
-                        </button>
-                    </div>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <button class="secondary btn-auto" onclick="voltarDashboard()">⬅ Voltar</button>
+                    <h3 style="margin:0;">Gerenciador Links</h3>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 5px; align-items: flex-end;">
-                    <button id="btn-open-admin" class="admin-btn btn-auto hidden" onclick="abrirAdminPanel()">⚙️ Master</button>
-                    <button onclick="logout()" class="danger btn-auto">Sair</button>
+                <div style="margin-top: 10px; display:flex; flex-wrap:wrap; gap:5px; justify-content: flex-end;">
+                    <button class="tutorial-btn-orange btn-auto" onclick="abrirTutoriais()">📺 Tutoriais</button>
+                    
+                    <button id="btn-autoresponder" class="autoresponder-btn btn-auto" onclick="window.open('https://drive.google.com/file/d/1KALRwBkxEqhymjNdxqlalBYsdAXH95zB/view?usp=sharing')">
+                        <div style="font-weight:700; font-size:13px;">⬇ Baixar</div>
+                        <div style="font-size:10px; opacity:0.9; font-weight:400;">Auto responde</div>
+                    </button>
                 </div>
             </div>
 
@@ -214,6 +238,21 @@
                 <div id="lista-descartados"></div><div id="paginacao-desc" class="pagination-ctrl"></div>
             </div>
         </div>
+
+        <div id="clients-screen" class="hidden">
+            <div class="header">
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <button class="secondary btn-auto" onclick="voltarDashboard()">⬅ Voltar</button>
+                    <h3 style="margin:0;">Gestão Clientes</h3>
+                </div>
+            </div>
+            <div style="text-align:center; margin-top:50px; opacity:0.7;">
+                <div style="font-size:50px;">🏗️</div>
+                <p>Área de Clientes em Construção...</p>
+                <p style="font-size:12px;">Em breve você poderá gerenciar seus clientes aqui.</p>
+            </div>
+        </div>
+
     </div>
 
     <div id="modal-admin" class="modal-overlay">
@@ -340,6 +379,25 @@
             if(session) { const s = JSON.parse(session); document.getElementById('user').value = s.user; document.getElementById('pass').value = s.pass; conectarBanco(); }
         };
 
+        // --- NAVEGAÇÃO ENTRE TELAS ---
+        function abrirZapFlow() {
+            document.getElementById('dashboard-screen').classList.add('hidden');
+            document.getElementById('clients-screen').classList.add('hidden');
+            document.getElementById('app-screen').classList.remove('hidden');
+        }
+
+        function abrirClientes() {
+            document.getElementById('dashboard-screen').classList.add('hidden');
+            document.getElementById('app-screen').classList.add('hidden');
+            document.getElementById('clients-screen').classList.remove('hidden');
+        }
+
+        function voltarDashboard() {
+            document.getElementById('app-screen').classList.add('hidden');
+            document.getElementById('clients-screen').classList.add('hidden');
+            document.getElementById('dashboard-screen').classList.remove('hidden');
+        }
+
         function toggleAdminSection(id) {
             const el = document.getElementById(id);
             if (el.style.display === 'block') {
@@ -405,14 +463,21 @@
 
                     if(!db[u]) db[u] = {links:[], salvos:[], naoSalvos: []};
                     
+                    // LOGIN SUCESSO: VAI PRO DASHBOARD AGORA
                     document.getElementById('login-screen').classList.add('hidden');
-                    document.getElementById('app-screen').classList.remove('hidden');
+                    document.getElementById('dashboard-screen').classList.remove('hidden');
+                    document.getElementById('ola-dashboard').innerText = "Olá, " + currentUserData.user;
+                    
+                    // Configura infos da Dashboard
                     document.getElementById('ola-user').innerText = "Olá, " + currentUserData.user;
                     
                     if (dados.cargo === 'Teste' && dados.testSeconds) {
                         iniciarTimerTeste(dados.testSeconds);
+                        document.getElementById('status-dashboard').innerText = "Modo Teste";
                     } else {
                         document.getElementById('status-acesso').innerText = "Vence: " + currentUserData.date;
+                        document.getElementById('status-dashboard').innerText = "Vencimento: " + currentUserData.date;
+                        
                         if(diff <= 5 && !dados.isMaster && dados.date !== 'Vitalício') {
                             document.getElementById('vencimento-alert').style.display = 'block';
                             document.getElementById('dias-restantes-alerta').innerText = diff < 0 ? 0 : diff;
@@ -421,14 +486,17 @@
 
                     // --- LÓGICA DO BOTÃO AUTORESPONDER ---
                     const btnAuto = document.getElementById('btn-autoresponder');
-                    // SÓ MOSTRA SE FOR ADMIN OU USER. (Sub-Admin e Teste NÃO VEEM)
                     if (dados.cargo === 'Admin' || dados.cargo === 'User') {
                         btnAuto.style.display = 'inline-flex';
                     } else {
                         btnAuto.style.display = 'none';
                     }
 
-                    if(dados.isMaster) document.getElementById('btn-open-admin').classList.remove('hidden');
+                    if(dados.isMaster) {
+                        document.getElementById('btn-open-admin').classList.remove('hidden');
+                        document.getElementById('btn-open-admin-dash').classList.remove('hidden'); // Botão na Dashboard
+                    }
+                    
                     if (dados.file && dados.file.url && dados.cargo !== 'Sub-Admin') {
                         document.getElementById('file-download-card').style.display = 'flex';
                         document.getElementById('file-date').innerText = dados.file.time;
@@ -542,7 +610,7 @@
         function addLinks(){ const t=document.getElementById('links-input'); const linhas = t.value.split('\n'); processarNovosLinks(linhas); t.value=''; pgPend = 0; }
         function lerArquivo(i) { const r=new FileReader(); r.onload=(e)=>{ const linhas = e.target.result.split('\n'); processarNovosLinks(linhas); }; r.readAsText(i.files[0]); i.value=''; }
         function renderizar() { const u = currentUserData.user; if(!db[u]) db[u] = {links:[], salvos:[], naoSalvos:[]}; if(!db[u].naoSalvos) db[u].naoSalvos = []; const p = document.getElementById('lista-pendentes'); p.innerHTML = ''; const tP = db[u].links.length; document.getElementById('count-pend').innerText = tP; db[u].links.slice(pgPend*ITENS_PAG, (pgPend+1)*ITENS_PAG).forEach((l,i) => { p.innerHTML += `<div class="card"><span class="link-text">${l}</span><button class="btn-auto" onclick="tratarAberturaLink(${pgPend*ITENS_PAG+i},'${l}')">Abrir ↗</button></div>`; }); renderControles('paginacao-pend', tP, pgPend, (n)=> {pgPend=n; renderizar();}); const s = document.getElementById('lista-salvos'); s.innerHTML = ''; const tS = db[u].salvos ? db[u].salvos.length : 0; document.getElementById('count-saved').innerText = tS; if(db[u].salvos) db[u].salvos.slice(pgSalv*ITENS_PAG, (pgSalv+1)*ITENS_PAG).forEach((l,i) => { s.innerHTML += `<div class="card" style="border-left:4px solid var(--primary)"><span class="link-text">${l}</span><button class="danger btn-auto" onclick="db['${u}'].salvos.splice(${pgSalv*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-salv', tS, pgSalv, (n)=> {pgSalv=n; renderizar();}); const d = document.getElementById('lista-descartados'); d.innerHTML = ''; const tD = db[u].naoSalvos ? db[u].naoSalvos.length : 0; document.getElementById('count-discarded').innerText = tD; if(db[u].naoSalvos) db[u].naoSalvos.slice(pgDesc*ITENS_PAG, (pgDesc+1)*ITENS_PAG).forEach((l,i) => { d.innerHTML += `<div class="card card-discarded"><span class="link-text">${l}</span><button class="btn-auto" onclick="resgatarDescartado(${pgDesc*ITENS_PAG+i})">♻️</button><button class="danger btn-auto" onclick="db['${u}'].naoSalvos.splice(${pgDesc*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-desc', tD, pgDesc, (n)=> {pgDesc=n; renderizar();}); localStorage.setItem(DB_KEY, JSON.stringify(db)); }
-        function renderControles(id, total, atual, cb) { const div = document.getElementById(id), max = Math.ceil(total/ITENS_PAG); if(max <= 1) { div.innerHTML = ''; return; } div.innerHTML = `<button class="secondary btn-auto" ${atual===0?'disabled':''} onclick="(${cb})(${atual+1})">«</button><span>${atual+1}/${max}</span><button class="secondary btn-auto" ${atual>=max-1?'disabled':''} onclick="(${cb})(${atual+1})">»</button>`; }
+        function renderControles(id, total, atual, cb) { const div = document.getElementById(id), max = Math.ceil(total/ITENS_PAG); if(max <= 1) { div.innerHTML = ''; return; } div.innerHTML = `<button class="secondary btn-auto" ${atual===0?'disabled':''} onclick="(${cb})(${atual-1})">«</button><span>${atual+1}/${max}</span><button class="secondary btn-auto" ${atual>=max-1?'disabled':''} onclick="(${cb})(${atual+1})">»</button>`; }
         async function alterarStatus(targetUser) { if(!confirm("Deseja alterar o status deste usuário?")) return; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggle_status', user: currentUserData.user, pass: currentUserData.pass, targetUser: targetUser }) }); const res = await req.json(); if(res.success) { alert("Status alterado: " + res.novoStatus); abrirAdminPanel(); } else { alert("Erro: " + res.msg); } } catch(e) { alert("Erro de conexão."); } }
         async function clickRenovar(targetUser) { const dias = prompt("Renovar por quantos dias?", "30"); if (!dias) return; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'renew_user', user: currentUserData.user, pass: currentUserData.pass, targetUser: targetUser, days: dias }) }); const res = await req.json(); if (res.success) { alert("Usuário renovado com sucesso!"); abrirAdminPanel(); } else { alert("Erro: " + res.msg); } } catch(e) { alert("Erro de conexão."); } }
         
@@ -554,17 +622,15 @@
             });
         }
 
-        // --- FUNÇÃO DE ABRIR EDIÇÃO (SEM MOSTRAR SENHA e SEM MOSTRAR CARGO P/ SUB) ---
         function abrirModalEdit(user, date, wa, val, role) {
             userEditing = user;
             document.getElementById('edit-user-display').innerText = user;
-            document.getElementById('edit-pass').value = ""; // Senha vazia por segurança
+            document.getElementById('edit-pass').value = ""; 
             document.getElementById('edit-date').value = date;
             document.getElementById('edit-wa').value = wa;
             document.getElementById('edit-val').value = val;
             document.getElementById('edit-role').value = role;
 
-            // Lógica para esconder o select de Cargo se for Sub-Admin
             const isSub = currentUserData.cargo === 'Sub-Admin';
             const divRole = document.getElementById('div-edit-role');
             if (isSub) {
@@ -614,14 +680,11 @@
             
             const isSub = currentUserData.cargo === 'Sub-Admin'; 
             
-            // --- NOVA LÓGICA DE BOTÕES DO ADMIN ---
-            // Se for Sub-Admin, ESCONDE a barra de botões (Aviso, Geral, Teste)
             const actionBar = document.querySelector('.admin-action-bar');
             if(actionBar) {
                 actionBar.style.display = isSub ? 'none' : 'grid';
             }
 
-            // Garante que as seções comecem fechadas
             document.getElementById('admin-msg-area').style.display = 'none';
             document.getElementById('upload-section-geral').style.display = 'none';
             document.getElementById('upload-section-teste').style.display = 'none';
@@ -652,9 +715,9 @@
                     dados.forEach((row) => { 
                         const uUser = row[0] || ""; 
                         
-                        // --- NOVA LÓGICA: PULA O PRÓPRIO USUÁRIO SE FOR SUB-ADMIN ---
+                        // --- NOVA LÓGICA: SE FOR SUB-ADMIN, ESCONDE O PRÓPRIO USUÁRIO DA LISTA ---
                         if (isSubAdmin && uUser.toLowerCase() === currentUserData.user.toLowerCase()) {
-                            return; // Pula essa iteração do loop
+                            return; 
                         }
 
                         const dateVal = row[2]; 
@@ -673,13 +736,8 @@
                                 if (dTeste && dTeste < agora) isExpired = true;
                             }
 
-                            if (isExpired) { 
-                                displayStatusDot = "status-expired"; 
-                                statusText = "Vencido"; 
-                            } else { 
-                                displayStatusDot = "status-test"; 
-                                statusText = "Teste"; 
-                            } 
+                            if (isExpired) { displayStatusDot = "status-expired"; statusText = "Vencido"; } 
+                            else { displayStatusDot = "status-test"; statusText = "Teste"; } 
                         } 
                         else if (dateVal === 'Vitalício') {
                              displayStatusDot = "status-active"; statusText = "Vitalício";
@@ -717,7 +775,6 @@
                     toggleDetalhes();
                     
                 } else { 
-                    // MENSAGEM DE ERRO DETALHADA NO FRONT
                     lista.innerHTML = `<p style="text-align:center; color:red">Erro ao carregar lista.<br><small>${res.msg || "Verifique a planilha."}</small></p>`; 
                 } 
             } catch(e) { 
