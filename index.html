@@ -38,8 +38,23 @@
         .tutorial-btn-orange { background: linear-gradient(135deg, #fb923c, #ea580c); color: white; border: none; padding: 8px 20px; font-size: 12px; border-radius: 25px; box-shadow: 0 4px 10px rgba(234, 88, 12, 0.4); transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .tutorial-btn-orange:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(234, 88, 12, 0.6); filter: brightness(1.1); }
         
-        /* NOVO BOTÃO AUTORESPONDER */
-        .autoresponder-btn { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border: none; padding: 8px 20px; font-size: 12px; border-radius: 25px; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4); transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        /* NOVO ESTILO DO BOTÃO DEIXAR */
+        .autoresponder-btn { 
+            background: linear-gradient(135deg, #6366f1, #4f46e5); 
+            color: white; 
+            border: none; 
+            padding: 6px 15px; 
+            font-size: 12px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4); 
+            transition: 0.3s; 
+            display: none; /* OCULTO POR PADRÃO - JS VAI ATIVAR */
+            flex-direction: column; /* TEXTO EM PÉ */
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            line-height: 1.1;
+        }
         .autoresponder-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(79, 70, 229, 0.6); filter: brightness(1.1); }
 
         .tutorial-card { background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05); border-radius: 15px; padding: 15px; margin-bottom: 20px; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
@@ -131,7 +146,11 @@
                     <small id="status-acesso"></small>
                     <div style="margin-top: 10px; display:flex; flex-wrap:wrap; gap:5px;">
                         <button class="tutorial-btn-orange btn-auto" onclick="abrirTutoriais()">📺 Tutoriais</button>
-                        <button class="autoresponder-btn btn-auto" onclick="window.open('https://drive.google.com/file/d/1KALRwBkxEqhymjNdxqlalBYsdAXH95zB/view?usp=sharing')">🤖 AutoResponder</button>
+                        
+                        <button id="btn-autoresponder" class="autoresponder-btn btn-auto" onclick="window.open('https://drive.google.com/file/d/1KALRwBkxEqhymjNdxqlalBYsdAXH95zB/view?usp=sharing')">
+                            <div style="display:flex; align-items:center; gap:4px; font-weight:700;">⬇ Baixar</div>
+                            <div style="font-size:10px; opacity:0.9;">AutoResponder</div>
+                        </button>
                     </div>
                 </div>
                 <div style="display: flex; flex-direction: column; gap: 5px; align-items: flex-end;">
@@ -404,6 +423,15 @@
                         }
                     }
 
+                    // === LÓGICA DO BOTÃO AUTORESPONDER ===
+                    // SÓ MOSTRA SE O CARGO FOR 'Admin' OU 'User'
+                    const btnAuto = document.getElementById('btn-autoresponder');
+                    if (dados.cargo === 'Admin' || dados.cargo === 'User') {
+                        btnAuto.style.display = 'inline-flex';
+                    } else {
+                        btnAuto.style.display = 'none';
+                    }
+
                     if(dados.isMaster) document.getElementById('btn-open-admin').classList.remove('hidden');
                     if (dados.file && dados.file.url && dados.cargo !== 'Sub-Admin') {
                         document.getElementById('file-download-card').style.display = 'flex';
@@ -530,7 +558,6 @@
             });
         }
 
-        // --- FUNÇÃO DE ABRIR EDIÇÃO (SEM MOSTRAR SENHA e SEM MOSTRAR CARGO P/ SUB) ---
         function abrirModalEdit(user, date, wa, val, role) {
             userEditing = user;
             document.getElementById('edit-user-display').innerText = user;
@@ -540,7 +567,6 @@
             document.getElementById('edit-val').value = val;
             document.getElementById('edit-role').value = role;
 
-            // Lógica para esconder o select de Cargo se for Sub-Admin
             const isSub = currentUserData.cargo === 'Sub-Admin';
             const divRole = document.getElementById('div-edit-role');
             if (isSub) {
