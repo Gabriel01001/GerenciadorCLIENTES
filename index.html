@@ -29,18 +29,24 @@
         button.renew-btn { background: #8b5cf6; color: white; }
         button.vip-btn { background: #fffbeb; color: #b45309; border: 1px solid #fcd34d; }
         .btn-auto { width: auto !important; padding: 8px 16px; font-size: 13px; margin: 3px; flex-shrink: 0; }
+        
+        /* ESTILOS DO SEU CÓDIGO (LINK MANAGER) */
+        .tutorial-btn-orange { background: linear-gradient(135deg, #fb923c, #ea580c); color: white; border: none; padding: 8px 20px; font-size: 12px; border-radius: 25px; box-shadow: 0 4px 10px rgba(234, 88, 12, 0.4); transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .tutorial-btn-orange:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(234, 88, 12, 0.6); filter: brightness(1.1); }
+        .autoresponder-btn { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border: none; padding: 5px 15px; font-size: 12px; border-radius: 15px; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4); transition: 0.3s; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 2px; line-height: 1.2; }
+        .autoresponder-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(79, 70, 229, 0.6); filter: brightness(1.1); }
+        .tutorial-card { background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05); border-radius: 15px; padding: 15px; margin-bottom: 20px; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .tut-title-text { font-weight: 700; color: var(--primary); margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+        
+        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .card { background: var(--card); border: 1px solid #e5e7eb; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; border-radius: var(--radius); align-items: center; gap: 10px; overflow: hidden; }
+        .link-text { flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 13px; min-width: 0; word-break: break-all; }
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
         .menu-card { background: var(--bg); border: 2px solid #e5e7eb; border-radius: 15px; padding: 20px; text-align: center; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 120px; }
         .menu-card:hover { transform: translateY(-5px); border-color: var(--primary); background: rgba(16, 185, 129, 0.05); }
         .menu-icon { font-size: 40px; margin-bottom: 10px; }
         .menu-title { font-weight: 700; font-size: 14px; color: var(--text); }
-        .tutorial-btn-orange { background: linear-gradient(135deg, #fb923c, #ea580c); color: white; border: none; padding: 5px 15px; font-size: 11px; border-radius: 25px; box-shadow: 0 4px 10px rgba(234, 88, 12, 0.4); transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-left: 5px; }
-        .tutorial-btn-orange:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(234, 88, 12, 0.6); filter: brightness(1.1); }
-        .autoresponder-btn { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border: none; padding: 5px 15px; font-size: 11px; border-radius: 15px; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4); transition: 0.3s; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 2px; line-height: 1.2; margin-left: 5px; }
-        .autoresponder-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(79, 70, 229, 0.6); filter: brightness(1.1); }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .card { background: var(--card); border: 1px solid #e5e7eb; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; border-radius: var(--radius); align-items: center; gap: 10px; overflow: hidden; }
-        .link-text { flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 13px; min-width: 0; word-break: break-all; }
+
         .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:none; justify-content:center; align-items:center; z-index:1000; backdrop-filter: blur(4px); padding: 20px; }
         .modal-overlay.show { display:flex; }
         .modal-content { background:var(--card); padding: 20px; border-radius:20px; width: 100%; max-width: 400px; position:relative; color: var(--text); max-height: 80vh; overflow-y: auto; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
@@ -136,36 +142,80 @@
 
         <div id="app-screen" class="hidden">
             <div class="header">
-                <div style="display:flex; gap:10px; align-items:center;">
-                    <button class="secondary btn-auto" onclick="voltarDashboard()">⬅ Voltar</button>
-                    <h3 style="margin:0;">Gerenciador Links</h3>
+                <div style="max-width: 70%;">
+                    <div style="display:flex; align-items:center; gap:5px;">
+                        <button class="secondary btn-auto" style="padding: 2px 8px; font-size: 10px;" onclick="voltarDashboard()">⬅</button>
+                        <h3 id="ola-user" style="margin:0; font-size: 18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">...</h3>
+                    </div>
+                    <small id="status-acesso"></small>
+                    <div style="margin-top: 10px; display:flex; flex-wrap:wrap; gap:5px;">
+                        <button class="tutorial-btn-orange btn-auto" onclick="abrirTutoriais()">📺 Tutoriais</button>
+                        <button id="btn-autoresponder" class="autoresponder-btn btn-auto" onclick="window.open('https://drive.google.com/file/d/1KALRwBkxEqhymjNdxqlalBYsdAXH95zB/view?usp=sharing')">
+                            <div style="font-weight:700; font-size:13px;">⬇ Baixar</div>
+                            <div style="font-size:10px; opacity:0.9; font-weight:400;">Auto responde</div>
+                        </button>
+                    </div>
                 </div>
-                <div style="display:flex; flex-wrap:wrap; gap:2px; align-items:center;">
-                    <button class="tutorial-btn-orange btn-auto" onclick="abrirTutoriais()">📺 Tutoriais</button>
-                    <button id="btn-autoresponder" class="autoresponder-btn btn-auto" onclick="window.open('https://drive.google.com/file/d/1KALRwBkxEqhymjNdxqlalBYsdAXH95zB/view?usp=sharing')">⬇ Baixar<br><span style="font-size:9px">Auto responde</span></button>
-                    <button id="btn-open-admin-app" class="admin-btn hidden btn-auto" style="background:#1f2937; color:white; border:none; padding:8px 15px; margin-left:5px;" onclick="abrirAdminPanel()">⚙️ Master</button>
+                <div style="display: flex; flex-direction: column; gap: 5px; align-items: flex-end;">
+                    <button id="btn-open-admin" class="admin-btn btn-auto hidden" onclick="abrirAdminPanel()">⚙️ Master</button>
+                    <button onclick="logout()" class="danger btn-auto">Sair</button>
                 </div>
             </div>
-            
+
             <div id="file-download-card" class="card" style="background: #eff6ff; border: 1px solid #bfdbfe; display: none; color: #1f2937 !important;">
-                <div style="display: flex; align-items: center; gap: 10px; overflow: hidden;"><span style="font-size: 24px;">📥</span><div style="overflow: hidden;"><div style="font-weight: bold; font-size: 14px; color: #1f2937;" id="file-title">Arquivo</div><div style="font-size: 11px; color: #4b5563; white-space: nowrap;">Atualizado: <span id="file-date"></span></div></div></div>
+                <div style="display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                    <span style="font-size: 24px;">📥</span>
+                    <div style="overflow: hidden;">
+                        <div style="font-weight: bold; font-size: 14px; color: #1f2937;" id="file-title">Arquivo</div>
+                        <div style="font-size: 11px; color: #4b5563; white-space: nowrap;">Atualizado: <span id="file-date"></span></div>
+                    </div>
+                </div>
                 <button id="btn-download-file" onclick="baixarArquivoGeral()" class="btn-auto" style="background: #3b82f6;">Baixar</button>
             </div>
+
             <div id="vencimento-alert" class="card" style="background: #fff7ed; border: 1px solid #fdba74; display: none; margin-bottom: 20px; padding: 15px;">
-                <div style="display:flex; align-items:center; gap:5px; justify-content: space-between; width: 100%;"><span style="color:#333; font-size: 12px;">⚠️ Expira em <span id="dias-restantes-alerta" style="font-weight: bold;">0</span> dias.</span><button onclick="abrirModalRenovar()" class="vip-btn btn-auto">Renovar</button></div>
+                <div style="display:flex; align-items:center; gap:5px; justify-content: space-between; width: 100%;">
+                    <span style="color:#333; font-size: 12px;">⚠️ Expira em <span id="dias-restantes-alerta" style="font-weight: bold;">0</span> dias.</span>
+                    <button onclick="abrirModalRenovar()" class="vip-btn btn-auto">Renovar</button>
+                </div>
             </div>
+
             <div style="background: rgba(0,0,0,0.03); padding: 15px; border-radius: var(--radius); margin-bottom: 20px; border: 1px solid #e5e7eb;">
                 <h4 style="margin: 0 0 10px 0;">📥 Adicionar Dados</h4>
                 <textarea id="links-input" rows="1" placeholder="Cole links ou números..."></textarea>
-                <div style="display: flex; gap: 8px;"><button onclick="addLinks()" class="btn-auto">Carregar</button><button onclick="document.getElementById('file').click()" class="secondary btn-auto">📂 Arquivo</button><input type="file" id="file" accept=".txt" hidden onchange="lerArquivo(this)"></div>
-                <div id="save-prompt" class="save-prompt"><div style="overflow: hidden; flex: 1;"><span style="font-size: 12px; font-weight: bold;">Salvar anterior?</span><div id="last-link-opened" style="font-size: 10px; opacity: 0.7; overflow: hidden; text-overflow: ellipsis;"></div></div><div style="display: flex; gap: 6px;"><button onclick="confirmarSalvamento(true)" class="btn-auto" style="padding: 6px 12px;">Sim</button><button onclick="confirmarSalvamento(false)" class="secondary btn-auto" style="padding: 6px 12px;">Não</button></div></div>
+                <div style="display: flex; gap: 8px;">
+                    <button onclick="addLinks()" class="btn-auto">Carregar</button>
+                    <button onclick="document.getElementById('file').click()" class="secondary btn-auto">📂 Arquivo</button>
+                    <input type="file" id="file" accept=".txt" hidden onchange="lerArquivo(this)">
+                </div>
+                <div id="save-prompt" class="save-prompt">
+                    <div style="overflow: hidden; flex: 1;"><span style="font-size: 12px; font-weight: bold;">Salvar anterior?</span><div id="last-link-opened" style="font-size: 10px; opacity: 0.7; overflow: hidden; text-overflow: ellipsis;"></div></div>
+                    <div style="display: flex; gap: 6px;"><button onclick="confirmarSalvamento(true)" class="btn-auto" style="padding: 6px 12px;">Sim</button><button onclick="confirmarSalvamento(false)" class="secondary btn-auto" style="padding: 6px 12px;">Não</button></div>
+                </div>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;"><h4 style="color: var(--primary); margin:0;">Pendentes (<span id="count-pend">0</span>)</h4><button onclick="limparPendentes()" class="danger btn-auto" style="padding: 6px 12px; font-size: 11px;">🗑️ Limpar</button></div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h4 style="color: var(--primary); margin:0;">Pendentes (<span id="count-pend">0</span>)</h4>
+                <button onclick="limparPendentes()" class="danger btn-auto" style="padding: 6px 12px; font-size: 11px;">🗑️ Limpar</button>
+            </div>
             <div id="lista-pendentes"></div><div id="paginacao-pend" class="pagination-ctrl"></div>
+            
             <h4 style="color: var(--blue);">Salvos (<span id="count-saved">0</span>)</h4>
-            <div style="display: flex; gap: 8px; margin-bottom: 10px;"><button onclick="baixarSalvos()" class="secondary btn-auto">📥 Extrair</button><button onclick="document.getElementById('file-saved').click()" class="secondary btn-auto">📂 Arquivo</button><input type="file" id="file-saved" accept=".txt" hidden onchange="lerArquivoSalvos(this)"><button onclick="limparSalvos()" class="danger btn-auto">🗑️ Limpar</button></div>
+            <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                <button onclick="baixarSalvos()" class="secondary btn-auto">📥 Extrair</button>
+                <button onclick="document.getElementById('file-saved').click()" class="secondary btn-auto">📂 Arquivo</button>
+                <input type="file" id="file-saved" accept=".txt" hidden onchange="lerArquivoSalvos(this)">
+                <button onclick="limparSalvos()" class="danger btn-auto">🗑️ Limpar</button>
+            </div>
             <div id="lista-salvos"></div><div id="paginacao-salv" class="pagination-ctrl"></div>
-            <div class="discarded-section"><div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;"><h4 style="color: var(--gray); margin:0;">Não Salvos (<span id="count-discarded">0</span>)</h4><button onclick="limparDescartados()" class="danger btn-auto" style="padding: 6px 12px; font-size: 11px;">🗑️ Limpar</button></div><div id="lista-descartados"></div><div id="paginacao-desc" class="pagination-ctrl"></div></div>
+
+            <div class="discarded-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <h4 style="color: var(--gray); margin:0;">Não Salvos (<span id="count-discarded">0</span>)</h4>
+                    <button onclick="limparDescartados()" class="danger btn-auto" style="padding: 6px 12px; font-size: 11px;">🗑️ Limpar</button>
+                </div>
+                <div id="lista-descartados"></div><div id="paginacao-desc" class="pagination-ctrl"></div>
+            </div>
         </div>
 
         <div id="clients-screen" class="hidden">
@@ -232,6 +282,41 @@
         </div>
     </div>
 
+    <div id="modal-admin" class="modal-overlay">
+        <div class="modal-content">
+            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold; color:var(--text);" onclick="fecharModal('modal-admin')">&times;</span>
+            <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom:15px;">
+                <h2 style="color: var(--dark); font-size: 20px; margin:0;">⚙️ Gestão Master</h2>
+                <div style="display:flex; gap:8px;"><button class="secondary btn-auto" onclick="abrirAdminPanel()">🔄</button><button class="chat-btn btn-auto" onclick="abrirModalCreate()">➕ Novo</button></div>
+            </div>
+            <div class="admin-action-bar">
+                <button class="admin-toggle-btn section-orange" onclick="toggleAdminSection('admin-msg-area')"><span style="font-size:18px">🔔</span> Aviso</button>
+                <button class="admin-toggle-btn section-blue" onclick="toggleAdminSection('upload-section-geral')"><span style="font-size:18px">📁</span> Geral</button>
+                <button class="admin-toggle-btn section-green" onclick="toggleAdminSection('upload-section-teste')"><span style="font-size:18px">🧪</span> Teste</button>
+            </div>
+            <div id="admin-msg-area" class="admin-section-hidden" style="background:#fff7ed; border:1px dashed #f97316; padding:15px; border-radius:8px; margin-bottom:10px;">
+                <div style="font-size:12px; font-weight:bold; margin-bottom:8px; color:#c2410c;">🔔 Mensagem Global (Popup)</div>
+                <textarea id="global-msg-input" rows="2" placeholder="Escreva um aviso para todos os usuários..." style="margin-bottom:5px; font-size:12px;"></textarea>
+                <button class="btn-auto" style="background:#f97316; width:100% !important;" onclick="salvarMensagem()">Enviar Aviso</button>
+            </div>
+            <div id="upload-section-geral" class="admin-section-hidden" style="background:#f9fafb; border:1px dashed #ccc; padding:15px; border-radius:8px; margin-bottom:10px;">
+                <div style="font-size:12px; font-weight:bold; margin-bottom:8px; color:#333;">📁 Arquivo OFICIAL (Todos)</div>
+                <div style="display:flex; gap:8px;"><input type="file" id="admin-file-upload" style="margin:0; padding:8px; font-size:12px; color:#333; width: 100%;"><button class="btn-auto" onclick="fazerUploadArquivo('geral')">Enviar</button></div>
+            </div>
+            <div id="upload-section-teste" class="admin-section-hidden" style="background:#f0fdf4; border:1px dashed #16a34a; padding:15px; border-radius:8px; margin-bottom:20px;">
+                <div style="font-size:12px; font-weight:bold; margin-bottom:8px; color:#15803d;">🧪 Arquivo TESTE (Apenas Testes)</div>
+                <div style="display:flex; gap:8px;"><input type="file" id="admin-file-test" style="margin:0; padding:8px; font-size:12px; color:#333; width: 100%;"><button class="btn-auto" style="background:#16a34a;" onclick="fazerUploadArquivo('teste')">Enviar</button></div>
+            </div>
+            <div id="upload-status" style="font-size:11px; color:#666; margin-bottom:10px;"></div>
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                <input type="checkbox" id="toggle-details" onchange="toggleDetalhes()">
+                <label for="toggle-details" style="font-size:13px; cursor:pointer;">👁️ Mostrar Detalhes (Senha, Pix, etc)</label>
+            </div>
+            <input type="text" id="search-user" placeholder="🔍 Pesquisar usuário..." onkeyup="filtrarUsuarios()" style="margin-bottom: 15px;">
+            <div id="admin-users-list"></div>
+        </div>
+    </div>
+
     <div id="modal-new-client" class="modal-overlay" style="z-index: 1005;">
         <div class="modal-content" style="max-width: 350px;">
             <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-new-client')">&times;</span>
@@ -246,7 +331,6 @@
             <button onclick="salvarCliente()" id="btn-save-cli" style="margin-top:15px;">💾 Salvar Cliente</button>
         </div>
     </div>
-
     <div id="modal-config-msg" class="modal-overlay" style="z-index: 1006;">
         <div class="modal-content" style="max-width: 400px;">
             <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-config-msg')">&times;</span>
@@ -256,7 +340,6 @@
             <button onclick="salvarTemplateMsg()">💾 Salvar Padrão</button>
         </div>
     </div>
-
     <div id="modal-send-charge" class="modal-overlay" style="z-index: 1007;">
         <div class="modal-content" style="max-width: 400px;">
             <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-send-charge')">&times;</span>
@@ -266,8 +349,7 @@
             <button onclick="enviarCobrancaReal()" class="chat-btn">🚀 Enviar WhatsApp</button>
         </div>
     </div>
-
-    <div id="modal-admin" class="modal-overlay"><div class="modal-content"><span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold; color:var(--text);" onclick="fecharModal('modal-admin')">&times;</span><div style="display:flex; justify-content: space-between; align-items:center; margin-bottom:15px;"><h2 style="color: var(--dark); font-size: 20px; margin:0;">⚙️ Gestão Master</h2><div style="display:flex; gap:8px;"><button class="secondary btn-auto" onclick="abrirAdminPanel()">🔄</button><button class="chat-btn btn-auto" onclick="abrirModalCreate()">➕ Novo</button></div></div><div class="admin-action-bar"><button class="admin-toggle-btn section-orange" onclick="toggleAdminSection('admin-msg-area')"><span style="font-size:18px">🔔</span> Aviso</button><button class="admin-toggle-btn section-blue" onclick="toggleAdminSection('upload-section-geral')"><span style="font-size:18px">📁</span> Geral</button><button class="admin-toggle-btn section-green" onclick="toggleAdminSection('upload-section-teste')"><span style="font-size:18px">🧪</span> Teste</button></div><div id="admin-msg-area" class="admin-section-hidden" style="background:#fff7ed; border:1px dashed #f97316; padding:15px; border-radius:8px; margin-bottom:10px;"><div style="font-size:12px; font-weight:bold; margin-bottom:8px; color:#c2410c;">🔔 Mensagem Global (Popup)</div><textarea id="global-msg-input" rows="2" placeholder="Escreva um aviso para todos os usuários..." style="margin-bottom:5px; font-size:12px;"></textarea><button class="btn-auto" style="background:#f97316; width:100% !important;" onclick="salvarMensagem()">Enviar Aviso</button></div><div id="upload-section-geral" class="admin-section-hidden" style="background:#f9fafb; border:1px dashed #ccc; padding:15px; border-radius:8px; margin-bottom:10px;"><div style="font-size:12px; font-weight:bold; margin-bottom:8px; color:#333;">📁 Arquivo OFICIAL (Todos)</div><div style="display:flex; gap:8px;"><input type="file" id="admin-file-upload" style="margin:0; padding:8px; font-size:12px; color:#333; width: 100%;"><button class="btn-auto" onclick="fazerUploadArquivo('geral')">Enviar</button></div></div><div id="upload-section-teste" class="admin-section-hidden" style="background:#f0fdf4; border:1px dashed #16a34a; padding:15px; border-radius:8px; margin-bottom:20px;"><div style="font-size:12px; font-weight:bold; margin-bottom:8px; color:#15803d;">🧪 Arquivo TESTE (Apenas Testes)</div><div style="display:flex; gap:8px;"><input type="file" id="admin-file-test" style="margin:0; padding:8px; font-size:12px; color:#333; width: 100%;"><button class="btn-auto" style="background:#16a34a;" onclick="fazerUploadArquivo('teste')">Enviar</button></div></div><div id="upload-status" style="font-size:11px; color:#666; margin-bottom:10px;"></div><div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;"><input type="checkbox" id="toggle-details" onchange="toggleDetalhes()"><label for="toggle-details" style="font-size:13px; cursor:pointer;">👁️ Mostrar Detalhes (Senha, Pix, etc)</label></div><input type="text" id="search-user" placeholder="🔍 Pesquisar usuário..." onkeyup="filtrarUsuarios()" style="margin-bottom: 15px;"><div id="admin-users-list"></div></div></div>
+    <div id="modal-tutorials" class="modal-overlay" style="z-index: 1500;"><div class="modal-content"><span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold;" onclick="fecharModal('modal-tutorials')">&times;</span><h3 style="margin-top:0; color:var(--primary); font-size: 20px;">📺 Central de Ajuda</h3><div id="admin-tutorial-area" style="background:#fff7ed; padding:10px; border-radius:10px; margin-bottom:15px; border:1px dashed #f97316; display:none;"><h4 style="margin:0 0 10px 0; font-size:12px; color:#c2410c;">➕ Adicionar Vídeo (Admin)</h4><input type="text" id="tut-title" placeholder="Título do Vídeo" style="font-size:12px; padding:8px;"><input type="text" id="tut-link" placeholder="Link do YouTube/Drive" style="font-size:12px; padding:8px;"><button onclick="salvarTutorial()" class="btn-auto" style="background:#f97316; width:100% !important;">Salvar Vídeo</button></div><div id="tutorials-list" style="text-align:left; padding-bottom: 10px;"><p style="text-align:center; color:#666; font-size:13px;">Carregando...</p></div></div></div>
     <div id="modal-create" class="modal-overlay" style="z-index: 1001;"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold; color:var(--text);" onclick="fecharModal('modal-create')">&times;</span> <h3 style="margin-top:0;">Novo Acesso</h3> <div class="form-grid"> <input type="text" id="new-user" placeholder="Usuário"> <input type="text" id="new-pass" placeholder="Senha"> <div class="full-width" id="days-container" style="display:flex; gap:5px; align-items:center;"><input type="number" id="new-days" placeholder="Dias" style="width: 80px; margin:0"><span style="font-size:12px; color:#666">dias de validade</span></div> <div class="full-width" id="role-container"><label style="font-size:12px; font-weight:bold; color:#333;">Tipo de Acesso:</label><select id="new-role" onchange="checkRole()"></select></div> <input type="text" id="new-wa" placeholder="WhatsApp (só números)" class="full-width"> <input type="text" id="new-val" placeholder="Valor (ex: 30,00)"> <input type="text" id="new-pix" placeholder="Chave PIX (opcional)"> </div> <button onclick="salvarNovoUsuario()" id="btn-save-user" style="margin-top:15px;">💾 Salvar</button> <p id="msg-create" style="color:red; font-size:12px; text-align:center; margin-top:5px;"></p> </div> </div>
     <div id="modal-edit" class="modal-overlay" style="z-index: 1002;"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold; color:var(--text);" onclick="fecharModal('modal-edit')">&times;</span> <h3 style="margin-top:0; color:#3b82f6">Editar: <span id="edit-user-display"></span></h3> <div class="form-grid"> <div class="full-width"><label style="font-size:11px; font-weight:bold;">Senha (Deixe vazio para não alterar):</label><input type="text" id="edit-pass" placeholder="Redefinir senha..."></div> <div class="full-width"><label style="font-size:11px; font-weight:bold;">Vencimento:</label><input type="text" id="edit-date" placeholder="DD/MM/AAAA"></div> <div class="full-width"><label style="font-size:11px; font-weight:bold;">WhatsApp:</label><input type="text" id="edit-wa"></div> <div class="full-width"><label style="font-size:11px; font-weight:bold;">Valor:</label><input type="text" id="edit-val"></div> <div class="full-width" id="div-edit-role"><label style="font-size:11px; font-weight:bold;">Função (Cargo):</label><select id="edit-role"><option value="User">Usuário</option><option value="Teste">Teste</option><option value="Sub-Admin">Sub-Admin</option><option value="Admin">Admin</option></select></div></div> <button onclick="salvarEdicao()" id="btn-save-edit" class="edit-btn" style="margin-top:15px;">💾 Atualizar Dados</button> <p id="msg-edit" style="color:red; font-size:12px; text-align:center; margin-top:5px;"></p> </div> </div>
     <div id="modal-renovar" class="modal-overlay"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-renovar')">&times;</span> <h3 style="text-align: center; color: var(--primary);">💎 Renovar Acesso</h3> <div class="pay-card"> <div style="font-size: 12px; font-weight: bold;">PIX PARA PAGAMENTO</div> <div class="pay-key" id="pix-display" style="font-size:16px; padding:15px;">...</div> </div> <button onclick="copiarPixReal()" class="chat-btn" style="border-radius: 50px; width:100%">📋 Copiar Chave PIX</button> </div> </div>
@@ -275,7 +357,6 @@
     <div id="modal-global-msg" class="modal-overlay" style="z-index: 1100;"> <div class="modal-content" style="max-width: 400px; text-align: center;"> <div style="font-size: 40px; margin-bottom: 10px;">🔔</div> <h3 style="margin-top:0; color: var(--primary);">Comunicado</h3> <p id="msg-text" style="font-size: 14px; color: #333 !important; background: #f3f4f6; padding: 15px; border-radius: 10px;"></p> <button onclick="marcarMensagemLida()" class="btn-auto" style="margin-top: 15px; width: 100% !important;">Entendi</button> </div> </div>
     <div id="modal-send-whatsapp" class="modal-overlay" style="z-index: 1200;"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-send-whatsapp')">&times;</span> <h3 style="margin-top:0; color: #25d366;">📲 Enviar Acesso</h3> <p style="font-size:12px; margin:0 0 10px 0;">Para: <b id="send-dest">...</b></p> <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:10px; margin-bottom:15px; font-size:12px; color:#166534;"><div style="font-weight:bold; margin-bottom:5px;">📋 Dados que serão enviados:</div><div id="preview-msg-content" style="font-family:monospace; line-height:1.4;"></div></div> <label style="font-size:12px; font-weight:bold;">Mensagem Complementar (Opcional):</label> <textarea id="whatsapp-extra-msg" class="msg-box" placeholder="Ex: 'Aproveite sua tela!', 'Pagamento Confirmado', etc."></textarea> <button class="chat-btn" onclick="finalizarEnvioWhatsApp()">🚀 Enviar via WhatsApp</button> </div> </div>
     <div id="modal-created-success" class="modal-overlay" style="z-index: 1300;"> <div class="modal-content" style="max-width: 350px; text-align:center;"> <div style="font-size: 50px;">✅</div> <h3 style="margin-top:0; color:var(--primary);">Usuário Criado!</h3> <p style="font-size:13px; color:#666; margin-bottom:20px;">O que deseja fazer agora?</p> <div style="display:flex; flex-direction:column; gap:10px;"><button class="chat-btn" onclick="prepararEnvioAposCriacao()">📲 Enviar Acesso</button><button class="secondary" onclick="fecharModalSucessoCriacao()">❌ Fechar</button></div> </div> </div>
-    <div id="modal-tutorials" class="modal-overlay" style="z-index: 1500;"><div class="modal-content"><span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold;" onclick="fecharModal('modal-tutorials')">&times;</span><h3 style="margin-top:0; color:var(--primary); font-size: 20px;">📺 Central de Ajuda</h3><div id="admin-tutorial-area" style="background:#fff7ed; padding:10px; border-radius:10px; margin-bottom:15px; border:1px dashed #f97316; display:none;"><h4 style="margin:0 0 10px 0; font-size:12px; color:#c2410c;">➕ Adicionar Vídeo (Admin)</h4><input type="text" id="tut-title" placeholder="Título do Vídeo" style="font-size:12px; padding:8px;"><input type="text" id="tut-link" placeholder="Link do YouTube/Drive" style="font-size:12px; padding:8px;"><button onclick="salvarTutorial()" class="btn-auto" style="background:#f97316; width:100% !important;">Salvar Vídeo</button></div><div id="tutorials-list" style="text-align:left; padding-bottom: 10px;"><p style="text-align:center; color:#666; font-size:13px;">Carregando...</p></div></div></div>
 
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbwtMMYq6gHWUX33Ie05iyjbVKPzWtzd9vebIInLe607nqN57GteOeOGE1a8dMI05Cpw/exec';
@@ -504,7 +585,7 @@
             });
         }
 
-        // --- ADMIN FUNCTIONS (RESTAURADAS E COLORIDAS) ---
+        // --- ADMIN FUNCTIONS (CORES RESTAURADAS) ---
         async function abrirAdminPanel() {
             document.getElementById('modal-admin').classList.add('show');
             const listDiv = document.getElementById('admin-users-list');
@@ -523,7 +604,7 @@
             list.forEach(u => {
                 let statusClass = String(u[7]).toLowerCase().includes('bloq') ? 'status-expired' : 'status-active';
                 if(String(u[5]) === 'Teste') statusClass = 'status-test';
-                // RESTAURADO: Botões com classes específicas (edit-btn, status-btn, renew-btn) para voltarem a ter cor
+                // CORES DOS BOTOES RESTAURADAS: edit-btn, status-btn, renew-btn
                 html += `<tr><td>${u[0]}</td><td>${u[5]}</td><td>${u[2]}</td><td>${u[3]}</td><td><span class="status-dot ${statusClass}"></span>${u[7]}</td><td><button class="edit-btn btn-auto" style="padding:5px" onclick="prepararEdicaoUser('${u[0]}')">✏️</button><button class="status-btn btn-auto" style="padding:5px" onclick="toggleStatus('${u[0]}')">🚫</button><button class="renew-btn btn-auto" style="padding:5px" onclick="renovarUser('${u[0]}')">🔄</button></td></tr>`;
             });
             html += '</tbody></table></div>';
@@ -538,17 +619,9 @@
             document.getElementById('new-wa').value = ''; 
             document.getElementById('new-val').value = ''; 
             document.getElementById('new-pix').value = ''; 
-            
             const roleSelect = document.getElementById('new-role');
             roleSelect.innerHTML = '';
-            
-            // Lógica de papéis: Admin pode criar tudo, Sub-Admin cria apenas User/Teste
-            if(currentUserData.cargo === 'Admin') {
-                roleSelect.innerHTML += '<option value="User">Usuário</option><option value="Teste">Teste</option><option value="Sub-Admin">Sub-Admin</option><option value="Admin">Admin</option>';
-            } else {
-                roleSelect.innerHTML += '<option value="User">Usuário</option><option value="Teste">Teste</option>';
-            }
-            
+            if(currentUserData.cargo === 'Admin') { roleSelect.innerHTML += '<option value="User">Usuário</option><option value="Teste">Teste</option><option value="Sub-Admin">Sub-Admin</option><option value="Admin">Admin</option>'; } else { roleSelect.innerHTML += '<option value="User">Usuário</option><option value="Teste">Teste</option>'; }
             checkRole(); 
             document.getElementById('modal-create').classList.add('show'); 
         }
@@ -564,7 +637,7 @@
         async function salvarMensagem() { const m = document.getElementById('global-msg-input').value; if (!m) return alert("Digite algo."); try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'save_message', user: currentUserData.user, pass: currentUserData.pass, message: m }) }); alert("Mensagem salva!"); } catch (e) { alert("Erro."); } }
         
         // --- TUTORIAIS ---
-        async function abrirTutoriais() { document.getElementById('modal-tutorials').classList.add('show'); const area = document.getElementById('tutorials-list'); area.innerHTML = 'Carregando...'; if(currentUserData.isMaster) document.getElementById('admin-tutorial-area').style.display = 'block'; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'get_tutorials' }) }); const res = await req.json(); if(res.success && res.list.length > 0) { area.innerHTML = ''; res.list.forEach(t => { let embed = t.link; if(t.link.includes('youtu')) { const vidId = t.link.split('v=')[1] || t.link.split('/').pop(); embed = `https://www.youtube.com/embed/${vidId}`; } area.innerHTML += `<div style="margin-bottom:20px;"><div style="font-weight:bold; margin-bottom:5px; font-size:14px;">${t.title} ${currentUserData.isMaster ? `<button onclick="apagarTutorial(${t.id})" style="background:red; color:white; border:none; padding:2px 5px; font-size:10px; cursor:pointer; border-radius:4px;">Excluir</button>` : ''}</div><div class="video-container"><iframe src="${embed}" frameborder="0" allowfullscreen></iframe></div></div>`; }); } else { area.innerHTML = '<p>Nenhum tutorial disponível.</p>'; } } catch(e) { area.innerHTML = 'Erro ao carregar.'; } }
+        async function abrirTutoriais() { document.getElementById('modal-tutorials').classList.add('show'); const area = document.getElementById('tutorials-list'); area.innerHTML = 'Carregando...'; if(currentUserData.isMaster) document.getElementById('admin-tutorial-area').style.display = 'block'; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'get_tutorials' }) }); const res = await req.json(); if(res.success && res.list.length > 0) { area.innerHTML = ''; res.list.forEach(t => { let embed = t.link; if(t.link.includes('youtu')) { const vidId = t.link.split('v=')[1] || t.link.split('/').pop(); embed = `https://www.youtube.com/embed/${vidId}`; } area.innerHTML += `<div class="tutorial-card"><div class="tut-title-text">📺 ${t.title} ${currentUserData.isMaster ? `<button class="danger btn-auto" style="padding:2px 5px; font-size:10px;" onclick="apagarTutorial(${t.id})">X</button>` : ''}</div><div class="video-container"><iframe src="${embed}" frameborder="0" allowfullscreen></iframe></div></div>`; }); } else { area.innerHTML = '<p>Nenhum tutorial disponível.</p>'; } } catch(e) { area.innerHTML = 'Erro ao carregar.'; } }
         async function salvarTutorial() { const t = document.getElementById('tut-title').value; const l = document.getElementById('tut-link').value; if(!t || !l) return alert("Preencha tudo."); try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'save_tutorial', title: t, link: l }) }); alert("Adicionado!"); abrirTutoriais(); } catch(e){ alert("Erro."); } }
         async function apagarTutorial(id) { if(!confirm("Apagar?")) return; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'delete_tutorial', id: id }) }); abrirTutoriais(); } catch(e){ alert("Erro."); } }
 
@@ -592,7 +665,12 @@
         function lerArquivo(i) { const r=new FileReader(); r.onload=(e)=>{ const linhas = e.target.result.split('\n'); processarNovosLinks(linhas); }; r.readAsText(i.files[0]); i.value=''; }
         function renderizar() { const u = currentUserData.user; if(!db[u]) db[u] = {links:[], salvos:[], naoSalvos:[]}; if(!db[u].naoSalvos) db[u].naoSalvos = []; const p = document.getElementById('lista-pendentes'); p.innerHTML = ''; const tP = db[u].links.length; document.getElementById('count-pend').innerText = tP; db[u].links.slice(pgPend*ITENS_PAG, (pgPend+1)*ITENS_PAG).forEach((l,i) => { p.innerHTML += `<div class="card"><span class="link-text">${l}</span><button class="btn-auto" onclick="tratarAberturaLink(${pgPend*ITENS_PAG+i},'${l}')">Abrir ↗</button></div>`; }); renderControles('paginacao-pend', tP, pgPend, (n)=> {pgPend=n; renderizar();}); const s = document.getElementById('lista-salvos'); s.innerHTML = ''; const tS = db[u].salvos ? db[u].salvos.length : 0; document.getElementById('count-saved').innerText = tS; if(db[u].salvos) db[u].salvos.slice(pgSalv*ITENS_PAG, (pgSalv+1)*ITENS_PAG).forEach((l,i) => { s.innerHTML += `<div class="card" style="border-left:4px solid var(--primary)"><span class="link-text">${l}</span><button class="danger btn-auto" onclick="db['${u}'].salvos.splice(${pgSalv*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-salv', tS, pgSalv, (n)=> {pgSalv=n; renderizar();}); const d = document.getElementById('lista-descartados'); d.innerHTML = ''; const tD = db[u].naoSalvos ? db[u].naoSalvos.length : 0; document.getElementById('count-discarded').innerText = tD; if(db[u].naoSalvos) db[u].naoSalvos.slice(pgDesc*ITENS_PAG, (pgDesc+1)*ITENS_PAG).forEach((l,i) => { d.innerHTML += `<div class="card card-discarded"><span class="link-text">${l}</span><button class="btn-auto" onclick="resgatarDescartado(${pgDesc*ITENS_PAG+i})">♻️</button><button class="danger btn-auto" onclick="db['${u}'].naoSalvos.splice(${pgDesc*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-desc', tD, pgDesc, (n)=> {pgDesc=n; renderizar();}); localStorage.setItem(DB_KEY, JSON.stringify(db)); }
         function renderControles(id, total, atual, cb) { const div = document.getElementById(id), max = Math.ceil(total/ITENS_PAG); if(max <= 1) { div.innerHTML = ''; return; } div.innerHTML = `<button class="secondary btn-auto" ${atual===0?'disabled':''} onclick="(${cb})(${atual-1})">«</button><span>${atual+1}/${max}</span><button class="secondary btn-auto" ${atual>=max-1?'disabled':''} onclick="(${cb})(${atual+1})">»</button>`; }
-        async function conectarBanco() { const u = document.getElementById('user').value.trim(); const p = document.getElementById('pass').value.trim(); const msg = document.getElementById('msg-login'); const btn = document.getElementById('btn-login'); const txt = document.getElementById('txt-login'); const loader = document.getElementById('loader-login'); if(!u || !p) return msg.innerText = "Preencha todos os campos."; btn.disabled = true; txt.style.display = 'none'; loader.style.display = 'block'; msg.innerText = ""; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'login', user: u, pass: p }) }); const res = await req.json(); if (res.success) { const dados = res.data; let diff = 0; if (dados.cargo !== 'Teste' && dados.date !== 'Vitalício') { const dV = formatarData(dados.date); dV.setHours(0,0,0,0); const hoje = new Date(); hoje.setHours(0,0,0,0); diff = Math.ceil((dV - hoje) / 86400000); if(diff < 0 && !dados.isMaster) { msg.innerText = "Acesso expirado."; localStorage.removeItem(SESSION_KEY); btn.disabled = false; txt.style.display = 'block'; loader.style.display = 'none'; return; } } currentUserData = dados; if(dados.waTemplate) globalWhatsappTemplate = dados.waTemplate; if(dados.pass) { currentUserData.pass = dados.pass; localStorage.setItem(SESSION_KEY, JSON.stringify({user: u, pass: dados.pass})); } else { currentUserData.pass = p; localStorage.setItem(SESSION_KEY, JSON.stringify({user: u, pass: p})); } if(!db[u]) db[u] = {links:[], salvos:[], naoSalvos: []}; document.getElementById('login-screen').classList.add('hidden'); document.getElementById('dashboard-screen').classList.remove('hidden'); document.getElementById('ola-dashboard').innerText = "Olá, " + currentUserData.user; if(currentUserData.cargo === 'Admin') document.getElementById('ola-dashboard').innerText = "Olá, Admin"; if (dados.cargo === 'Teste' && dados.testSeconds) { iniciarTimerTeste(dados.testSeconds); document.getElementById('status-dashboard').innerText = "Modo Teste"; } else { document.getElementById('status-dashboard').innerText = "Vence: " + currentUserData.date; if(diff <= 5 && !dados.isMaster && dados.date !== 'Vitalício') { document.getElementById('vencimento-alert').style.display = 'block'; document.getElementById('dias-restantes-alerta').innerText = diff < 0 ? 0 : diff; } } const btnAuto = document.getElementById('btn-autoresponder'); if (dados.cargo === 'Admin' || dados.cargo === 'User') { btnAuto.style.display = 'inline-flex'; } else { btnAuto.style.display = 'none'; } if(dados.isMaster) { document.getElementById('btn-open-admin-app').classList.remove('hidden'); } if (dados.file && dados.file.url && dados.cargo !== 'Sub-Admin') { document.getElementById('file-download-card').style.display = 'flex'; document.getElementById('file-date').innerText = dados.file.time; document.getElementById('file-title').innerText = (dados.cargo === 'Teste') ? "Arquivo Teste (1h)" : "Arquivo Geral"; currentFileUrl = dados.file.url; document.getElementById('btn-download-file').style.display = 'block'; } else { document.getElementById('file-download-card').style.display = 'none'; } if(dados.message && dados.message.trim() !== "") { const savedMsg = localStorage.getItem('zapflow_last_msg_' + currentUserData.user); if (savedMsg !== dados.message) { document.getElementById('msg-text').innerText = dados.message; document.getElementById('modal-global-msg').classList.add('show'); } } renderizar(); } else { msg.innerText = res.msg || "Dados incorretos."; localStorage.removeItem(SESSION_KEY); } } catch(e) { console.error(e); msg.innerText = "Erro ao conectar. Verifique internet."; } finally { btn.disabled = false; txt.style.display = 'block'; loader.style.display = 'none'; } }
+        async function conectarBanco() { const u = document.getElementById('user').value.trim(); const p = document.getElementById('pass').value.trim(); const msg = document.getElementById('msg-login'); const btn = document.getElementById('btn-login'); const txt = document.getElementById('txt-login'); const loader = document.getElementById('loader-login'); if(!u || !p) return msg.innerText = "Preencha todos os campos."; btn.disabled = true; txt.style.display = 'none'; loader.style.display = 'block'; msg.innerText = ""; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'login', user: u, pass: p }) }); const res = await req.json(); if (res.success) { const dados = res.data; let diff = 0; if (dados.cargo !== 'Teste' && dados.date !== 'Vitalício') { const dV = formatarData(dados.date); dV.setHours(0,0,0,0); const hoje = new Date(); hoje.setHours(0,0,0,0); diff = Math.ceil((dV - hoje) / 86400000); if(diff < 0 && !dados.isMaster) { msg.innerText = "Acesso expirado."; localStorage.removeItem(SESSION_KEY); btn.disabled = false; txt.style.display = 'block'; loader.style.display = 'none'; return; } } currentUserData = dados; if(dados.waTemplate) globalWhatsappTemplate = dados.waTemplate; if(dados.pass) { currentUserData.pass = dados.pass; localStorage.setItem(SESSION_KEY, JSON.stringify({user: u, pass: dados.pass})); } else { currentUserData.pass = p; localStorage.setItem(SESSION_KEY, JSON.stringify({user: u, pass: p})); } if(!db[u]) db[u] = {links:[], salvos:[], naoSalvos: []}; document.getElementById('login-screen').classList.add('hidden'); document.getElementById('dashboard-screen').classList.remove('hidden'); document.getElementById('ola-dashboard').innerText = "Olá, " + currentUserData.user; 
+        
+        // Mapeando dados para o layout do seu código
+        if(document.getElementById('ola-user')) document.getElementById('ola-user').innerText = "Olá, " + currentUserData.user;
+        
+        if(currentUserData.cargo === 'Admin') document.getElementById('ola-dashboard').innerText = "Olá, Admin"; if (dados.cargo === 'Teste' && dados.testSeconds) { iniciarTimerTeste(dados.testSeconds); document.getElementById('status-dashboard').innerText = "Modo Teste"; } else { document.getElementById('status-dashboard').innerText = "Vence: " + currentUserData.date; if(diff <= 5 && !dados.isMaster && dados.date !== 'Vitalício') { document.getElementById('vencimento-alert').style.display = 'block'; document.getElementById('dias-restantes-alerta').innerText = diff < 0 ? 0 : diff; } } const btnAuto = document.getElementById('btn-autoresponder'); if (dados.cargo === 'Admin' || dados.cargo === 'User') { btnAuto.style.display = 'inline-flex'; } else { btnAuto.style.display = 'none'; } if(dados.isMaster) { document.getElementById('btn-open-admin').classList.remove('hidden'); } if (dados.file && dados.file.url && dados.cargo !== 'Sub-Admin') { document.getElementById('file-download-card').style.display = 'flex'; document.getElementById('file-date').innerText = dados.file.time; document.getElementById('file-title').innerText = (dados.cargo === 'Teste') ? "Arquivo Teste (1h)" : "Arquivo Geral"; currentFileUrl = dados.file.url; document.getElementById('btn-download-file').style.display = 'block'; } else { document.getElementById('file-download-card').style.display = 'none'; } if(dados.message && dados.message.trim() !== "") { const savedMsg = localStorage.getItem('zapflow_last_msg_' + currentUserData.user); if (savedMsg !== dados.message) { document.getElementById('msg-text').innerText = dados.message; document.getElementById('modal-global-msg').classList.add('show'); } } renderizar(); } else { msg.innerText = res.msg || "Dados incorretos."; localStorage.removeItem(SESSION_KEY); } } catch(e) { console.error(e); msg.innerText = "Erro ao conectar. Verifique internet."; } finally { btn.disabled = false; txt.style.display = 'block'; loader.style.display = 'none'; } }
     </script>
 </body>
 </html>
