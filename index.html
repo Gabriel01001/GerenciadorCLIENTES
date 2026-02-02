@@ -6,7 +6,6 @@
     <title>Gerenciador |WA|</title>
     
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%2310b981%22/><text x=%2250%22 y=%2250%22 font-size=%2260%22 text-anchor=%22middle%22 dy=%22.35em%22>⚡</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%2310b981%22/><text x=%2250%22 y=%2250%22 font-size=%2260%22 text-anchor=%22middle%22 dy=%22.35em%22>⚡</text></svg>">
     
     <meta name="theme-color" content="#10b981">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -73,7 +72,6 @@
 
         /* ESTILOS DE COLUNAS DETALHADAS */
         .col-detailed { transition: 0.2s; } 
-        /* Classe para ocultar colunas no modo compacto */
 
         /* 5 BOTOES DE AÇÃO (MASTER) */
         .btn-action-master { width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); cursor: pointer; transition: 0.2s; font-size: 14px; margin: 0 2px; }
@@ -514,18 +512,20 @@
             const listDiv = document.getElementById('admin-users-list');
             if (!list || list.length === 0) { listDiv.innerHTML = '<p style="text-align:center">Vazio.</p>'; return; }
             
-            // COLUNAS COM CLASSE 'col-detailed' PARA OCULTAR
+            // COLUNAS COM 'col-detailed' para ocultar no modo compacto
+            // SENHA: Fixa como '******' na tabela.
             let html = '<div class="table-responsive"><table class="admin-table"><thead><tr>';
             html += '<th>Status</th><th>User</th><th class="col-detailed">Pass</th><th>Validade</th><th>WhatsApp</th><th class="col-detailed">Valor</th><th class="col-detailed">Cargo</th><th class="col-detailed">Pix</th><th class="col-detailed">Cadastro</th><th class="col-detailed">Criador</th><th class="col-detailed">Valor Revenda</th><th>Ações</th>';
             html += '</tr></thead><tbody>';
 
             const isSubAdmin = currentUserData.cargo === 'Sub-Admin';
+            const hoje = new Date();
 
             list.forEach(row => {
                 const uUser = row[0] || "";
-                if (isSubAdmin && uUser.toLowerCase() === currentUserData.user.toLowerCase()) return;
+                if (isSubAdmin && uUser.toLowerCase() === currentUserData.user.toLowerCase()) return; // Sub não vê a si mesmo
 
-                const uPass = row[1];
+                const uPass = row[1]; // Senha real (oculta visualmente)
                 const uDate = row[2] || "";
                 const uWa = row[3] || "";
                 const uVal = row[4] || "";
@@ -533,7 +533,7 @@
                 const uPix = row[6] || "";
                 const uStatus = row[7] || "Ativo";
                 const uCriador = row[8] || "-";
-                // Indices ajustados da tabela V108: Col 9 é Msg (Ignorada), Col 10 é Revenda
+                // Coluna Msg (9) pulada
                 const uCadastro = "-"; 
                 const uRevenda = row[10] || "0"; 
 
@@ -541,13 +541,71 @@
                 if(uCargo.toLowerCase() === 'administrador') uCargo = "Admin";
                 if(uCargo.toLowerCase() === 'subadministrador') uCargo = "Sub-Admin";
 
-                let statusDot = "status-active"; 
-                if (uCargo === 'Teste') statusDot = "status-test";
-                else if (String(uStatus).includes('Bloq')) statusDot = "status-expired";
-                else if (String(uStatus).includes('Expirado')) statusDot = "status-expired";
+                // LÓGICA DE VENCIMENTO EM TEMPO REAL
+                let statusDot = "status-active";
+                let statusTexto = uStatus;
+
+                if (uCargo === 'Teste') {
+                    // Teste tem data completa
+                    const dTeste = formatarData(uDate); // tenta converter
+                    if (dTeste.getFullYear() !== 1969) { // Se valido
+                         // Se dTeste tem hora, melhor comparar timestamps
+                         // Simplificação: Se a string tiver hora, parse correto
+                    }
+                    // A data vinda do admin_list já está formatada pelo Backend? 
+                    // Backend manda formatarDataSafe. Se for string complexa, manda string.
+                    // Para simplificar: O Backend já validou login. Aqui é visual.
+                    statusDot = "status-test";
+                } 
+                
+                // CHECAGEM VISUAL DE VALIDADE
+                if (uCargo !== 'Admin' && uCargo !== 'Sub-Admin' && !uDate.includes("Vitalício")) {
+                    const partes = uDate.split('/');
+                    if(partes.length === 3) {
+                        const dataVenc = new Date(partes[2], partes[1]-1, partes[0], 23, 59, 59); // Fim do dia
+                        if (dataVenc < hoje) {
+                            statusDot = "status-expired";
+                            statusTexto = "Vencido";
+                        }
+                    }
+                }
+
+                if (String(uStatus).includes('Bloq')) { statusDot = "status-expired"; statusTexto = "Bloqueado"; }
+                if (String(uStatus).includes('Pendente')) { statusDot = "status-pending"; statusTexto = "Pendente"; }
+
+                // BOTÕES PERMITIDOS
+                let btns = '';
+                
+                // SUB-ADMIN NÃO VÊ BOTÃO TOGGLE NEM RENOVAR
+                if (!isSubAdmin) {
+                    btns += `<button class="btn-action-master act-toggle" title="Aprovar/Bloquear" onclick="toggleStatus('${uUser}')">✅</button>`;
+                    btns += `<button class="btn-action-master act-renew" title="Renovar" onclick="renovarUser('${uUser}')">📅</button>`;
+                }
+
+                btns += `<button class="btn-action-master act-chat" title="WhatsApp" onclick="window.open('https://wa.me/55${String(uWa).replace(/\D/g,'')}')">💬</button>`;
+                btns += `<button class="btn-action-master act-send" title="Enviar Dados" onclick="prepararEnvioWhatsApp('${uUser}','******','${uWa}','${uDate}','${uVal}')">📩</button>`; // Envia Mascarado por padrão, ou real se quiser
+                btns += `<button class="btn-action-master act-edit" title="Editar" onclick="prepararEdicaoUser('${uUser}')">✏️</button>`;
+
+                // NOTA: Para enviar senha real no whatsapp, precisaria passar uPass. 
+                // Se quiser segurança total, passe uPass. Se quiser ocultar até no envio, passe '******'.
+                // Vou passar uPass para que o botão de envio funcione utilmente.
+                // Mas na tabela visual (HTML) será fixo ******
+                
+                // CORREÇÃO DO BOTÃO ENVIAR (Para funcionar com a senha real no WhatsApp)
+                const btnSendReal = `<button class="btn-action-master act-send" title="Enviar Dados" onclick="prepararEnvioWhatsApp('${uUser}','${uPass}','${uWa}','${uDate}','${uVal}')">📩</button>`;
+
+                // Recriando btns com o send correto
+                btns = '';
+                if (!isSubAdmin) {
+                    btns += `<button class="btn-action-master act-toggle" title="Aprovar/Bloquear" onclick="toggleStatus('${uUser}')">✅</button>`;
+                    btns += `<button class="btn-action-master act-renew" title="Renovar" onclick="renovarUser('${uUser}')">📅</button>`;
+                }
+                btns += `<button class="btn-action-master act-chat" title="WhatsApp" onclick="window.open('https://wa.me/55${String(uWa).replace(/\D/g,'')}')">💬</button>`;
+                btns += btnSendReal;
+                btns += `<button class="btn-action-master act-edit" title="Editar" onclick="prepararEdicaoUser('${uUser}')">✏️</button>`;
 
                 html += `<tr>
-                    <td><span class="status-dot ${statusDot}"></span>${uStatus}</td>
+                    <td><span class="status-dot ${statusDot}"></span>${statusTexto}</td>
                     <td><b>${uUser}</b></td>
                     <td class="col-detailed">******</td> <td>${uDate}</td>
                     <td>${uWa}</td>
@@ -557,20 +615,12 @@
                     <td class="col-detailed">${uCadastro}</td>
                     <td class="col-detailed">${uCriador}</td>
                     <td class="col-detailed">${uRevenda}</td>
-                    <td>
-                        <div style="display:flex; justify-content:center; gap:4px;">
-                            <button class="btn-action-master act-toggle" title="Ativar/Bloquear" onclick="toggleStatus('${uUser}')">✅</button>
-                            <button class="btn-action-master act-renew" title="Renovar" onclick="renovarUser('${uUser}')">📅</button>
-                            <button class="btn-action-master act-chat" title="WhatsApp" onclick="window.open('https://wa.me/55${String(uWa).replace(/\D/g,'')}')">💬</button>
-                            <button class="btn-action-master act-send" title="Enviar Dados" onclick="prepararEnvioWhatsApp('${uUser}','${uPass}','${uWa}','${uDate}','${uVal}')">📩</button>
-                            <button class="btn-action-master act-edit" title="Editar" onclick="prepararEdicaoUser('${uUser}')">✏️</button>
-                        </div>
-                    </td>
+                    <td><div style="display:flex; justify-content:center; gap:4px;">${btns}</div></td>
                 </tr>`;
             });
             html += '</tbody></table></div>';
             listDiv.innerHTML = html;
-            toggleCompactMode(); // Aplica estado inicial do checkbox
+            toggleCompactMode(); // Aplica estado inicial
         }
 
         function toggleCompactMode() {
