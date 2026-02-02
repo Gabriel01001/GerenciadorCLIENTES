@@ -37,6 +37,11 @@
         
         .tutorial-btn-orange { background: linear-gradient(135deg, #fb923c, #ea580c); color: white; border: none; padding: 8px 20px; font-size: 12px; border-radius: 25px; box-shadow: 0 4px 10px rgba(234, 88, 12, 0.4); transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .tutorial-btn-orange:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(234, 88, 12, 0.6); filter: brightness(1.1); }
+        
+        /* NOVO BOTÃO AUTORESPONDER */
+        .autoresponder-btn { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border: none; padding: 8px 20px; font-size: 12px; border-radius: 25px; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4); transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .autoresponder-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(79, 70, 229, 0.6); filter: brightness(1.1); }
+
         .tutorial-card { background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05); border-radius: 15px; padding: 15px; margin-bottom: 20px; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         body.dark-mode .tutorial-card { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
         .tutorial-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
@@ -124,8 +129,9 @@
                 <div style="max-width: 70%;">
                     <h3 id="ola-user" style="margin:0; font-size: 18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">...</h3>
                     <small id="status-acesso"></small>
-                    <div style="margin-top: 10px;">
+                    <div style="margin-top: 10px; display:flex; flex-wrap:wrap; gap:5px;">
                         <button class="tutorial-btn-orange btn-auto" onclick="abrirTutoriais()">📺 Tutoriais</button>
+                        <button class="autoresponder-btn btn-auto" onclick="window.open('https://drive.google.com/file/d/1KALRwBkxEqhymjNdxqlalBYsdAXH95zB/view?usp=sharing')">🤖 AutoResponder</button>
                     </div>
                 </div>
                 <div style="display: flex; flex-direction: column; gap: 5px; align-items: flex-end;">
