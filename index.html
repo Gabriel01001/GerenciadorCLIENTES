@@ -507,6 +507,70 @@
             });
         }
 
+        // --- ADMIN FUNCTIONS (RESTAURADAS) ---
+        async function abrirAdminPanel() {
+            document.getElementById('modal-admin').classList.add('show');
+            const listDiv = document.getElementById('admin-users-list');
+            listDiv.innerHTML = '<div class="loader" style="display:block; margin:20px auto"></div>';
+            try {
+                const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'admin_list', user: currentUserData.user, pass: currentUserData.pass }) });
+                const res = await req.json();
+                if (res.success) { renderAdminUsers(res.list); } else { listDiv.innerHTML = '<p style="text-align:center; color:red">Erro ao carregar.</p>'; }
+            } catch (e) { listDiv.innerHTML = '<p style="text-align:center; color:red">Erro de conexão.</p>'; }
+        }
+
+        function renderAdminUsers(list) {
+            const listDiv = document.getElementById('admin-users-list');
+            if (!list || list.length === 0) { listDiv.innerHTML = '<p style="text-align:center">Vazio.</p>'; return; }
+            let html = '<div class="table-responsive"><table class="admin-table"><thead><tr><th>User</th><th>Cargo</th><th>Vencimento</th><th>WhatsApp</th><th>Status</th><th>Ações</th></tr></thead><tbody>';
+            list.forEach(u => {
+                let statusClass = String(u[7]).toLowerCase().includes('bloq') ? 'status-expired' : 'status-active';
+                if(String(u[5]) === 'Teste') statusClass = 'status-test';
+                let passDisplay = `<span class="sensitive hidden">${u[1]}</span>`;
+                html += `<tr><td>${u[0]}</td><td>${u[5]}</td><td>${u[2]}</td><td>${u[3]}</td><td><span class="status-dot ${statusClass}"></span>${u[7]}</td><td><button class="btn-auto" style="padding:5px" onclick="prepararEdicaoUser('${u[0]}')">✏️</button><button class="status-btn btn-auto" style="padding:5px" onclick="toggleStatus('${u[0]}')">🚫</button><button class="renew-btn btn-auto" style="padding:5px" onclick="renovarUser('${u[0]}')">🔄</button></td></tr>`;
+            });
+            html += '</tbody></table></div>';
+            listDiv.innerHTML = html;
+        }
+
+        function abrirModalCreate() { 
+            userEditing = null; 
+            document.getElementById('new-user').value = ''; 
+            document.getElementById('new-pass').value = ''; 
+            document.getElementById('new-days').value = ''; 
+            document.getElementById('new-wa').value = ''; 
+            document.getElementById('new-val').value = ''; 
+            document.getElementById('new-pix').value = ''; 
+            
+            const roleSelect = document.getElementById('new-role');
+            roleSelect.innerHTML = '';
+            
+            // Lógica de papéis: Admin pode criar tudo, Sub-Admin cria apenas User/Teste
+            if(currentUserData.cargo === 'Admin') {
+                roleSelect.innerHTML += '<option value="User">Usuário</option><option value="Teste">Teste</option><option value="Sub-Admin">Sub-Admin</option><option value="Admin">Admin</option>';
+            } else {
+                roleSelect.innerHTML += '<option value="User">Usuário</option><option value="Teste">Teste</option>';
+            }
+            
+            checkRole(); 
+            document.getElementById('modal-create').classList.add('show'); 
+        }
+
+        function checkRole() { const r = document.getElementById('new-role').value; const d = document.getElementById('days-container'); if (r === 'Teste') d.classList.add('hidden'); else d.classList.remove('hidden'); }
+        async function salvarNovoUsuario() { const btn = document.getElementById('btn-save-user'); const u = document.getElementById('new-user').value; const p = document.getElementById('new-pass').value; const d = document.getElementById('new-days').value; const r = document.getElementById('new-role').value; const w = document.getElementById('new-wa').value; const v = document.getElementById('new-val').value; const x = document.getElementById('new-pix').value; const msg = document.getElementById('msg-create'); if (!u || !p) return msg.innerText = "Preencha usuário e senha."; btn.disabled = true; btn.innerText = "Salvando..."; let date = ""; if (r !== 'Teste') { if (!d) return msg.innerText = "Defina os dias."; const hoje = new Date(); hoje.setDate(hoje.getDate() + parseInt(d)); date = formatarFull(hoje).split(' ')[0]; } else { date = "1h"; } const novo = { user: u, pass: p, date: date, wa: w, val: v, cargo: r, pix: x }; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'create_user', user: currentUserData.user, pass: currentUserData.pass, novoUsuario: novo }) }); const res = await req.json(); if (res.success) { tempUser=u; tempPass=p; tempWa=w; tempDate=date; tempVal=v; fecharModal('modal-create'); document.getElementById('modal-created-success').classList.add('show'); abrirAdminPanel(); } else { msg.innerText = "Erro ao criar."; } } catch (e) { msg.innerText = "Erro conexão."; } finally { btn.disabled = false; btn.innerText = "💾 Salvar"; } }
+        function prepararEdicaoUser(uName) { userEditing = uName; document.getElementById('edit-user-display').innerText = uName; document.getElementById('edit-pass').value = ''; document.getElementById('edit-date').value = ''; document.getElementById('edit-wa').value = ''; document.getElementById('edit-val').value = ''; document.getElementById('modal-edit').classList.add('show'); }
+        async function salvarEdicao() { const btn = document.getElementById('btn-save-edit'); const p = document.getElementById('edit-pass').value; const d = document.getElementById('edit-date').value; const w = document.getElementById('edit-wa').value; const v = document.getElementById('edit-val').value; const r = document.getElementById('edit-role').value; btn.disabled = true; btn.innerText = "Salvando..."; const edit = { userOriginal: userEditing, pass: p, date: d, wa: w, val: v, cargo: r }; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'edit_user', user: currentUserData.user, pass: currentUserData.pass, dadosEditados: edit }) }); alert("Editado!"); fecharModal('modal-edit'); abrirAdminPanel(); } catch (e) { alert("Erro."); } finally { btn.disabled = false; btn.innerText = "💾 Atualizar Dados"; } }
+        async function renovarUser(target) { const d = prompt("Quantos dias adicionar?", "30"); if (!d) return; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'renew_user', user: currentUserData.user, pass: currentUserData.pass, targetUser: target, days: d }) }); alert("Renovado!"); abrirAdminPanel(); } catch (e) { alert("Erro."); } }
+        async function toggleStatus(target) { if (!confirm("Alterar status?")) return; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggle_status', user: currentUserData.user, pass: currentUserData.pass, targetUser: target }) }); abrirAdminPanel(); } catch (e) { alert("Erro."); } }
+        function toggleDetalhes() { document.querySelectorAll('.sensitive').forEach(el => el.classList.toggle('hidden')); }
+        async function fazerUploadArquivo(modo) { const input = (modo === 'teste') ? document.getElementById('admin-file-test') : document.getElementById('admin-file-upload'); if (input.files.length === 0) return alert("Selecione um arquivo."); const file = input.files[0]; const reader = new FileReader(); reader.onload = async function(e) { const base64 = e.target.result.split(',')[1]; document.getElementById('upload-status').innerText = "Enviando..."; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'upload_file', user: currentUserData.user, pass: currentUserData.pass, fileData: base64, fileName: file.name, fileType: file.type, mode: modo }) }); const res = await req.json(); if (res.success) { alert("Arquivo enviado!"); document.getElementById('upload-status').innerText = ""; } else { alert("Erro no envio."); } } catch (err) { alert("Erro de conexão."); } }; reader.readAsDataURL(file); }
+        async function salvarMensagem() { const m = document.getElementById('global-msg-input').value; if (!m) return alert("Digite algo."); try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'save_message', user: currentUserData.user, pass: currentUserData.pass, message: m }) }); alert("Mensagem salva!"); } catch (e) { alert("Erro."); } }
+        
+        // --- TUTORIAIS ---
+        async function abrirTutoriais() { document.getElementById('modal-tutorials').classList.add('show'); const area = document.getElementById('tutorials-list'); area.innerHTML = 'Carregando...'; if(currentUserData.isMaster) document.getElementById('admin-tutorial-area').style.display = 'block'; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'get_tutorials' }) }); const res = await req.json(); if(res.success && res.list.length > 0) { area.innerHTML = ''; res.list.forEach(t => { let embed = t.link; if(t.link.includes('youtu')) { const vidId = t.link.split('v=')[1] || t.link.split('/').pop(); embed = `https://www.youtube.com/embed/${vidId}`; } area.innerHTML += `<div style="margin-bottom:20px;"><div style="font-weight:bold; margin-bottom:5px; font-size:14px;">${t.title} ${currentUserData.isMaster ? `<button onclick="apagarTutorial(${t.id})" style="background:red; color:white; border:none; padding:2px 5px; font-size:10px; cursor:pointer; border-radius:4px;">Excluir</button>` : ''}</div><div class="video-container"><iframe src="${embed}" frameborder="0" allowfullscreen></iframe></div></div>`; }); } else { area.innerHTML = '<p>Nenhum tutorial disponível.</p>'; } } catch(e) { area.innerHTML = 'Erro ao carregar.'; } }
+        async function salvarTutorial() { const t = document.getElementById('tut-title').value; const l = document.getElementById('tut-link').value; if(!t || !l) return alert("Preencha tudo."); try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'save_tutorial', title: t, link: l }) }); alert("Adicionado!"); abrirTutoriais(); } catch(e){ alert("Erro."); } }
+        async function apagarTutorial(id) { if(!confirm("Apagar?")) return; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'delete_tutorial', id: id }) }); abrirTutoriais(); } catch(e){ alert("Erro."); } }
+
         // --- LEGADO & UTIL ---
         function toggleAdminSection(id) { const el = document.getElementById(id); if (el.style.display === 'block') { el.style.display = 'none'; } else { document.getElementById('admin-msg-area').style.display = 'none'; document.getElementById('upload-section-geral').style.display = 'none'; document.getElementById('upload-section-teste').style.display = 'none'; el.style.display = 'block'; } }
         function verificarInstalacaoApp() { if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) return; const bannerFechadoEm = localStorage.getItem('install_banner_closed'); if (bannerFechadoEm && (new Date().getTime() - parseInt(bannerFechadoEm) < 86400000)) return; abrirTutorialInstall(); }
