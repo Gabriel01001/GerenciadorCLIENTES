@@ -518,11 +518,13 @@
             
             // CABEÇALHO DA TABELA
             let html = '<div class="table-responsive"><table class="admin-table"><thead><tr>';
-            html += '<th>Status</th><th>User</th><th class="col-detailed">Pass</th><th>Validade</th><th>WhatsApp</th><th class="col-detailed">Valor</th><th class="col-detailed">Cargo</th><th class="col-detailed">Pix</th><th class="col-detailed">Cadastro</th><th class="col-detailed">Criador</th>';
-            // SE FOR SUB-ADMIN, NÃO RENDERIZA A COLUNA REVENDA
+            html += '<th>Status</th><th>User</th><th class="col-detailed">Pass</th><th>Validade</th><th>WhatsApp</th><th class="col-detailed">Valor</th><th class="col-detailed">Cargo</th><th class="col-detailed">Pix</th>';
+            
+            // SE NÃO FOR SUB-ADMIN, MOSTRA AS COLUNAS EXTRAS
             if (!isSubAdmin) {
-                html += '<th class="col-detailed">Valor Revenda</th>';
+                html += '<th class="col-detailed">Cadastro</th><th class="col-detailed">Criador</th><th class="col-detailed">Valor Revenda</th>';
             }
+            
             html += '<th>Ações</th></tr></thead><tbody>';
 
             const hoje = new Date();
@@ -577,11 +579,9 @@
                 }
                 // --- SUB-ADMIN VÊ ISSO (MÃOZINHA) ---
                 else {
-                    // Se já estiver solicitando, pode desabilitar ou manter
                     btns += `<button class="btn-action-master act-signal" title="Solicitar Renovação ao Admin" onclick="sinalizarRenovacao('${uUser}')">✋</button>`;
                 }
 
-                // CORREÇÃO DO BOTÃO ENVIAR
                 const btnSendReal = `<button class="btn-action-master act-send" title="Enviar Dados" onclick="prepararEnvioWhatsApp('${uUser}','${uPass}','${uWa}','${uDate}','${uVal}')">📩</button>`;
 
                 btns += `<button class="btn-action-master act-chat" title="WhatsApp" onclick="window.open('https://wa.me/55${String(uWa).replace(/\D/g,'')}')">💬</button>`;
@@ -596,12 +596,12 @@
                     <td>${uWa}</td>
                     <td class="col-detailed">${uVal}</td>
                     <td class="col-detailed">${uCargo}</td>
-                    <td class="col-detailed">${uPix}</td>
-                    <td class="col-detailed">${uCadastro}</td>
-                    <td class="col-detailed">${uCriador}</td>`;
+                    <td class="col-detailed">${uPix}</td>`;
                 
-                // SÓ RENDERIZA CÉLULA DE REVENDA SE NÃO FOR SUB-ADMIN
+                // --- CÉLULAS OCULTAS PARA SUB-ADMIN ---
                 if (!isSubAdmin) {
+                    html += `<td class="col-detailed">${uCadastro}</td>`;
+                    html += `<td class="col-detailed">${uCriador}</td>`;
                     html += `<td class="col-detailed">${uRevenda}</td>`;
                 }
 
@@ -767,7 +767,7 @@
         function processarNovosLinks(listaBruta) { const u = currentUserData.user; if (!db[u]) db[u] = { links: [], salvos: [], naoSalvos: [] }; if (!db[u].salvos) db[u].salvos = []; if (!db[u].naoSalvos) db[u].naoSalvos = []; const jaExistem = new Set([...db[u].links, ...db[u].salvos, ...db[u].naoSalvos]); let adicionados = 0; let duplicados = 0; listaBruta.forEach(link => { const l = link.trim(); if (l) { if (jaExistem.has(l)) { duplicados++; } else { db[u].links.push(l); jaExistem.add(l); adicionados++; } } }); if (duplicados > 0) alert(`Filtrado: ${adicionados} novos adicionados. ${duplicados} repetidos removidos.`); renderizar(); }
         function addLinks(){ const t=document.getElementById('links-input'); const linhas = t.value.split('\n'); processarNovosLinks(linhas); t.value=''; pgPend = 0; }
         function renderizar() { const u = currentUserData.user; if(!db[u]) db[u] = {links:[], salvos:[], naoSalvos:[]}; if(!db[u].naoSalvos) db[u].naoSalvos = []; const p = document.getElementById('lista-pendentes'); p.innerHTML = ''; const tP = db[u].links.length; document.getElementById('count-pend').innerText = tP; db[u].links.slice(pgPend*ITENS_PAG, (pgPend+1)*ITENS_PAG).forEach((l,i) => { p.innerHTML += `<div class="card"><span class="link-text">${l}</span><button class="btn-auto" onclick="tratarAberturaLink(${pgPend*ITENS_PAG+i},'${l}')">Abrir ↗</button></div>`; }); renderControles('paginacao-pend', tP, pgPend, (n)=> {pgPend=n; renderizar();}); const s = document.getElementById('lista-salvos'); s.innerHTML = ''; const tS = db[u].salvos ? db[u].salvos.length : 0; document.getElementById('count-saved').innerText = tS; if(db[u].salvos) db[u].salvos.slice(pgSalv*ITENS_PAG, (pgSalv+1)*ITENS_PAG).forEach((l,i) => { s.innerHTML += `<div class="card" style="border-left:4px solid var(--primary)"><span class="link-text">${l}</span><button class="danger btn-auto" onclick="db['${u}'].salvos.splice(${pgSalv*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-salv', tS, pgSalv, (n)=> {pgSalv=n; renderizar();}); const d = document.getElementById('lista-descartados'); d.innerHTML = ''; const tD = db[u].naoSalvos ? db[u].naoSalvos.length : 0; document.getElementById('count-discarded').innerText = tD; if(db[u].naoSalvos) db[u].naoSalvos.slice(pgDesc*ITENS_PAG, (pgDesc+1)*ITENS_PAG).forEach((l,i) => { d.innerHTML += `<div class="card card-discarded"><span class="link-text">${l}</span><button class="btn-auto" onclick="resgatarDescartado(${pgDesc*ITENS_PAG+i})">♻️</button><button class="danger btn-auto" onclick="db['${u}'].naoSalvos.splice(${pgDesc*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-desc', tD, pgDesc, (n)=> {pgDesc=n; renderizar();}); localStorage.setItem(DB_KEY, JSON.stringify(db)); }
-        function renderControles(id, total, atual, cb) { const div = document.getElementById(id), max = Math.ceil(total/ITENS_PAG); if(max <= 1) { div.innerHTML = ''; return; } div.innerHTML = `<button class="secondary btn-auto" ${atual===0?'disabled':''} onclick="(${cb})(${atual-1})">«</button><span>${atual+1}/${max}</span><button class="secondary btn-auto" ${atual>=max-1?'disabled':''} onclick="(${cb})(${atual+1})">»</button>`; }
+        function renderControles(id, total, atual, cb) { const div = document.getElementById(id), max = Math.ceil(total/ITENS_PAG); if(max <= 1) { div.innerHTML = ''; return; } div.innerHTML = `<button class="secondary btn-auto" ${atual===0?'disabled':''} onclick="(${cb})(${atual+1})">«</button><span>${atual+1}/${max}</span><button class="secondary btn-auto" ${atual>=max-1?'disabled':''} onclick="(${cb})(${atual+1})">»</button>`; }
         
         function prepararEnvioAposCriacao() { fecharModalSucessoCriacao(); prepararEnvioWhatsApp(tempUser, tempPass, tempWa, tempDate, tempVal); }
         function fecharModalSucessoCriacao() { document.getElementById('modal-created-success').classList.remove('show'); }
