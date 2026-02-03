@@ -121,9 +121,11 @@
         .filter-btn-small { font-size: 10px; padding: 4px 10px; background: var(--text); color: var(--card); border-radius: 4px; width: auto; display: inline-block; cursor: pointer;}
 
         /* ESTILO PARA MAPEAMENTO DE COLUNAS */
-        .map-row { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
-        .map-label { font-weight: 700; width: 30%; font-size: 13px; }
-        .map-select { width: 65%; font-size: 12px; padding: 8px; }
+        .map-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px; border-bottom: 1px solid #eee; }
+        .map-label { font-weight: 700; width: 30%; font-size: 13px; margin-top: 8px; }
+        .map-input-group { width: 65%; display: flex; flex-direction: column; gap: 5px; }
+        .map-select { width: 100%; font-size: 12px; padding: 8px; }
+        .map-manual-input { width: 100%; font-size: 12px; padding: 8px; border: 1px dashed #3b82f6; background: #eff6ff; color: #1e40af; border-radius: 6px; }
 
         @media (max-width: 600px) {
             .custom-table, .custom-table thead, .custom-table tbody, .custom-table th, .custom-table td, .custom-table tr { display: block; }
@@ -282,7 +284,7 @@
         <div class="modal-content" style="max-width: 500px;"> 
             <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-column-map')">&times;</span> 
             <h3 style="margin-top:0; color:var(--purple);">🗺️ Mapear Colunas</h3> 
-            <p style="font-size:12px; color:#666;">O sistema encontrou estas colunas. Por favor, indique qual coluna corresponde a cada dado.</p>
+            <p style="font-size:12px; color:#666;">Indique a coluna correspondente ou digite um valor padrão para todos.</p>
             
             <div id="mapping-container" style="margin-bottom: 20px;">
                 </div>
@@ -413,8 +415,8 @@
         let listaClientes = []; let clienteEditandoId = null; let globalWhatsappTemplate = "";
         let filtrosAtivos = {}; 
         
-        let importacaoTemp = []; // Lista para preview
-        let lastCreatedIds = []; // IDs para undo
+        let importacaoTemp = []; // Lista temporária para o modal
+        let lastCreatedIds = []; // Lista de IDs criados para o Desfazer
         let globalRawData = []; // Dados brutos do Excel (para mapeamento)
         let globalHeaders = []; // Headers do Excel
 
@@ -432,7 +434,7 @@
         function abrirClientes() { document.getElementById('dashboard-screen').classList.add('hidden'); document.getElementById('app-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.remove('hidden'); carregarMeusClientes(); }
         function voltarDashboard() { document.getElementById('app-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.add('hidden'); document.getElementById('dashboard-screen').classList.remove('hidden'); }
 
-        // --- IMPORTAÇÃO UNIVERSAL COM MAPEAMENTO (V120) ---
+        // --- IMPORTAÇÃO UNIVERSAL COM MAPEAMENTO (V121) ---
         function lerArquivoImportacao(input) {
             const file = input.files[0];
             if (!file) return;
@@ -493,10 +495,19 @@
                     options += `<option value="${index}" ${index === selectedIndex ? 'selected' : ''}>${header} (Col ${index+1})</option>`;
                 });
 
+                let extraInput = '';
+                // Adicionar campo manual APENAS para Servidor
+                if(field.id === 'map_server') {
+                    extraInput = `<input type="text" id="manual_server_input" class="map-manual-input" placeholder="Ou digite para todos (ex: P2P)">`;
+                }
+
                 container.innerHTML += `
                     <div class="map-row">
                         <div class="map-label">${field.label}</div>
-                        <select id="${field.id}" class="map-select">${options}</select>
+                        <div class="map-input-group">
+                            <select id="${field.id}" class="map-select">${options}</select>
+                            ${extraInput}
+                        </div>
                     </div>
                 `;
             });
@@ -514,6 +525,8 @@
                 venc: parseInt(document.getElementById('map_venc').value)
             };
 
+            const manualServer = document.getElementById('manual_server_input').value.trim();
+
             // Validação mínima
             if (map.user === -1) {
                 alert("O campo 'Usuário' é obrigatório para importar.");
@@ -530,7 +543,15 @@
                 // Extrair dados baseado no índice mapeado
                 let nome = (map.nome !== -1 && row[map.nome]) ? String(row[map.nome]).trim() : "Sem Nome";
                 let usuario = (map.user !== -1 && row[map.user]) ? String(row[map.user]).trim() : "";
-                let servidor = (map.server !== -1 && row[map.server]) ? String(row[map.server]).trim() : "";
+                
+                // LÓGICA DO SERVIDOR: Manual > Coluna > Vazio
+                let servidor = "";
+                if(manualServer !== "") {
+                    servidor = manualServer;
+                } else {
+                    servidor = (map.server !== -1 && row[map.server]) ? String(row[map.server]).trim() : "";
+                }
+
                 let whatsapp = (map.wa !== -1 && row[map.wa]) ? String(row[map.wa]).replace(/\D/g,'') : "";
                 let valor = (map.val !== -1 && row[map.val]) ? String(row[map.val]).trim() : "";
                 let vencimento = (map.venc !== -1 && row[map.venc]) ? String(row[map.venc]).trim() : "";
@@ -882,7 +903,7 @@
         function processarNovosLinks(listaBruta) { const u = currentUserData.user; if (!db[u]) db[u] = { links: [], salvos: [], naoSalvos: [] }; if (!db[u].salvos) db[u].salvos = []; if (!db[u].naoSalvos) db[u].naoSalvos = []; const jaExistem = new Set([...db[u].links, ...db[u].salvos, ...db[u].naoSalvos]); let adicionados = 0; let duplicados = 0; listaBruta.forEach(link => { const l = link.trim(); if (l) { if (jaExistem.has(l)) { duplicados++; } else { db[u].links.push(l); jaExistem.add(l); adicionados++; } } }); if (duplicados > 0) alert(`Filtrado: ${adicionados} novos adicionados. ${duplicados} repetidos removidos.`); renderizar(); }
         function addLinks(){ const t=document.getElementById('links-input'); const linhas = t.value.split('\n'); processarNovosLinks(linhas); t.value=''; pgPend = 0; }
         function renderizar() { const u = currentUserData.user; if(!db[u]) db[u] = {links:[], salvos:[], naoSalvos:[]}; if(!db[u].naoSalvos) db[u].naoSalvos = []; const p = document.getElementById('lista-pendentes'); p.innerHTML = ''; const tP = db[u].links.length; document.getElementById('count-pend').innerText = tP; db[u].links.slice(pgPend*ITENS_PAG, (pgPend+1)*ITENS_PAG).forEach((l,i) => { p.innerHTML += `<div class="card"><span class="link-text">${l}</span><button class="btn-auto" onclick="tratarAberturaLink(${pgPend*ITENS_PAG+i},'${l}')">Abrir ↗</button></div>`; }); renderControles('paginacao-pend', tP, pgPend, (n)=> {pgPend=n; renderizar();}); const s = document.getElementById('lista-salvos'); s.innerHTML = ''; const tS = db[u].salvos ? db[u].salvos.length : 0; document.getElementById('count-saved').innerText = tS; if(db[u].salvos) db[u].salvos.slice(pgSalv*ITENS_PAG, (pgSalv+1)*ITENS_PAG).forEach((l,i) => { s.innerHTML += `<div class="card" style="border-left:4px solid var(--primary)"><span class="link-text">${l}</span><button class="danger btn-auto" onclick="db['${u}'].salvos.splice(${pgSalv*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-salv', tS, pgSalv, (n)=> {pgSalv=n; renderizar();}); const d = document.getElementById('lista-descartados'); d.innerHTML = ''; const tD = db[u].naoSalvos ? db[u].naoSalvos.length : 0; document.getElementById('count-discarded').innerText = tD; if(db[u].naoSalvos) db[u].naoSalvos.slice(pgDesc*ITENS_PAG, (pgDesc+1)*ITENS_PAG).forEach((l,i) => { d.innerHTML += `<div class="card card-discarded"><span class="link-text">${l}</span><button class="btn-auto" onclick="resgatarDescartado(${pgDesc*ITENS_PAG+i})">♻️</button><button class="danger btn-auto" onclick="db['${u}'].naoSalvos.splice(${pgDesc*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-desc', tD, pgDesc, (n)=> {pgDesc=n; renderizar();}); localStorage.setItem(DB_KEY, JSON.stringify(db)); }
-        function renderControles(id, total, atual, cb) { const div = document.getElementById(id), max = Math.ceil(total/ITENS_PAG); if(max <= 1) { div.innerHTML = ''; return; } div.innerHTML = `<button class="secondary btn-auto" ${atual===0?'disabled':''} onclick="(${cb})(${atual-1})">«</button><span>${atual+1}/${max}</span><button class="secondary btn-auto" ${atual>=max-1?'disabled':''} onclick="(${cb})(${atual+1})">»</button>`; }
+        function renderControles(id, total, atual, cb) { const div = document.getElementById(id), max = Math.ceil(total/ITENS_PAG); if(max <= 1) { div.innerHTML = ''; return; } div.innerHTML = `<button class="secondary btn-auto" ${atual===0?'disabled':''} onclick="(${cb})(${atual+1})">«</button><span>${atual+1}/${max}</span><button class="secondary btn-auto" ${atual>=max-1?'disabled':''} onclick="(${cb})(${atual+1})">»</button>`; }
         
         function prepararEnvioAposCriacao() { fecharModalSucessoCriacao(); prepararEnvioWhatsApp(tempUser, tempPass, tempWa, tempDate, tempVal); }
         function fecharModalSucessoCriacao() { document.getElementById('modal-created-success').classList.remove('show'); }
