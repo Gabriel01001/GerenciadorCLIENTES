@@ -407,7 +407,7 @@
     <div id="modal-created-success" class="modal-overlay" style="z-index: 1300;"> <div class="modal-content" style="max-width: 350px; text-align:center;"> <div style="font-size: 50px;">✅</div> <h3 style="margin-top:0; color:var(--primary);">Usuário Criado!</h3> <p style="font-size:13px; color:#666; margin-bottom:20px;">O que deseja fazer agora?</p> <div style="display:flex; flex-direction:column; gap:10px;"><button class="chat-btn" onclick="prepararEnvioAposCriacao()">📲 Enviar Acesso</button><button class="secondary" onclick="fecharModalSucessoCriacao()">❌ Fechar</button></div> </div> </div>
 
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbwtMMYq6gHWUX33Ie05iyjbVKPzWtzd9vebIInLe607nqN57GteOeOGE1a8dMI05Cpw/exec';
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwhA9GltEx9dvtqHepvCDbXZ4UjojnNzkx4cNJ3f9WSvNVylS8SIPLj7E4cNNwYY5oD4Q/exec';
         const DB_KEY = 'zapflow_v36'; const SESSION_KEY = 'zapflow_session_v36';
         let db = JSON.parse(localStorage.getItem(DB_KEY)) || {};
         let currentUserData = null; let lastOpenedLink = ""; let pgPend = 0, pgSalv = 0, pgDesc = 0; const ITENS_PAG = 5;
