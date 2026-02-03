@@ -9,6 +9,8 @@
     <meta name="theme-color" content="#10b981">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    
     <style>
         :root { --primary: #10b981; --dark: #064e3b; --bg: #f3f4f6; --text: #1f2937; --danger: #ef4444; --card: #fff; --radius: 12px; --blue: #3b82f6; --gold: #f59e0b; --gray: #6b7280; --purple: #8b5cf6; }
         body.dark-mode { --bg: #111827; --text: #f9fafb; --card: #1f2937; }
@@ -241,7 +243,7 @@
                 <div style="display:flex; gap:5px; flex-wrap: wrap; justify-content: flex-end;">
                     <button id="btn-undo-import" class="undo-btn btn-auto" onclick="desfazerImportacao()" style="display:none;">↺ Desfazer</button>
                     <button class="import-btn btn-auto" onclick="document.getElementById('file-import-clients').click()">📤 Importar</button>
-                    <input type="file" id="file-import-clients" accept=".csv" hidden onchange="lerCSVImportacao(this)">
+                    <input type="file" id="file-import-clients" accept=".csv, .xlsx, .xls, .xml, .ods" hidden onchange="lerArquivoImportacao(this)">
                     <button class="export-btn btn-auto" onclick="exportarPlanilhaClientes()">📥 Exportar</button>
                     <button class="secondary btn-auto" onclick="abrirConfigMsg()">⚙️ Msg</button>
                     <button class="chat-btn btn-auto" onclick="abrirModalCliente()">➕ Novo</button>
@@ -379,7 +381,6 @@
     <div id="modal-renovar" class="modal-overlay"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-renovar')">&times;</span> <h3 style="text-align: center; color: var(--primary);">💎 Renovar Acesso</h3> <div class="pay-card"> <div style="font-size: 12px; font-weight: bold;">PIX PARA PAGAMENTO</div> <div class="pay-key" id="pix-display" style="font-size:16px; padding:15px;">...</div> </div> <button onclick="copiarPixReal()" class="chat-btn" style="border-radius: 50px; width:100%">📋 Copiar Chave PIX</button> </div> </div>
     <div id="modal-install-tutorial" class="modal-overlay" style="z-index: 9999;"> <div class="modal-content" style="max-width: 350px;"> <div style="text-align:center; margin-bottom:20px;"> <div style="font-size:50px; margin-bottom:10px;">⚡</div> <h3 style="margin-top:0; font-size: 20px; font-weight: 700;">Instalar App</h3> <p style="font-size:14px; color: var(--text); line-height: 1.5;">Para a melhor experiência, adicione este app à sua tela inicial.</p> </div> <button id="btn-android-install" class="hidden" style="width:100% !important; margin-bottom:15px; font-size: 16px; padding: 15px;" onclick="instalarAndroid()">📲 Instalar Agora</button> <div id="tutorial-ios" class="hidden"><div class="tutorial-step">1. Toque no botão <b>Compartilhar</b> <span style="font-size:18px;">⎋</span> abaixo.</div><div class="tutorial-step">2. Role e selecione <b>Adicionar à Tela de Início</b> <span style="font-size:18px;">⊞</span>.</div></div> <div id="tutorial-android" class="hidden"><div class="tutorial-step">1. Toque nos <b>3 pontinhos</b> <span style="font-size:18px;">⋮</span> no topo do navegador.</div><div class="tutorial-step">2. Selecione <b>Adicionar à tela inicial</b> ou <b>Instalar app</b>.</div></div> <button class="secondary btn-auto" style="width:100% !important; margin-top:15px;" onclick="fecharInstallModal()">Agora não</button> </div> </div>
     <div id="modal-global-msg" class="modal-overlay" style="z-index: 1100;"> <div class="modal-content" style="max-width: 400px; text-align: center;"> <div style="font-size: 40px; margin-bottom: 10px;">🔔</div> <h3 style="margin-top:0; color: var(--primary);">Comunicado</h3> <p id="msg-text" style="font-size: 14px; color: #333 !important; background: #f3f4f6; padding: 15px; border-radius: 10px;"></p> <button onclick="marcarMensagemLida()" class="btn-auto" style="margin-top: 15px; width: 100% !important;">Entendi</button> </div> </div>
-    <div id="modal-send-whatsapp" class="modal-overlay" style="z-index: 1200;"> <div class="modal-content" style="max-width: 400px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-send-whatsapp')">&times;</span> <h3 style="margin-top:0; color: #25d366;">📲 Enviar Acesso</h3> <p style="font-size:12px; margin:0 0 10px 0;">Para: <b id="send-dest">...</b></p> <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:10px; margin-bottom:15px; font-size:12px; color:#166534;"><div style="font-weight:bold; margin-bottom:5px;">📋 Dados que serão enviados:</div><div id="preview-msg-content" style="font-family:monospace; line-height:1.4;"></div></div> <label style="font-size:12px; font-weight:bold;">Mensagem Complementar (Opcional):</label> <textarea id="whatsapp-extra-msg" class="msg-box" placeholder="Ex: 'Aproveite sua tela!', 'Pagamento Confirmado', etc."></textarea> <button class="chat-btn" onclick="finalizarEnvioWhatsApp()">🚀 Enviar via WhatsApp</button> </div> </div>
     <div id="modal-created-success" class="modal-overlay" style="z-index: 1300;"> <div class="modal-content" style="max-width: 350px; text-align:center;"> <div style="font-size: 50px;">✅</div> <h3 style="margin-top:0; color:var(--primary);">Usuário Criado!</h3> <p style="font-size:13px; color:#666; margin-bottom:20px;">O que deseja fazer agora?</p> <div style="display:flex; flex-direction:column; gap:10px;"><button class="chat-btn" onclick="prepararEnvioAposCriacao()">📲 Enviar Acesso</button><button class="secondary" onclick="fecharModalSucessoCriacao()">❌ Fechar</button></div> </div> </div>
 
     <script>
@@ -408,46 +409,83 @@
         function abrirClientes() { document.getElementById('dashboard-screen').classList.add('hidden'); document.getElementById('app-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.remove('hidden'); carregarMeusClientes(); }
         function voltarDashboard() { document.getElementById('app-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.add('hidden'); document.getElementById('dashboard-screen').classList.remove('hidden'); }
 
-        // --- IMPORTAÇÃO DE CLIENTES (V118) ---
-        function lerCSVImportacao(input) {
+        // --- IMPORTAÇÃO UNIVERSAL DE EXCEL (XLSX, XLS, CSV, XML) - V119 ---
+        function lerArquivoImportacao(input) {
             const file = input.files[0];
             if (!file) return;
             const reader = new FileReader();
+            
+            // Usa ArrayBuffer para suportar binários (XLS, XLSX)
+            reader.readAsArrayBuffer(file);
+            
             reader.onload = function(e) {
-                const text = e.target.result;
-                const rows = text.split('\n').filter(r => r.trim() !== '');
-                importacaoTemp = [];
-                // Assume CSV com separador ; ou , (detectar)
-                const separator = text.includes(';') ? ';' : ',';
+                const data = new Uint8Array(e.target.result);
+                // Lê o workbook usando SheetJS
+                const workbook = XLSX.read(data, {type: 'array'});
                 
-                // Ignora cabeçalho se parecer um
+                // Pega a primeira aba
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                
+                // Converte para JSON (Matriz de Arrays: Linha 1 = Header)
+                // header: 1 garante que pegamos as linhas cruas [A, B, C...]
+                const rows = XLSX.utils.sheet_to_json(worksheet, {header: 1, raw: false}); 
+                
+                importacaoTemp = [];
+                
+                // Tenta descobrir a estrutura
+                // Se tiver mais de 6 colunas, provavelmente é exportação do sistema (com coluna Criador)
+                // Se tiver <= 6, é planilha simples (Nome, User, Server, Wa, Valor, Venc)
+                let isSystemExport = false;
+                if (rows.length > 0 && rows[0].length > 6) isSystemExport = true;
+                
+                // Pula cabeçalho se a linha 0 tiver "Nome" ou "Usuario"
                 let start = 0;
-                if(rows[0].toLowerCase().includes('nome') || rows[0].toLowerCase().includes('usuario')) start = 1;
+                if (rows[0] && (String(rows[0][0]).toLowerCase().includes('nome') || String(rows[0][2]).toLowerCase().includes('usuário'))) {
+                    start = 1;
+                }
 
                 for (let i = start; i < rows.length; i++) {
-                    let cols = rows[i].split(separator);
-                    // Mapeamento simples: 0=Nome, 1=..., 2=Usuario... 
-                    // Tenta adivinhar ou usa ordem do export: Nome, Criador, User, Server, Wa, Valor, Venc
-                    // Se o CSV for simples: Nome, User, Server, Wa, Valor, Venc
-                    let nome = cols[0] ? cols[0].replace(/"/g,'').trim() : "Sem Nome";
-                    // Se for importação do próprio sistema, coluna 1 é criador, pular.
-                    let userIdx = (cols.length > 6) ? 2 : 1; 
-                    
-                    let usuario = cols[userIdx] ? cols[userIdx].replace(/"/g,'').trim() : "";
-                    let servidor = cols[userIdx+1] ? cols[userIdx+1].replace(/"/g,'').trim() : "";
-                    let whatsapp = cols[userIdx+2] ? cols[userIdx+2].replace(/"/g,'').replace(/\D/g,'') : "";
-                    let valor = cols[userIdx+3] ? cols[userIdx+3].replace(/"/g,'').trim() : "";
-                    let vencimento = cols[userIdx+4] ? cols[userIdx+4].replace(/"/g,'').trim() : "";
+                    const row = rows[i];
+                    if (!row || row.length === 0) continue;
 
-                    if(nome && usuario) {
+                    // Mapeamento das colunas
+                    // SIMPLES: 0=Nome, 1=User, 2=Server, 3=Whats, 4=Valor, 5=Venc
+                    // EXPORT:  0=Nome, 1=Criador, 2=User, 3=Server, 4=Whats, 5=Valor, 6=Venc
+                    let nome, usuario, servidor, whatsapp, valor, vencimento;
+
+                    if (isSystemExport) {
+                        nome = row[0];
+                        usuario = row[2];
+                        servidor = row[3];
+                        whatsapp = row[4];
+                        valor = row[5];
+                        vencimento = row[6];
+                    } else {
+                        nome = row[0];
+                        usuario = row[1];
+                        servidor = row[2];
+                        whatsapp = row[3];
+                        valor = row[4];
+                        vencimento = row[5];
+                    }
+
+                    // Limpeza básica
+                    nome = nome ? String(nome).trim() : "Sem Nome";
+                    usuario = usuario ? String(usuario).trim() : "";
+                    whatsapp = whatsapp ? String(whatsapp).replace(/\D/g,'') : "";
+                    valor = valor ? String(valor).trim() : "";
+                    vencimento = vencimento ? String(vencimento).trim() : "";
+                    servidor = servidor ? String(servidor).trim() : "";
+
+                    if (nome && usuario) {
                         importacaoTemp.push({ nome, usuario, servidor, whatsapp, valor, vencimento, checked: true });
                     }
                 }
                 
                 mostrarPreviewImportacao();
+                input.value = ''; // Reset input
             };
-            reader.readAsText(file);
-            input.value = ''; // Reset input
         }
 
         function mostrarPreviewImportacao() {
@@ -788,7 +826,7 @@
         function processarNovosLinks(listaBruta) { const u = currentUserData.user; if (!db[u]) db[u] = { links: [], salvos: [], naoSalvos: [] }; if (!db[u].salvos) db[u].salvos = []; if (!db[u].naoSalvos) db[u].naoSalvos = []; const jaExistem = new Set([...db[u].links, ...db[u].salvos, ...db[u].naoSalvos]); let adicionados = 0; let duplicados = 0; listaBruta.forEach(link => { const l = link.trim(); if (l) { if (jaExistem.has(l)) { duplicados++; } else { db[u].links.push(l); jaExistem.add(l); adicionados++; } } }); if (duplicados > 0) alert(`Filtrado: ${adicionados} novos adicionados. ${duplicados} repetidos removidos.`); renderizar(); }
         function addLinks(){ const t=document.getElementById('links-input'); const linhas = t.value.split('\n'); processarNovosLinks(linhas); t.value=''; pgPend = 0; }
         function renderizar() { const u = currentUserData.user; if(!db[u]) db[u] = {links:[], salvos:[], naoSalvos:[]}; if(!db[u].naoSalvos) db[u].naoSalvos = []; const p = document.getElementById('lista-pendentes'); p.innerHTML = ''; const tP = db[u].links.length; document.getElementById('count-pend').innerText = tP; db[u].links.slice(pgPend*ITENS_PAG, (pgPend+1)*ITENS_PAG).forEach((l,i) => { p.innerHTML += `<div class="card"><span class="link-text">${l}</span><button class="btn-auto" onclick="tratarAberturaLink(${pgPend*ITENS_PAG+i},'${l}')">Abrir ↗</button></div>`; }); renderControles('paginacao-pend', tP, pgPend, (n)=> {pgPend=n; renderizar();}); const s = document.getElementById('lista-salvos'); s.innerHTML = ''; const tS = db[u].salvos ? db[u].salvos.length : 0; document.getElementById('count-saved').innerText = tS; if(db[u].salvos) db[u].salvos.slice(pgSalv*ITENS_PAG, (pgSalv+1)*ITENS_PAG).forEach((l,i) => { s.innerHTML += `<div class="card" style="border-left:4px solid var(--primary)"><span class="link-text">${l}</span><button class="danger btn-auto" onclick="db['${u}'].salvos.splice(${pgSalv*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-salv', tS, pgSalv, (n)=> {pgSalv=n; renderizar();}); const d = document.getElementById('lista-descartados'); d.innerHTML = ''; const tD = db[u].naoSalvos ? db[u].naoSalvos.length : 0; document.getElementById('count-discarded').innerText = tD; if(db[u].naoSalvos) db[u].naoSalvos.slice(pgDesc*ITENS_PAG, (pgDesc+1)*ITENS_PAG).forEach((l,i) => { d.innerHTML += `<div class="card card-discarded"><span class="link-text">${l}</span><button class="btn-auto" onclick="resgatarDescartado(${pgDesc*ITENS_PAG+i})">♻️</button><button class="danger btn-auto" onclick="db['${u}'].naoSalvos.splice(${pgDesc*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-desc', tD, pgDesc, (n)=> {pgDesc=n; renderizar();}); localStorage.setItem(DB_KEY, JSON.stringify(db)); }
-        function renderControles(id, total, atual, cb) { const div = document.getElementById(id), max = Math.ceil(total/ITENS_PAG); if(max <= 1) { div.innerHTML = ''; return; } div.innerHTML = `<button class="secondary btn-auto" ${atual===0?'disabled':''} onclick="(${cb})(${atual+1})">«</button><span>${atual+1}/${max}</span><button class="secondary btn-auto" ${atual>=max-1?'disabled':''} onclick="(${cb})(${atual+1})">»</button>`; }
+        function renderControles(id, total, atual, cb) { const div = document.getElementById(id), max = Math.ceil(total/ITENS_PAG); if(max <= 1) { div.innerHTML = ''; return; } div.innerHTML = `<button class="secondary btn-auto" ${atual===0?'disabled':''} onclick="(${cb})(${atual-1})">«</button><span>${atual+1}/${max}</span><button class="secondary btn-auto" ${atual>=max-1?'disabled':''} onclick="(${cb})(${atual+1})">»</button>`; }
         
         function prepararEnvioAposCriacao() { fecharModalSucessoCriacao(); prepararEnvioWhatsApp(tempUser, tempPass, tempWa, tempDate, tempVal); }
         function fecharModalSucessoCriacao() { document.getElementById('modal-created-success').classList.remove('show'); }
