@@ -6,10 +6,7 @@
     <title>Gerenciador |WA|</title>
     
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%2310b981%22/><text x=%2250%22 y=%2250%22 font-size=%2260%22 text-anchor=%22middle%22 dy=%22.35em%22>⚡</text></svg>">
-    
     <meta name="theme-color" content="#10b981">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -32,15 +29,14 @@
         button.chat-btn { background: #25d366; color: white; }
         button.renew-btn { background: #8b5cf6; color: white; }
         button.vip-btn { background: #fffbeb; color: #b45309; border: 1px solid #fcd34d; }
-        button.export-btn { background: #059669; color: white; border: 1px solid #047857; } /* Verde Escuro Exportar */
+        button.export-btn { background: #059669; color: white; border: 1px solid #047857; } 
+        button.import-btn { background: #7c3aed; color: white; border: 1px solid #6d28d9; } /* Roxo Importar */
+        button.undo-btn { background: #dc2626; color: white; border: 1px solid #b91c1c; animation: pulse 2s infinite; } /* Vermelho Desfazer */
         .btn-auto { width: auto !important; padding: 8px 16px; font-size: 13px; margin: 3px; flex-shrink: 0; }
         
         .tutorial-btn-orange { background: linear-gradient(135deg, #fb923c, #ea580c); color: white; border: none; padding: 8px 20px; font-size: 12px; border-radius: 25px; box-shadow: 0 4px 10px rgba(234, 88, 12, 0.4); transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .tutorial-btn-orange:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(234, 88, 12, 0.6); filter: brightness(1.1); }
-        
         .autoresponder-btn { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border: none; padding: 5px 15px; font-size: 12px; border-radius: 15px; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4); transition: 0.3s; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 2px; line-height: 1.2; }
-        .autoresponder-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(79, 70, 229, 0.6); filter: brightness(1.1); }
-
         .tutorial-card { background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05); border-radius: 15px; padding: 15px; margin-bottom: 20px; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .tut-title-text { font-weight: 700; color: var(--primary); margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px; }
         
@@ -51,7 +47,7 @@
         .modal-overlay.show { display:flex; }
         
         .modal-content { background:var(--card); padding: 20px; border-radius:20px; width: 100%; max-width: 400px; position:relative; color: var(--text); max-height: 80vh; overflow-y: auto; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
-        @media (min-width: 768px) { #modal-admin .modal-content { max-width: 1400px; width: 98%; } }
+        @media (min-width: 768px) { #modal-admin .modal-content, #modal-import-preview .modal-content { max-width: 1400px; width: 98%; } }
 
         .admin-action-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; }
         .admin-toggle-btn { padding: 10px; font-size: 11px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; color: white; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.2s; }
@@ -67,15 +63,10 @@
         .admin-table td { padding: 10px; border-bottom: 1px solid #eee; vertical-align: middle; white-space: nowrap; text-align: center !important; font-size: 12px; }
         .admin-table tr:hover { background: rgba(0,0,0,0.02); }
         
-        /* STATUS DOT */
         .status-dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; }
         .status-active { background-color: #10b981; } .status-expired { background-color: #ef4444; } .status-pending { background-color: #f59e0b; } .status-test { background-color: #06b6d4; box-shadow: 0 0 6px #06b6d4; }
         .status-request { background-color: #8b5cf6; box-shadow: 0 0 6px #8b5cf6; } 
-
-        /* ESTILOS DE COLUNAS DETALHADAS */
         .col-detailed { transition: 0.2s; } 
-
-        /* 5 BOTOES DE AÇÃO (MASTER) */
         .btn-action-master { width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); cursor: pointer; transition: 0.2s; font-size: 14px; margin: 0 2px; }
         .btn-action-master:hover { transform: translateY(-2px); filter: brightness(1.1); }
         .act-toggle { background: #f59e0b; color: white; border-radius: 50%; } 
@@ -107,7 +98,7 @@
         .timer-badge { background: #ef4444; color: white; padding: 2px 8px; border-radius: 5px; font-size: 12px; font-weight: bold; margin-left: 5px; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
 
-        /* TELA CLIENTES - MANTIDA */
+        /* TELA CLIENTES */
         .custom-table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--card); border-radius: 10px; overflow: visible !important; }
         .custom-table thead { background: var(--bg); border-bottom: 2px solid #e5e7eb; position: sticky; top: 0; z-index: 50; }
         .custom-table th { padding: 12px; text-align: left; color: var(--primary); font-weight: 700; cursor: pointer; position: relative; }
@@ -247,7 +238,10 @@
         <div id="clients-screen" class="hidden">
             <div class="header">
                 <div style="display:flex; gap:10px; align-items:center;"><button class="secondary btn-auto" onclick="voltarDashboard()">⬅ Voltar</button><h3 style="margin:0;">Gestão Clientes</h3></div>
-                <div style="display:flex; gap:5px;">
+                <div style="display:flex; gap:5px; flex-wrap: wrap; justify-content: flex-end;">
+                    <button id="btn-undo-import" class="undo-btn btn-auto" onclick="desfazerImportacao()" style="display:none;">↺ Desfazer</button>
+                    <button class="import-btn btn-auto" onclick="document.getElementById('file-import-clients').click()">📤 Importar</button>
+                    <input type="file" id="file-import-clients" accept=".csv" hidden onchange="lerCSVImportacao(this)">
                     <button class="export-btn btn-auto" onclick="exportarPlanilhaClientes()">📥 Exportar</button>
                     <button class="secondary btn-auto" onclick="abrirConfigMsg()">⚙️ Msg</button>
                     <button class="chat-btn btn-auto" onclick="abrirModalCliente()">➕ Novo</button>
@@ -275,6 +269,31 @@
                 <p id="msg-sem-clientes" style="text-align:center; opacity:0.6; margin-top:20px; display:none;">Nenhum cliente encontrado.</p>
             </div>
         </div>
+    </div>
+
+    <div id="modal-import-preview" class="modal-overlay" style="z-index: 2000;"> 
+        <div class="modal-content" style="max-width: 900px;"> 
+            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-import-preview')">&times;</span> 
+            <h3 style="margin-top:0; color:var(--purple);">📤 Confirmar Importação</h3> 
+            <p style="font-size:12px; color:#666;">Verifique os dados encontrados no arquivo. Marque os que deseja adicionar.</p>
+            
+            <div class="table-responsive" style="max-height: 400px; margin-bottom: 15px;">
+                <table class="custom-table" id="table-preview">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="check-all-import" onchange="toggleAllImport(this)" checked></th>
+                            <th>Nome</th><th>Usuário</th><th>Servidor</th><th>WhatsApp</th><th>Valor</th><th>Vencimento</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-preview"></tbody>
+                </table>
+            </div>
+            
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="secondary btn-auto" onclick="fecharModal('modal-import-preview')">Cancelar</button>
+                <button class="import-btn btn-auto" onclick="confirmarImportacaoReal()">✅ Confirmar e Adicionar</button>
+            </div>
+        </div> 
     </div>
 
     <div id="modal-admin" class="modal-overlay">
@@ -371,6 +390,9 @@
         let autoTimer = null; let countdownRef = null; let userEditing = null; let currentFileUrl = ""; let deferredPrompt; let tempUser="", tempPass="", tempWa="", tempDate="", tempVal=""; let timerInterval = null;
         let listaClientes = []; let clienteEditandoId = null; let globalWhatsappTemplate = "";
         let filtrosAtivos = {}; 
+        
+        let importacaoTemp = []; // Lista temporária para o modal
+        let lastCreatedIds = []; // Lista de IDs criados para o Desfazer
 
         window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
         window.onload = () => {
@@ -386,14 +408,144 @@
         function abrirClientes() { document.getElementById('dashboard-screen').classList.add('hidden'); document.getElementById('app-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.remove('hidden'); carregarMeusClientes(); }
         function voltarDashboard() { document.getElementById('app-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.add('hidden'); document.getElementById('dashboard-screen').classList.remove('hidden'); }
 
-        // --- EXPORTAR PLANILHA (CORRIGIDO PARA PONTO E VÍRGULA) ---
+        // --- IMPORTAÇÃO DE CLIENTES (V118) ---
+        function lerCSVImportacao(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                const rows = text.split('\n').filter(r => r.trim() !== '');
+                importacaoTemp = [];
+                // Assume CSV com separador ; ou , (detectar)
+                const separator = text.includes(';') ? ';' : ',';
+                
+                // Ignora cabeçalho se parecer um
+                let start = 0;
+                if(rows[0].toLowerCase().includes('nome') || rows[0].toLowerCase().includes('usuario')) start = 1;
+
+                for (let i = start; i < rows.length; i++) {
+                    let cols = rows[i].split(separator);
+                    // Mapeamento simples: 0=Nome, 1=..., 2=Usuario... 
+                    // Tenta adivinhar ou usa ordem do export: Nome, Criador, User, Server, Wa, Valor, Venc
+                    // Se o CSV for simples: Nome, User, Server, Wa, Valor, Venc
+                    let nome = cols[0] ? cols[0].replace(/"/g,'').trim() : "Sem Nome";
+                    // Se for importação do próprio sistema, coluna 1 é criador, pular.
+                    let userIdx = (cols.length > 6) ? 2 : 1; 
+                    
+                    let usuario = cols[userIdx] ? cols[userIdx].replace(/"/g,'').trim() : "";
+                    let servidor = cols[userIdx+1] ? cols[userIdx+1].replace(/"/g,'').trim() : "";
+                    let whatsapp = cols[userIdx+2] ? cols[userIdx+2].replace(/"/g,'').replace(/\D/g,'') : "";
+                    let valor = cols[userIdx+3] ? cols[userIdx+3].replace(/"/g,'').trim() : "";
+                    let vencimento = cols[userIdx+4] ? cols[userIdx+4].replace(/"/g,'').trim() : "";
+
+                    if(nome && usuario) {
+                        importacaoTemp.push({ nome, usuario, servidor, whatsapp, valor, vencimento, checked: true });
+                    }
+                }
+                
+                mostrarPreviewImportacao();
+            };
+            reader.readAsText(file);
+            input.value = ''; // Reset input
+        }
+
+        function mostrarPreviewImportacao() {
+            const tbody = document.getElementById('tbody-preview');
+            tbody.innerHTML = '';
+            if(importacaoTemp.length === 0) return alert("Nenhum dado válido encontrado.");
+            
+            importacaoTemp.forEach((item, index) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><input type="checkbox" class="chk-import" data-index="${index}" checked></td>
+                        <td>${item.nome}</td>
+                        <td>${item.usuario}</td>
+                        <td>${item.servidor}</td>
+                        <td>${item.whatsapp}</td>
+                        <td>${item.valor}</td>
+                        <td>${item.vencimento}</td>
+                    </tr>
+                `;
+            });
+            document.getElementById('modal-import-preview').classList.add('show');
+        }
+
+        function toggleAllImport(source) {
+            document.querySelectorAll('.chk-import').forEach(c => c.checked = source.checked);
+        }
+
+        async function confirmarImportacaoReal() {
+            const selecionados = [];
+            document.querySelectorAll('.chk-import:checked').forEach(chk => {
+                selecionados.push(importacaoTemp[chk.getAttribute('data-index')]);
+            });
+
+            if (selecionados.length === 0) return alert("Nenhum item selecionado.");
+            
+            const btn = document.querySelector('.import-btn');
+            btn.disabled = true; btn.innerText = "Enviando...";
+
+            try {
+                const req = await fetch(API_URL, { 
+                    method: 'POST', 
+                    body: JSON.stringify({ 
+                        action: 'bulk_create_clients', 
+                        user: currentUserData.user, 
+                        pass: currentUserData.pass,
+                        lista: selecionados 
+                    }) 
+                });
+                const res = await req.json();
+                if (res.success) {
+                    alert(`${selecionados.length} Clientes importados com sucesso!`);
+                    lastCreatedIds = res.createdIds; // Salva IDs para desfazer
+                    document.getElementById('btn-undo-import').style.display = 'inline-block'; // Mostra botão desfazer
+                    fecharModal('modal-import-preview');
+                    carregarMeusClientes();
+                } else {
+                    alert("Erro ao importar.");
+                }
+            } catch(e) { alert("Erro de conexão."); } 
+            finally { 
+                btn.disabled = false; btn.innerText = "✅ Confirmar e Adicionar"; 
+            }
+        }
+
+        async function desfazerImportacao() {
+            if(!lastCreatedIds || lastCreatedIds.length === 0) return alert("Nada para desfazer.");
+            if(!confirm("Tem certeza? Isso apagará os clientes da última importação.")) return;
+
+            const btn = document.getElementById('btn-undo-import');
+            btn.disabled = true; btn.innerText = "Desfazendo...";
+
+            try {
+                const req = await fetch(API_URL, { 
+                    method: 'POST', 
+                    body: JSON.stringify({ 
+                        action: 'bulk_delete_clients', 
+                        user: currentUserData.user, 
+                        pass: currentUserData.pass,
+                        ids: lastCreatedIds
+                    }) 
+                });
+                const res = await req.json();
+                if (res.success) {
+                    alert(`Desfeito! ${res.count} clientes removidos.`);
+                    lastCreatedIds = []; // Limpa lista
+                    btn.style.display = 'none'; // Esconde botão
+                    carregarMeusClientes();
+                } else {
+                    alert("Erro ao desfazer.");
+                }
+            } catch(e) { alert("Erro de conexão."); }
+            finally { btn.disabled = false; btn.innerText = "↺ Desfazer"; }
+        }
+
+        // --- EXPORTAR PLANILHA ---
         function exportarPlanilhaClientes() {
             if (!listaClientes || listaClientes.length === 0) return alert("Nada para exportar.");
-            
-            // Cabeçalho CSV com separador ;
             let csvContent = "\uFEFFNome;Criador;Usuário;Servidor;WhatsApp;Valor;Vencimento;Cadastro\n";
-            
-            // Linhas
             listaClientes.forEach(cli => {
                 const wa = cli.whatsapp ? cli.whatsapp.replace(/\D/g, '') : '';
                 const linha = [
@@ -405,11 +557,9 @@
                     `"${cli.valor || ''}"`,
                     `"${cli.vencimento || ''}"`,
                     `"${cli.data || ''}"`
-                ].join(";"); // Alterado de , para ;
+                ].join(";");
                 csvContent += linha + "\n";
             });
-
-            // Download
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
             const url = URL.createObjectURL(blob);
@@ -552,235 +702,69 @@
             if (!list || list.length === 0) { listDiv.innerHTML = '<p style="text-align:center">Vazio.</p>'; return; }
             
             const isSubAdmin = currentUserData.cargo === 'Sub-Admin';
-            
-            // CABEÇALHO DA TABELA
             let html = '<div class="table-responsive"><table class="admin-table"><thead><tr>';
             html += '<th>Status</th><th>User</th><th class="col-detailed">Pass</th><th>Validade</th><th>WhatsApp</th><th class="col-detailed">Valor</th><th class="col-detailed">Cargo</th><th class="col-detailed">Pix</th>';
-            
-            // SE NÃO FOR SUB-ADMIN, MOSTRA AS COLUNAS EXTRAS
-            if (!isSubAdmin) {
-                html += '<th class="col-detailed">Cadastro</th><th class="col-detailed">Criador</th><th class="col-detailed">Valor Revenda</th>';
-            }
-            
+            if (!isSubAdmin) { html += '<th class="col-detailed">Cadastro</th><th class="col-detailed">Criador</th><th class="col-detailed">Valor Revenda</th>'; }
             html += '<th>Ações</th></tr></thead><tbody>';
 
             const hoje = new Date();
 
             list.forEach(row => {
                 const uUser = row[0] || "";
-                if (isSubAdmin && uUser.toLowerCase() === currentUserData.user.toLowerCase()) return; // Sub não vê a si mesmo
+                if (isSubAdmin && uUser.toLowerCase() === currentUserData.user.toLowerCase()) return; 
 
-                const uPass = row[1]; // Senha real (oculta visualmente)
-                const uDate = row[2] || "";
-                const uWa = row[3] || "";
-                const uVal = row[4] || "";
-                let uCargo = row[5] || "";
-                const uPix = row[6] || "";
-                const uStatus = row[7] || "Ativo";
-                const uCriador = row[8] || "-";
-                // Coluna Msg (9) pulada
-                const uCadastro = "-"; 
-                const uRevenda = row[10] || "0"; 
+                const uPass = row[1]; const uDate = row[2] || ""; const uWa = row[3] || ""; const uVal = row[4] || ""; let uCargo = row[5] || ""; const uPix = row[6] || ""; const uStatus = row[7] || "Ativo"; const uCriador = row[8] || "-"; const uCadastro = "-"; const uRevenda = row[10] || "0"; 
 
-                // RENOMEAR CARGOS
                 if(uCargo.toLowerCase() === 'administrador') uCargo = "Admin";
                 if(uCargo.toLowerCase() === 'subadministrador') uCargo = "Sub-Admin";
 
-                // LÓGICA DE VENCIMENTO EM TEMPO REAL COM HORA
-                let statusDot = "status-active";
-                let statusTexto = uStatus;
-
+                let statusDot = "status-active"; let statusTexto = uStatus;
                 if (uCargo !== 'Admin' && uCargo !== 'Sub-Admin' && !uDate.includes("Vitalício")) {
                     const d = parseData(uDate); 
                     if (d && !isNaN(d.getTime())) {
-                        if (d < hoje) {
-                            statusDot = "status-expired";
-                            statusTexto = (uCargo === 'Teste') ? "Expirado" : "Vencido";
-                        } else if (uCargo === 'Teste') {
-                            statusDot = "status-test";
-                        }
+                        if (d < hoje) { statusDot = "status-expired"; statusTexto = (uCargo === 'Teste') ? "Expirado" : "Vencido"; } else if (uCargo === 'Teste') { statusDot = "status-test"; }
                     }
                 }
-
                 if (String(uStatus).includes('Bloq')) { statusDot = "status-expired"; statusTexto = "Bloqueado"; }
                 if (String(uStatus).includes('Pendente')) { statusDot = "status-pending"; statusTexto = "Pendente"; }
                 if (String(uStatus).includes('Solicitando')) { statusDot = "status-request"; statusTexto = "Solicitando Renovação"; }
 
-                // BOTÕES PERMITIDOS
                 let btns = '';
-                
-                // --- ADMIN VÊ ISSO ---
                 if (!isSubAdmin) {
                     btns += `<button class="btn-action-master act-toggle" title="Aprovar/Bloquear" onclick="toggleStatus('${uUser}')">✅</button>`;
                     btns += `<button class="btn-action-master act-renew" title="Renovar" onclick="renovarUser('${uUser}')">📅</button>`;
-                }
-                // --- SUB-ADMIN VÊ ISSO (MÃOZINHA) ---
-                else {
+                } else {
                     btns += `<button class="btn-action-master act-signal" title="Solicitar Renovação ao Admin" onclick="sinalizarRenovacao('${uUser}')">✋</button>`;
                 }
-
                 const btnSendReal = `<button class="btn-action-master act-send" title="Enviar Dados" onclick="prepararEnvioWhatsApp('${uUser}','${uPass}','${uWa}','${uDate}','${uVal}')">📩</button>`;
-
                 btns += `<button class="btn-action-master act-chat" title="WhatsApp" onclick="window.open('https://wa.me/55${String(uWa).replace(/\D/g,'')}')">💬</button>`;
                 btns += btnSendReal;
                 btns += `<button class="btn-action-master act-edit" title="Editar" onclick="prepararEdicaoUser('${uUser}')">✏️</button>`;
 
-                html += `<tr>
-                    <td><span class="status-dot ${statusDot}"></span>${statusTexto}</td>
-                    <td><b>${uUser}</b></td>
-                    <td class="col-detailed">******</td>
-                    <td>${uDate}</td>
-                    <td>${uWa}</td>
-                    <td class="col-detailed">${uVal}</td>
-                    <td class="col-detailed">${uCargo}</td>
-                    <td class="col-detailed">${uPix}</td>`;
-                
-                // --- CÉLULAS OCULTAS PARA SUB-ADMIN ---
-                if (!isSubAdmin) {
-                    html += `<td class="col-detailed">${uCadastro}</td>`;
-                    html += `<td class="col-detailed">${uCriador}</td>`;
-                    html += `<td class="col-detailed">${uRevenda}</td>`;
-                }
-
-                html += `<td><div style="display:flex; justify-content:center; gap:4px;">${btns}</div></td>
-                </tr>`;
+                html += `<tr><td><span class="status-dot ${statusDot}"></span>${statusTexto}</td><td><b>${uUser}</b></td><td class="col-detailed">******</td><td>${uDate}</td><td>${uWa}</td><td class="col-detailed">${uVal}</td><td class="col-detailed">${uCargo}</td><td class="col-detailed">${uPix}</td>`;
+                if (!isSubAdmin) { html += `<td class="col-detailed">${uCadastro}</td><td class="col-detailed">${uCriador}</td><td class="col-detailed">${uRevenda}</td>`; }
+                html += `<td><div style="display:flex; justify-content:center; gap:4px;">${btns}</div></td></tr>`;
             });
             html += '</tbody></table></div>';
             listDiv.innerHTML = html;
             toggleCompactMode(); 
         }
 
-        function toggleCompactMode() {
-            const hide = document.getElementById('toggle-compact').checked;
-            document.querySelectorAll('.col-detailed').forEach(el => {
-                el.style.display = hide ? 'none' : 'table-cell';
-            });
-        }
-        
-        // --- FUNÇÃO PARA SUB-ADMIN SOLICITAR RENOVAÇÃO ---
-        async function sinalizarRenovacao(target) {
-            if(!confirm("Solicitar ao Admin que renove este usuário?")) return;
-            try {
-                const req = await fetch(API_URL, { 
-                    method: 'POST', 
-                    body: JSON.stringify({ 
-                        action: 'signal_renewal', 
-                        user: currentUserData.user, 
-                        pass: currentUserData.pass,
-                        targetUser: target
-                    }) 
-                });
-                const res = await req.json();
-                if(res.success) {
-                    alert("Solicitação enviada! O status mudou para 'Solicitando Renovação'.");
-                    abrirAdminPanel();
-                } else {
-                    alert("Erro ao solicitar.");
-                }
-            } catch(e) { alert("Erro de conexão."); }
-        }
-
-        // FUNÇÃO DE PARSE INTELIGENTE (DIA, MES, ANO, HORA, MINUTO)
-        function parseData(v) { 
-            if(!v) return null; 
-            if(v instanceof Date) return v; 
-            if(typeof v==='string'){ 
-                var s=v.trim(); 
-                if(s.length>10){ 
-                    try {
-                        var parts=s.split(' '); 
-                        var d=parts[0].split('/'); 
-                        var t=parts[1].split(':'); 
-                        return new Date(d[2],d[1]-1,d[0],t[0],t[1]); 
-                    } catch(e) { return null; }
-                } else { 
-                    var d=s.split('/'); 
-                    if(d.length===3) return new Date(d[2],d[1]-1,d[0], 23, 59, 59); // Fim do dia se nao tiver hora
-                } 
-            } 
-            return new Date(v); 
-        }
-
-        function abrirModalCreate() { 
-            userEditing = null; 
-            document.getElementById('new-user').value = ''; 
-            document.getElementById('new-pass').value = ''; 
-            document.getElementById('new-days').value = '30'; 
-            document.getElementById('new-wa').value = ''; 
-            document.getElementById('new-val').value = ''; 
-            document.getElementById('new-pix').value = ''; 
-            
-            const roleSelect = document.getElementById('new-role');
-            roleSelect.innerHTML = '';
-            
-            const optUser = document.createElement('option'); optUser.value = 'User'; optUser.innerText = 'Usuário Comum'; roleSelect.appendChild(optUser);
-            const optTest = document.createElement('option'); optTest.value = 'Teste'; optTest.innerText = 'Teste (1 Hora)'; roleSelect.appendChild(optTest);
-            
-            if (currentUserData.cargo === 'Admin') {
-               const optSub = document.createElement('option'); optSub.value = 'Sub-Admin'; optSub.innerText = 'Sub-Admin'; roleSelect.appendChild(optSub);
-               const optAdmin = document.createElement('option'); optAdmin.value = 'Admin'; optAdmin.innerText = 'Admin Master'; roleSelect.appendChild(optAdmin);
-            }
-            
-            checkRole(); 
-            document.getElementById('modal-create').classList.add('show'); 
-        }
-
+        function toggleCompactMode() { const hide = document.getElementById('toggle-compact').checked; document.querySelectorAll('.col-detailed').forEach(el => { el.style.display = hide ? 'none' : 'table-cell'; }); }
+        async function sinalizarRenovacao(target) { if(!confirm("Solicitar ao Admin que renove este usuário?")) return; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'signal_renewal', user: currentUserData.user, pass: currentUserData.pass, targetUser: target }) }); const res = await req.json(); if(res.success) { alert("Solicitação enviada! O status mudou para 'Solicitando Renovação'."); abrirAdminPanel(); } else { alert("Erro ao solicitar."); } } catch(e) { alert("Erro de conexão."); } }
+        function parseData(v) { if(!v) return null; if(v instanceof Date) return v; if(typeof v==='string'){ var s=v.trim(); if(s.length>10){ try { var parts=s.split(' '); var d=parts[0].split('/'); var t=parts[1].split(':'); return new Date(d[2],d[1]-1,d[0],t[0],t[1]); } catch(e) { return null; } } else { var d=s.split('/'); if(d.length===3) return new Date(d[2],d[1]-1,d[0], 23, 59, 59); } } return new Date(v); }
+        function abrirModalCreate() { userEditing = null; document.getElementById('new-user').value = ''; document.getElementById('new-pass').value = ''; document.getElementById('new-days').value = '30'; document.getElementById('new-wa').value = ''; document.getElementById('new-val').value = ''; document.getElementById('new-pix').value = ''; const roleSelect = document.getElementById('new-role'); roleSelect.innerHTML = ''; const optUser = document.createElement('option'); optUser.value = 'User'; optUser.innerText = 'Usuário Comum'; roleSelect.appendChild(optUser); const optTest = document.createElement('option'); optTest.value = 'Teste'; optTest.innerText = 'Teste (1 Hora)'; roleSelect.appendChild(optTest); if (currentUserData.cargo === 'Admin') { const optSub = document.createElement('option'); optSub.value = 'Sub-Admin'; optSub.innerText = 'Sub-Admin'; roleSelect.appendChild(optSub); const optAdmin = document.createElement('option'); optAdmin.value = 'Admin'; optAdmin.innerText = 'Admin Master'; roleSelect.appendChild(optAdmin); } checkRole(); document.getElementById('modal-create').classList.add('show'); }
         function checkRole() { const r = document.getElementById('new-role').value; const d = document.getElementById('days-container'); if (r === 'Teste') d.classList.add('hidden'); else d.classList.remove('hidden'); }
-        
-        async function salvarNovoUsuario() { 
-            const btn = document.getElementById('btn-save-user'); const u = document.getElementById('new-user').value; const p = document.getElementById('new-pass').value; const d = parseInt(document.getElementById('new-days').value); const w = document.getElementById('new-wa').value; const v = document.getElementById('new-val').value; const x = document.getElementById('new-pix').value; const cargo = document.getElementById('new-role').value; const msg = document.getElementById('msg-create'); 
-            
-            if(!u || !p) return msg.innerText = "Preencha usuário e senha."; 
-            btn.disabled = true; btn.innerText = "Salvando..."; 
-            
-            let date = "";
-            const hoje = new Date();
-            
-            if (cargo !== 'Teste') {
-                 hoje.setDate(hoje.getDate() + (d || 0));
-                 const dia = ("0" + hoje.getDate()).slice(-2);
-                 const mes = ("0" + (hoje.getMonth() + 1)).slice(-2);
-                 const ano = hoje.getFullYear();
-                 date = `${dia}/${mes}/${ano}`;
-            } else {
-                date = "1h";
-            }
-            
-            const novo = { user: u, pass: p, date: date, wa: w, val: v, cargo: cargo, pix: x }; 
-            try { 
-                const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'create_user', user: currentUserData.user, pass: currentUserData.pass, novoUsuario: novo }) }); 
-                const res = await req.json(); 
-                if (res.success) { 
-                    tempUser=u; tempPass=p; tempWa=w; tempDate=date; tempVal=v; 
-                    fecharModal('modal-create'); 
-                    document.getElementById('modal-created-success').classList.add('show'); 
-                    abrirAdminPanel(); 
-                } else { msg.innerText = "Erro ao criar."; } 
-            } catch (e) { msg.innerText = "Erro conexão."; } finally { btn.disabled = false; btn.innerText = "💾 Salvar"; } 
-        }
-        
-        function prepararEdicaoUser(uName) { userEditing = uName; document.getElementById('edit-user-display').innerText = uName; document.getElementById('edit-pass').value = ''; document.getElementById('edit-date').value = ''; document.getElementById('edit-wa').value = ''; document.getElementById('edit-val').value = ''; 
-            const isSub = currentUserData.cargo === 'Sub-Admin';
-            document.getElementById('div-edit-role').style.display = isSub ? 'none' : 'block';
-            document.getElementById('modal-edit').classList.add('show'); 
-        }
-        
-        async function salvarEdicao() { 
-            const btn = document.getElementById('btn-save-edit'); const p = document.getElementById('edit-pass').value; const d = document.getElementById('edit-date').value; const w = document.getElementById('edit-wa').value; const v = document.getElementById('edit-val').value; const r = document.getElementById('edit-role').value; 
-            btn.disabled = true; btn.innerText = "Salvando..."; 
-            const edit = { userOriginal: userEditing, pass: p, date: d, wa: w, val: v, cargo: r }; 
-            try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'edit_user', user: currentUserData.user, pass: currentUserData.pass, dadosEditados: edit }) }); alert("Editado!"); fecharModal('modal-edit'); abrirAdminPanel(); } catch (e) { alert("Erro."); } finally { btn.disabled = false; btn.innerText = "💾 Atualizar Dados"; } 
-        }
-        
+        async function salvarNovoUsuario() { const btn = document.getElementById('btn-save-user'); const u = document.getElementById('new-user').value; const p = document.getElementById('new-pass').value; const d = parseInt(document.getElementById('new-days').value); const w = document.getElementById('new-wa').value; const v = document.getElementById('new-val').value; const x = document.getElementById('new-pix').value; const cargo = document.getElementById('new-role').value; const msg = document.getElementById('msg-create'); if(!u || !p) return msg.innerText = "Preencha usuário e senha."; btn.disabled = true; btn.innerText = "Salvando..."; let date = ""; const hoje = new Date(); if (cargo !== 'Teste') { hoje.setDate(hoje.getDate() + (d || 0)); const dia = ("0" + hoje.getDate()).slice(-2); const mes = ("0" + (hoje.getMonth() + 1)).slice(-2); const ano = hoje.getFullYear(); date = `${dia}/${mes}/${ano}`; } else { date = "1h"; } const novo = { user: u, pass: p, date: date, wa: w, val: v, cargo: cargo, pix: x }; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'create_user', user: currentUserData.user, pass: currentUserData.pass, novoUsuario: novo }) }); const res = await req.json(); if (res.success) { tempUser=u; tempPass=p; tempWa=w; tempDate=date; tempVal=v; fecharModal('modal-create'); document.getElementById('modal-created-success').classList.add('show'); abrirAdminPanel(); } else { msg.innerText = "Erro ao criar."; } } catch (e) { msg.innerText = "Erro conexão."; } finally { btn.disabled = false; btn.innerText = "💾 Salvar"; } }
+        function prepararEdicaoUser(uName) { userEditing = uName; document.getElementById('edit-user-display').innerText = uName; document.getElementById('edit-pass').value = ''; document.getElementById('edit-date').value = ''; document.getElementById('edit-wa').value = ''; document.getElementById('edit-val').value = ''; const isSub = currentUserData.cargo === 'Sub-Admin'; document.getElementById('div-edit-role').style.display = isSub ? 'none' : 'block'; document.getElementById('modal-edit').classList.add('show'); }
+        async function salvarEdicao() { const btn = document.getElementById('btn-save-edit'); const p = document.getElementById('edit-pass').value; const d = document.getElementById('edit-date').value; const w = document.getElementById('edit-wa').value; const v = document.getElementById('edit-val').value; const r = document.getElementById('edit-role').value; btn.disabled = true; btn.innerText = "Salvando..."; const edit = { userOriginal: userEditing, pass: p, date: d, wa: w, val: v, cargo: r }; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'edit_user', user: currentUserData.user, pass: currentUserData.pass, dadosEditados: edit }) }); alert("Editado!"); fecharModal('modal-edit'); abrirAdminPanel(); } catch (e) { alert("Erro."); } finally { btn.disabled = false; btn.innerText = "💾 Atualizar Dados"; } }
         async function renovarUser(target) { const d = prompt("Quantos dias adicionar?", "30"); if (!d) return; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'renew_user', user: currentUserData.user, pass: currentUserData.pass, targetUser: target, days: d }) }); alert("Renovado!"); abrirAdminPanel(); } catch (e) { alert("Erro."); } }
         async function toggleStatus(target) { if (!confirm("Alterar status?")) return; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggle_status', user: currentUserData.user, pass: currentUserData.pass, targetUser: target }) }); abrirAdminPanel(); } catch (e) { alert("Erro."); } }
         async function fazerUploadArquivo(modo) { const input = (modo === 'teste') ? document.getElementById('admin-file-test') : document.getElementById('admin-file-upload'); if (input.files.length === 0) return alert("Selecione um arquivo."); const file = input.files[0]; const reader = new FileReader(); reader.onload = async function(e) { const base64 = e.target.result.split(',')[1]; document.getElementById('upload-status').innerText = "Enviando..."; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'upload_file', user: currentUserData.user, pass: currentUserData.pass, fileData: base64, fileName: file.name, fileType: file.type, mode: modo }) }); const res = await req.json(); if (res.success) { alert("Arquivo enviado!"); document.getElementById('upload-status').innerText = ""; } else { alert("Erro no envio."); } } catch (err) { alert("Erro de conexão."); } }; reader.readAsDataURL(file); }
         async function salvarMensagem() { const m = document.getElementById('global-msg-input').value; if (!m) return alert("Digite algo."); try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'save_message', user: currentUserData.user, pass: currentUserData.pass, message: m }) }); alert("Mensagem salva!"); } catch (e) { alert("Erro."); } }
-        
         async function abrirTutoriais() { document.getElementById('modal-tutorials').classList.add('show'); const area = document.getElementById('tutorials-list'); area.innerHTML = 'Carregando...'; if(currentUserData.isMaster) document.getElementById('admin-tutorial-area').style.display = 'block'; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'get_tutorials' }) }); const res = await req.json(); if(res.success && res.list.length > 0) { area.innerHTML = ''; res.list.forEach(t => { let embed = t.link; if(t.link.includes('youtu')) { const vidId = t.link.split('v=')[1] || t.link.split('/').pop(); embed = `https://www.youtube.com/embed/${vidId}`; } area.innerHTML += `<div class="tutorial-card"><div class="tut-title-text">📺 ${t.title} ${currentUserData.isMaster ? `<button class="danger btn-auto" style="padding:2px 5px; font-size:10px;" onclick="apagarTutorial(${t.id})">X</button>` : ''}</div><div class="video-container"><iframe src="${embed}" frameborder="0" allowfullscreen></iframe></div></div>`; }); } else { area.innerHTML = '<p>Nenhum tutorial disponível.</p>'; } } catch(e) { area.innerHTML = 'Erro ao carregar.'; } }
         async function salvarTutorial() { const t = document.getElementById('tut-title').value; const l = document.getElementById('tut-link').value; if(!t || !l) return alert("Preencha tudo."); try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'save_tutorial', title: t, link: l }) }); alert("Adicionado!"); abrirTutoriais(); } catch(e){ alert("Erro."); } }
         async function apagarTutorial(id) { if(!confirm("Apagar?")) return; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'delete_tutorial', id: id }) }); abrirTutoriais(); } catch(e){ alert("Erro."); } }
-
         function verificarInstalacaoApp() { if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) return; const bannerFechadoEm = localStorage.getItem('install_banner_closed'); if (bannerFechadoEm && (new Date().getTime() - parseInt(bannerFechadoEm) < 86400000)) return; abrirTutorialInstall(); }
         function abrirTutorialInstall() { const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream; if (deferredPrompt) { document.getElementById('btn-android-install').classList.remove('hidden'); document.getElementById('tutorial-android').classList.add('hidden'); document.getElementById('tutorial-ios').classList.add('hidden'); } else if (isIOS) { document.getElementById('btn-android-install').classList.add('hidden'); document.getElementById('tutorial-ios').classList.remove('hidden'); document.getElementById('tutorial-android').classList.add('hidden'); } else { document.getElementById('btn-android-install').classList.add('hidden'); document.getElementById('tutorial-ios').classList.add('hidden'); document.getElementById('tutorial-android').classList.remove('hidden'); } document.getElementById('modal-install-tutorial').classList.add('show'); }
         async function instalarAndroid() { if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') fecharInstallModal(); deferredPrompt = null; } }
