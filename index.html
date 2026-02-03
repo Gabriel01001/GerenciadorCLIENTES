@@ -32,8 +32,8 @@
         button.renew-btn { background: #8b5cf6; color: white; }
         button.vip-btn { background: #fffbeb; color: #b45309; border: 1px solid #fcd34d; }
         button.export-btn { background: #059669; color: white; border: 1px solid #047857; } 
-        button.import-btn { background: #7c3aed; color: white; border: 1px solid #6d28d9; } /* Roxo Importar */
-        button.undo-btn { background: #dc2626; color: white; border: 1px solid #b91c1c; animation: pulse 2s infinite; } /* Vermelho Desfazer */
+        button.import-btn { background: #7c3aed; color: white; border: 1px solid #6d28d9; } 
+        button.undo-btn { background: #dc2626; color: white; border: 1px solid #b91c1c; animation: pulse 2s infinite; }
         .btn-auto { width: auto !important; padding: 8px 16px; font-size: 13px; margin: 3px; flex-shrink: 0; }
         
         .tutorial-btn-orange { background: linear-gradient(135deg, #fb923c, #ea580c); color: white; border: none; padding: 8px 20px; font-size: 12px; border-radius: 25px; box-shadow: 0 4px 10px rgba(234, 88, 12, 0.4); transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -49,7 +49,7 @@
         .modal-overlay.show { display:flex; }
         
         .modal-content { background:var(--card); padding: 20px; border-radius:20px; width: 100%; max-width: 400px; position:relative; color: var(--text); max-height: 80vh; overflow-y: auto; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
-        @media (min-width: 768px) { #modal-admin .modal-content, #modal-import-preview .modal-content { max-width: 1400px; width: 98%; } }
+        @media (min-width: 768px) { #modal-admin .modal-content, #modal-import-preview .modal-content, #modal-column-map .modal-content { max-width: 1400px; width: 98%; } }
 
         .admin-action-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; }
         .admin-toggle-btn { padding: 10px; font-size: 11px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; color: white; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.2s; }
@@ -119,6 +119,11 @@
         .filter-option input { width: 14px; height: 14px; margin: 0; cursor: pointer; }
         .filter-actions { border-top: 1px solid #eee; margin-top: 8px; padding-top: 8px; text-align: right; }
         .filter-btn-small { font-size: 10px; padding: 4px 10px; background: var(--text); color: var(--card); border-radius: 4px; width: auto; display: inline-block; cursor: pointer;}
+
+        /* ESTILO PARA MAPEAMENTO DE COLUNAS */
+        .map-row { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
+        .map-label { font-weight: 700; width: 30%; font-size: 13px; }
+        .map-select { width: 65%; font-size: 12px; padding: 8px; }
 
         @media (max-width: 600px) {
             .custom-table, .custom-table thead, .custom-table tbody, .custom-table th, .custom-table td, .custom-table tr { display: block; }
@@ -273,6 +278,22 @@
         </div>
     </div>
 
+    <div id="modal-column-map" class="modal-overlay" style="z-index: 2100;"> 
+        <div class="modal-content" style="max-width: 500px;"> 
+            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-column-map')">&times;</span> 
+            <h3 style="margin-top:0; color:var(--purple);">🗺️ Mapear Colunas</h3> 
+            <p style="font-size:12px; color:#666;">O sistema encontrou estas colunas. Por favor, indique qual coluna corresponde a cada dado.</p>
+            
+            <div id="mapping-container" style="margin-bottom: 20px;">
+                </div>
+            
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="secondary btn-auto" onclick="fecharModal('modal-column-map')">Cancelar</button>
+                <button class="import-btn btn-auto" onclick="aplicarMapeamento()">Continuar ➡️</button>
+            </div>
+        </div> 
+    </div>
+
     <div id="modal-import-preview" class="modal-overlay" style="z-index: 2000;"> 
         <div class="modal-content" style="max-width: 900px;"> 
             <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-import-preview')">&times;</span> 
@@ -392,8 +413,10 @@
         let listaClientes = []; let clienteEditandoId = null; let globalWhatsappTemplate = "";
         let filtrosAtivos = {}; 
         
-        let importacaoTemp = []; // Lista temporária para o modal
-        let lastCreatedIds = []; // Lista de IDs criados para o Desfazer
+        let importacaoTemp = []; // Lista para preview
+        let lastCreatedIds = []; // IDs para undo
+        let globalRawData = []; // Dados brutos do Excel (para mapeamento)
+        let globalHeaders = []; // Headers do Excel
 
         window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
         window.onload = () => {
@@ -409,83 +432,116 @@
         function abrirClientes() { document.getElementById('dashboard-screen').classList.add('hidden'); document.getElementById('app-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.remove('hidden'); carregarMeusClientes(); }
         function voltarDashboard() { document.getElementById('app-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.add('hidden'); document.getElementById('dashboard-screen').classList.remove('hidden'); }
 
-        // --- IMPORTAÇÃO UNIVERSAL DE EXCEL (XLSX, XLS, CSV, XML) - V119 ---
+        // --- IMPORTAÇÃO UNIVERSAL COM MAPEAMENTO (V120) ---
         function lerArquivoImportacao(input) {
             const file = input.files[0];
             if (!file) return;
             const reader = new FileReader();
-            
-            // Usa ArrayBuffer para suportar binários (XLS, XLSX)
             reader.readAsArrayBuffer(file);
-            
             reader.onload = function(e) {
                 const data = new Uint8Array(e.target.result);
-                // Lê o workbook usando SheetJS
                 const workbook = XLSX.read(data, {type: 'array'});
-                
-                // Pega a primeira aba
                 const firstSheetName = workbook.SheetNames[0];
                 const worksheet = workbook.Sheets[firstSheetName];
                 
-                // Converte para JSON (Matriz de Arrays: Linha 1 = Header)
-                // header: 1 garante que pegamos as linhas cruas [A, B, C...]
-                const rows = XLSX.utils.sheet_to_json(worksheet, {header: 1, raw: false}); 
+                // Pega dados crus com formatação de texto (para datas ficarem legíveis)
+                globalRawData = XLSX.utils.sheet_to_json(worksheet, {header: 1, raw: false}); 
                 
-                importacaoTemp = [];
-                
-                // Tenta descobrir a estrutura
-                // Se tiver mais de 6 colunas, provavelmente é exportação do sistema (com coluna Criador)
-                // Se tiver <= 6, é planilha simples (Nome, User, Server, Wa, Valor, Venc)
-                let isSystemExport = false;
-                if (rows.length > 0 && rows[0].length > 6) isSystemExport = true;
-                
-                // Pula cabeçalho se a linha 0 tiver "Nome" ou "Usuario"
-                let start = 0;
-                if (rows[0] && (String(rows[0][0]).toLowerCase().includes('nome') || String(rows[0][2]).toLowerCase().includes('usuário'))) {
-                    start = 1;
+                if(!globalRawData || globalRawData.length < 1) {
+                    alert("Arquivo vazio ou inválido.");
+                    return;
                 }
 
-                for (let i = start; i < rows.length; i++) {
-                    const row = rows[i];
-                    if (!row || row.length === 0) continue;
-
-                    // Mapeamento das colunas
-                    // SIMPLES: 0=Nome, 1=User, 2=Server, 3=Whats, 4=Valor, 5=Venc
-                    // EXPORT:  0=Nome, 1=Criador, 2=User, 3=Server, 4=Whats, 5=Valor, 6=Venc
-                    let nome, usuario, servidor, whatsapp, valor, vencimento;
-
-                    if (isSystemExport) {
-                        nome = row[0];
-                        usuario = row[2];
-                        servidor = row[3];
-                        whatsapp = row[4];
-                        valor = row[5];
-                        vencimento = row[6];
-                    } else {
-                        nome = row[0];
-                        usuario = row[1];
-                        servidor = row[2];
-                        whatsapp = row[3];
-                        valor = row[4];
-                        vencimento = row[5];
-                    }
-
-                    // Limpeza básica
-                    nome = nome ? String(nome).trim() : "Sem Nome";
-                    usuario = usuario ? String(usuario).trim() : "";
-                    whatsapp = whatsapp ? String(whatsapp).replace(/\D/g,'') : "";
-                    valor = valor ? String(valor).trim() : "";
-                    vencimento = vencimento ? String(vencimento).trim() : "";
-                    servidor = servidor ? String(servidor).trim() : "";
-
-                    if (nome && usuario) {
-                        importacaoTemp.push({ nome, usuario, servidor, whatsapp, valor, vencimento, checked: true });
-                    }
-                }
+                // Identificar Headers (Linha 0)
+                globalHeaders = globalRawData[0].map(h => String(h).trim());
                 
-                mostrarPreviewImportacao();
-                input.value = ''; // Reset input
+                // Se não tiver cabeçalho claro, criar genérico
+                if(globalHeaders.length === 0) {
+                    globalHeaders = globalRawData[0].map((_, i) => `Coluna ${i+1}`);
+                }
+
+                abrirModalMapeamento();
+                input.value = ''; // Reset
             };
+        }
+
+        function abrirModalMapeamento() {
+            const container = document.getElementById('mapping-container');
+            container.innerHTML = '';
+
+            // Campos do nosso sistema
+            const systemFields = [
+                { id: 'map_nome', label: 'Nome', keywords: ['nome', 'name', 'cliente', 'customer'] },
+                { id: 'map_user', label: 'Usuário (Login)', keywords: ['usuário', 'usuario', 'user', 'login', 'username'] },
+                { id: 'map_server', label: 'Servidor', keywords: ['servidor', 'server', 'painel'] },
+                { id: 'map_wa', label: 'WhatsApp', keywords: ['whatsapp', 'celular', 'telefone', 'phone', 'contato'] },
+                { id: 'map_val', label: 'Valor', keywords: ['valor', 'preço', 'price', 'custo'] },
+                { id: 'map_venc', label: 'Vencimento', keywords: ['vencimento', 'validade', 'expire', 'data'] }
+            ];
+
+            // Gerar HTML dos Selects
+            systemFields.forEach(field => {
+                let options = `<option value="-1">-- Ignorar --</option>`;
+                let selectedIndex = -1;
+
+                globalHeaders.forEach((header, index) => {
+                    const hLower = header.toLowerCase();
+                    // Auto-detectar
+                    if (selectedIndex === -1 && field.keywords.some(k => hLower.includes(k))) {
+                        selectedIndex = index;
+                    }
+                    options += `<option value="${index}" ${index === selectedIndex ? 'selected' : ''}>${header} (Col ${index+1})</option>`;
+                });
+
+                container.innerHTML += `
+                    <div class="map-row">
+                        <div class="map-label">${field.label}</div>
+                        <select id="${field.id}" class="map-select">${options}</select>
+                    </div>
+                `;
+            });
+
+            document.getElementById('modal-column-map').classList.add('show');
+        }
+
+        function aplicarMapeamento() {
+            const map = {
+                nome: parseInt(document.getElementById('map_nome').value),
+                user: parseInt(document.getElementById('map_user').value),
+                server: parseInt(document.getElementById('map_server').value),
+                wa: parseInt(document.getElementById('map_wa').value),
+                val: parseInt(document.getElementById('map_val').value),
+                venc: parseInt(document.getElementById('map_venc').value)
+            };
+
+            // Validação mínima
+            if (map.user === -1) {
+                alert("O campo 'Usuário' é obrigatório para importar.");
+                return;
+            }
+
+            importacaoTemp = [];
+            
+            // Loop começa na linha 1 (pula cabeçalho)
+            for (let i = 1; i < globalRawData.length; i++) {
+                const row = globalRawData[i];
+                if (!row || row.length === 0) continue;
+
+                // Extrair dados baseado no índice mapeado
+                let nome = (map.nome !== -1 && row[map.nome]) ? String(row[map.nome]).trim() : "Sem Nome";
+                let usuario = (map.user !== -1 && row[map.user]) ? String(row[map.user]).trim() : "";
+                let servidor = (map.server !== -1 && row[map.server]) ? String(row[map.server]).trim() : "";
+                let whatsapp = (map.wa !== -1 && row[map.wa]) ? String(row[map.wa]).replace(/\D/g,'') : "";
+                let valor = (map.val !== -1 && row[map.val]) ? String(row[map.val]).trim() : "";
+                let vencimento = (map.venc !== -1 && row[map.venc]) ? String(row[map.venc]).trim() : "";
+
+                if (usuario) {
+                    importacaoTemp.push({ nome, usuario, servidor, whatsapp, valor, vencimento, checked: true });
+                }
+            }
+
+            fecharModal('modal-column-map');
+            mostrarPreviewImportacao();
         }
 
         function mostrarPreviewImportacao() {
