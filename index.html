@@ -65,7 +65,7 @@
         .act-chat { background: #25d366; color: white; border-radius: 50%; } 
         .act-send { background: #fffbeb; color: #b45309; border: 1px solid #fcd34d; border-radius: 8px; font-size: 12px; } 
         .act-edit { background: #3b82f6; color: white; border-radius: 50%; } 
-        .act-quick-msg { background: #10b981; color: white; border-radius: 8px; } /* Botão Foguete */
+        .act-quick-msg { background: #10b981; color: white; border-radius: 8px; } 
 
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
         .menu-card { background: var(--bg); border: 2px solid #e5e7eb; border-radius: 15px; padding: 20px; text-align: center; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 120px; }
@@ -74,6 +74,16 @@
         .menu-title { font-weight: 700; font-size: 14px; color: var(--text); }
 
         .theme-toggle { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; border-radius: 50%; padding: 0; background: var(--primary); color: white; border: none; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-size: 24px; }
+        
+        .map-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px; border-bottom: 1px solid #eee; }
+        .map-label { font-weight: 700; width: 30%; font-size: 13px; margin-top: 8px; color: var(--text); }
+        .map-input-group { width: 65%; display: flex; flex-direction: column; gap: 5px; }
+        .map-select { width: 100%; font-size: 12px; padding: 8px; }
+        .map-manual-input { width: 100%; font-size: 12px; padding: 8px; border: 1px dashed #3b82f6; background: #eff6ff; color: #1e40af; border-radius: 6px; }
+
+        .custom-table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--card); border-radius: 10px; }
+        .custom-table th { padding: 12px; text-align: left; color: var(--primary); font-weight: 700; }
+        .custom-table td { padding: 12px; border-bottom: 1px solid #f3f4f6; color: var(--text); }
     </style>
 </head>
 <body>
@@ -148,17 +158,21 @@
                 <div style="display:flex; gap:10px; align-items:center;"><button class="secondary btn-auto" onclick="voltarDashboard()">⬅ Voltar</button><h3 style="margin:0;">Gestão Clientes</h3></div>
                 <div style="display:flex; gap:5px; flex-wrap: wrap; justify-content: flex-end;">
                     <button class="secondary btn-auto" onclick="abrirConfigMsg()">⚙️ Msg</button>
+                    <button id="btn-undo-import" class="undo-btn btn-auto" onclick="desfazerImportacao()" style="display:none;">↺ Desfazer</button>
                     <button class="import-btn btn-auto" onclick="document.getElementById('file-import-clients').click()">📤 Importar</button>
                     <input type="file" id="file-import-clients" accept=".csv, .xlsx, .xls, .xml, .ods" hidden onchange="lerArquivoImportacao(this)">
                     <button class="export-btn btn-auto" onclick="exportarPlanilhaClientes()">📥 Exportar</button>
                     <button class="chat-btn btn-auto" onclick="abrirModalCliente()">➕ Novo</button>
                 </div>
             </div>
+            <input type="text" id="search-client" placeholder="🔍 Buscar por nome, usuário, criador..." onkeyup="filtrarClientesUI()" style="margin-bottom:15px;">
             <div class="table-responsive">
                 <table class="custom-table">
                     <thead><tr><th>Nome</th><th>Usuário</th><th>Servidor</th><th>Vencimento</th><th>Ações</th></tr></thead>
                     <tbody id="tabela-corpo"></tbody>
                 </table>
+                <div id="loader-clientes" class="loader" style="display:none; border-color:#ccc; border-top-color:#333; margin-top:20px;"></div>
+                <p id="msg-sem-clientes" style="text-align:center; opacity:0.6; margin-top:20px; display:none;">Nenhum cliente encontrado.</p>
             </div>
         </div>
     </div>
@@ -167,7 +181,7 @@
         <div class="modal-content" style="max-width: 450px;"> 
             <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px;" onclick="fecharModal('modal-config-msg')">&times;</span> 
             <h3 style="margin-top:0; color:var(--primary);">⚙️ Configurar Mensagem</h3> 
-            <p style="font-size:12px; color:#666; text-align: left;">Use as tags: <b>{nome}</b>, <b>{usuario}</b>, <b>{servidor}</b>, <b>{valor}</b>, <b>{vencimento}</b></p>
+            <p style="font-size:12px; color:#666; text-align: left;">Use: <b>{nome}</b>, <b>{usuario}</b>, <b>{servidor}</b>, <b>{valor}</b>, <b>{vencimento}</b></p>
             <textarea id="quick-msg-template" style="height: 150px; text-align: left;" placeholder="Olá {nome}, seu acesso {servidor} vence em {vencimento}..."></textarea>
             <button onclick="salvarConfigMsg()">💾 Salvar Mensagem</button>
         </div> 
@@ -179,10 +193,13 @@
 
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbwtMMYq6gHWUX33Ie05iyjbVKPzWtzd9vebIInLe607nqN57GteOeOGE1a8dMI05Cpw/exec';
-        const DB_KEY = 'zapflow_v36'; const SESSION_KEY = 'zapflow_session_v36';
+        const SESSION_KEY = 'zapflow_session_v36';
         let currentUserData = null; let currentFileUrl = ""; 
         let tempUser="", tempPass="", tempWa="", tempDate="", tempVal="";
         let listaClientes = [];
+
+        // MAPEAMENTO E IMPORTAÇÃO MANTIDOS CONFORME SOLICITADO
+        let globalRawData = []; let globalHeaders = []; let importacaoTemp = []; let lastCreatedIds = [];
 
         // --- NOVA LÓGICA MENSAGEM RÁPIDA ---
         function abrirConfigMsg() {
@@ -194,39 +211,27 @@
         function salvarConfigMsg() {
             const msg = document.getElementById('quick-msg-template').value;
             localStorage.setItem('zapflow_quick_msg', msg);
-            alert("Mensagem salva localmente com sucesso!");
+            alert("Mensagem salva!");
             fecharModal('modal-config-msg');
         }
 
         function enviarMensagemRapida(nome, usuario, servidor, valor, vencimento, whatsapp) {
             const template = localStorage.getItem('zapflow_quick_msg');
-            if(!template) return alert("Configure a mensagem primeiro no botão '⚙️ Msg'");
-            if(!whatsapp) return alert("Este cliente não possui WhatsApp cadastrado.");
-
-            let msgFinal = template
-                .replace(/{nome}/g, nome)
-                .replace(/{usuario}/g, usuario)
-                .replace(/{servidor}/g, servidor)
-                .replace(/{valor}/g, valor)
-                .replace(/{vencimento}/g, vencimento);
-
+            if(!template) return alert("Configure a mensagem primeiro!");
+            let msgFinal = template.replace(/{nome}/g, nome).replace(/{usuario}/g, usuario).replace(/{servidor}/g, servidor).replace(/{valor}/g, valor).replace(/{vencimento}/g, vencimento);
             let num = String(whatsapp).replace(/\D/g,'');
             if(num.length === 10 || num.length === 11) num = '55' + num;
-            
             window.open(`https://wa.me/${num}?text=${encodeURIComponent(msgFinal)}`);
         }
 
-        // --- FUNÇÕES EXISTENTES MANTIDAS ---
+        // --- RESTANTE DAS FUNÇÕES ORIGINAIS ---
         function baixarArquivoGeral() { if(!currentFileUrl) return alert("Erro"); window.open(currentFileUrl, '_blank'); }
 
         async function carregarMeusClientes() {
             try {
                 const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'list_clients', user: currentUserData.user, pass: currentUserData.pass }) });
                 const res = await req.json();
-                if(res.success) {
-                    listaClientes = res.lista;
-                    renderizarClientes(res.lista);
-                }
+                if(res.success) { listaClientes = res.lista; renderizarClientes(res.lista); }
             } catch(e) {}
         }
 
@@ -234,16 +239,8 @@
             const corpo = document.getElementById('tabela-corpo');
             corpo.innerHTML = '';
             lista.forEach(c => {
-                // Adicionando o botão FOGUETE na tabela
-                const btnQuick = `<button class="btn-action-master act-quick-msg" title="Mensagem Rápida" onclick="enviarMensagemRapida('${c.nome}','${c.usuario}','${c.servidor}','${c.valor}','${c.vencimento}','${c.whatsapp}')">🚀</button>`;
-                
-                corpo.innerHTML += `<tr>
-                    <td>${c.nome}</td>
-                    <td>${c.usuario}</td>
-                    <td>${c.servidor}</td>
-                    <td>${c.vencimento}</td>
-                    <td><div style="display:flex;">${btnQuick}</div></td>
-                </tr>`;
+                const btnQuick = `<button class="btn-action-master act-quick-msg" onclick="enviarMensagemRapida('${c.nome}','${c.usuario}','${c.servidor}','${c.valor}','${c.vencimento}','${c.whatsapp}')">🚀</button>`;
+                corpo.innerHTML += `<tr><td>${c.nome}</td><td>${c.usuario}</td><td>${c.servidor}</td><td>${c.vencimento}</td><td><div style="display:flex;">${btnQuick}</div></td></tr>`;
             });
         }
 
@@ -259,17 +256,13 @@
                     localStorage.setItem(SESSION_KEY, JSON.stringify({user: u, pass: p}));
                     document.getElementById('login-screen').classList.add('hidden');
                     document.getElementById('dashboard-screen').classList.remove('hidden');
-                    if (res.data.file && res.data.file.url) {
-                        currentFileUrl = res.data.file.url;
-                        document.getElementById('file-download-card').style.display = 'flex';
-                    }
+                    if (res.data.file && res.data.file.url) { currentFileUrl = res.data.file.url; document.getElementById('file-download-card').style.display = 'flex'; }
                     if(res.data.isMaster) document.getElementById('btn-open-admin').classList.remove('hidden');
                     carregarMeusClientes();
                 } else { alert(res.msg || "Erro"); }
             } catch(e) { alert("Erro de conexão"); }
         }
 
-        // Funções de navegação e suporte mantidas
         function toggleTheme() { document.body.classList.toggle('dark-mode'); }
         function fecharModal(id) { document.getElementById(id).classList.remove('show'); }
         function logout() { localStorage.removeItem(SESSION_KEY); location.reload(); }
