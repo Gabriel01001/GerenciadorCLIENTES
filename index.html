@@ -11,6 +11,22 @@
     
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     
+    <script>
+        // ========================================
+        // FUNÇÃO DE NORMALIZAÇÃO DO WHATSAPP
+        // ========================================
+        /**
+         * Normaliza o número do WhatsApp removendo todos os caracteres não numéricos
+         * Aceita formatos como: +55 21 96584-2561, (21) 96584-2561, 21965842561, etc.
+         * Retorna apenas os dígitos: 5521965842561
+         */
+        function normalizarWhatsApp(numero) {
+            if (!numero) return "";
+            // Remove todos os caracteres que não sejam dígitos
+            return String(numero).replace(/\D/g, '');
+        }
+    </script>
+    
     <style>
         :root { --primary: #10b981; --dark: #064e3b; --bg: #f3f4f6; --text: #1f2937; --danger: #ef4444; --card: #fff; --radius: 12px; --blue: #3b82f6; --gold: #f59e0b; --gray: #6b7280; --purple: #8b5cf6; }
         body.dark-mode { --bg: #111827; --text: #f9fafb; --card: #1f2937; }
@@ -608,7 +624,8 @@
                     servidor = (map.server !== -1 && row[map.server]) ? String(row[map.server]).trim() : "";
                 }
 
-                let whatsapp = (map.wa !== -1 && row[map.wa]) ? String(row[map.wa]).replace(/\D/g,'') : "";
+                let whatsappRaw = (map.wa !== -1 && row[map.wa]) ? String(row[map.wa]) : "";
+                let whatsapp = normalizarWhatsApp(whatsappRaw);
                 let valor = (map.val !== -1 && row[map.val]) ? String(row[map.val]).trim() : "";
                 let vencimento = (map.venc !== -1 && row[map.venc]) ? String(row[map.venc]).trim() : "";
 
@@ -768,7 +785,7 @@
             let msg = globalWhatsappTemplate;
             msg = msg.replace(/{nome}/g, cli.nome || '').replace(/{usuario}/g, cli.usuario || '').replace(/{servidor}/g, cli.servidor || '').replace(/{valor}/g, cli.valor || '').replace(/{vencimento}/g, cli.vencimento || '');
             document.getElementById('msg-final-charge').value = msg;
-            document.getElementById('wa-dest-charge').value = cli.whatsapp.replace(/\D/g,'');
+            document.getElementById('wa-dest-charge').value = normalizarWhatsApp(cli.whatsapp);
             document.getElementById('modal-send-charge').classList.add('show');
         }
         function prepararMensagemAcao(id) {
@@ -779,7 +796,7 @@
             let msg = globalActionWaTemplate;
             msg = msg.replace(/{nome}/g, cli.nome || '').replace(/{usuario}/g, cli.usuario || '').replace(/{servidor}/g, cli.servidor || '').replace(/{valor}/g, cli.valor || '').replace(/{vencimento}/g, cli.vencimento || '');
             document.getElementById('msg-final-charge').value = msg;
-            document.getElementById('wa-dest-charge').value = cli.whatsapp.replace(/\D/g,'');
+            document.getElementById('wa-dest-charge').value = normalizarWhatsApp(cli.whatsapp);
             document.getElementById('modal-send-charge').classList.add('show');
         }
         function enviarCobrancaReal() {
@@ -795,11 +812,11 @@
             const cli = listaClientes.find(c => String(c.id) === String(id)); 
             if(!cli) return; 
             clienteEditandoId = id; 
-            document.getElementById('modal-cli-title').innerText = "Editar Cliente"; document.getElementById('cli-nome').value = cli.nome; document.getElementById('cli-user').value = cli.usuario; document.getElementById('cli-server').value = cli.servidor; document.getElementById('cli-wa').value = cli.whatsapp ? cli.whatsapp.replace(/\D/g,'') : ''; document.getElementById('cli-val').value = cli.valor; 
+            document.getElementById('modal-cli-title').innerText = "Editar Cliente"; document.getElementById('cli-nome').value = cli.nome; document.getElementById('cli-user').value = cli.usuario; document.getElementById('cli-server').value = cli.ser            document.getElementById('cli-wa').value = cli.whatsapp ? normalizarWhatsApp(cli.whatsapp) : '';ment.getElementById('cli-val').value = cli.valor; 
             if(cli.vencimento && cli.vencimento.includes('/')) { const parts = cli.vencimento.split('/'); document.getElementById('cli-venc').value = `${parts[2]}-${parts[1]}-${parts[0]}`; } else { document.getElementById('cli-venc').value = ''; } 
             document.getElementById('modal-new-client').classList.add('show'); 
         }
-        async function salvarCliente() { const btn = document.getElementById('btn-save-cli'); const nome = document.getElementById('cli-nome').value; const usuario = document.getElementById('cli-user').value; const servidor = document.getElementById('cli-server').value; const whatsapp = document.getElementById('cli-wa').value; const valor = document.getElementById('cli-val').value; const vencInput = document.getElementById('cli-venc').value; if(!nome || !usuario) return alert("Preencha ao menos Nome e Usuário."); let vencFormatado = "-"; if(vencInput) { const partes = vencInput.split('-'); vencFormatado = `${partes[2]}/${partes[1]}/${partes[0]}`; } btn.disabled = true; btn.innerText = "Salvando..."; const payload = { id: clienteEditandoId, nome: nome, usuario: usuario, servidor: servidor, whatsapp: whatsapp, valor: valor, vencimento: vencFormatado }; const acao = clienteEditandoId ? 'edit_client' : 'save_client'; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: acao, user: currentUserData.user, pass: currentUserData.pass, cliente: payload }) }); const res = await req.json(); if(res.success) { alert("Salvo!"); fecharModal('modal-new-client'); carregarMeusClientes(); } else { alert("Erro ao salvar."); } } catch(e) { alert("Erro de conexão."); } finally { btn.disabled = false; btn.innerText = "💾 Salvar Cliente"; } }
+        async function salvarCliente() { const btn = document.getElementById('btn-save-cli'); const nome = document.getElementById('cli-nome').value; const usuario = document.getElementById('cli-user').value; const servidor = document.getElementById('cli-server').value; const whatsappRaw = document.getElementById('cli-wa').value; const whatsapp = normalizarWhatsApp(whatsappRaw); const valor = document.getElementById('cli-val').value; const vencInput = document.getElementById('cli-venc').value; if(!nome || !usuario) return alert("Preencha ao menos Nome e Usuário."); let vencFormatado = "-"; if(vencInput) { const partes = vencInput.split('-'); vencFormatado = `${partes[2]}/${partes[1]}/${partes[0]}`; } btn.disabled = true; btn.innerText = "Salvando..."; const payload = { id: clienteEditandoId, nome: nome, usuario: usuario, servidor: servidor, whatsapp: whatsapp, valor: valor, vencimento: vencFormatado }; const acao = clienteEditandoId ? 'edit_client' : 'save_client'; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: acao, user: currentUserData.user, pass: currentUserData.pass, cliente: payload }) }); const res = await req.json(); if(res.success) { alert("Salvo!"); fecharModal('modal-new-client'); carregarMeusClientes(); } else { alert("Erro ao salvar."); } } catch(e) { alert("Erro de conexão."); } finally { btn.disabled = false; btn.innerText = "💾 Salvar Cliente"; } }
         async function carregarMeusClientes() { 
             const loader = document.getElementById('loader-clientes');
             const msgEmpty = document.getElementById('msg-sem-clientes');
@@ -979,7 +996,7 @@
                 // CORREÇÃO: Passando dados "safe" (sem aspas)
                 const btnSendReal = `<button class="btn-action-master act-send" title="Enviar Dados" onclick="prepararEnvioWhatsApp('${safeUser}','${safePass}','${safeWa}','${safeDate}','${safeVal}')">📩</button>`;
                 
-                btns += `<button class="btn-action-master act-chat" title="WhatsApp" onclick="window.open('https://wa.me/55${String(uWa).replace(/\D/g,'')}')">💬</button>`;
+                btns += `<button class="btn-action-master act-chat" title="WhatsApp" onclick="window.open('https://wa.me/55${normalizarWhatsApp(uWa)}')">💬</button>`;
                 btns += btnSendReal;
                 
                 // CORREÇÃO: Passando dados "safe" para o modal de edição
@@ -1035,7 +1052,7 @@
             const msg = `🔐 *Seu Acesso Gerenciador |WA|*\n\n👤 *Usuário:* ${tempUser}\n🔑 *Senha:* ${tempPass}\n📅 *Vencimento:* ${tempDate}\n🌐 *Site:* www.gerenciadorwa.com.br${quebra}`; 
             
             // LIMPEZA E CORREÇÃO DO NÚMERO
-            let num = String(tempWa).replace(/\D/g,'');
+            let num = normalizarWhatsApp(tempWa);
             if(!num || num.length < 8) return alert("Este usuário não tem número de WhatsApp válido.");
 
             if (num.length >= 10 && num.length <= 11) {
@@ -1063,7 +1080,7 @@
         function fecharModal(id){ document.getElementById(id).classList.remove('show'); }
         function logout(){ localStorage.removeItem(SESSION_KEY); location.reload(); }
         function lerArquivoSalvos(i) { const r=new FileReader(); r.onload=(e)=>{if(!db[currentUserData.user].salvos) db[currentUserData.user].salvos=[]; const linhas = e.target.result.split('\n'); const novos = linhas.filter(l => l.trim() && !db[currentUserData.user].salvos.includes(l.trim())); db[currentUserData.user].salvos.push(...novos); renderizar();}; r.readAsText(i.files[0]); i.value=''; }
-        function tratarAberturaLink(idx, link) { if (lastOpenedLink) { if(!db[currentUserData.user].naoSalvos) db[currentUserData.user].naoSalvos = []; db[currentUserData.user].naoSalvos.push(lastOpenedLink); } lastOpenedLink = link; if(link.includes('http')) { window.open(link); } else { window.open(`whatsapp://send?phone=55${link.replace(/\D/g,'')}`); } db[currentUserData.user].links.splice(idx, 1); document.getElementById('last-link-opened').innerText = link; document.getElementById('save-prompt').style.display = 'flex'; renderizar(); }
+        function tratarAberturaLink(idx, link) { if (lastOpenedLink) { if(!db[currentUserData.user].naoSalvos) db[currentUserData.user].naoSalvos = []; db[currentUserData.user].naoSalvos.push(lastOpenedLink); } lastOpenedLink = link; if(link.includes('http')) { window.open(link); } else { window.open(`whatsapp://send?phone=55${normalizarWhatsApp(link)}`); } db[currentUserData.user].links.splice(idx, 1); document.getElementById('last-link-opened').innerText = link; document.getElementById('save-prompt').style.display = 'flex'; renderizar(); }
         function confirmarSalvamento(sim) { const u = currentUserData.user; if(!db[u].salvos) db[u].salvos=[]; if(!db[u].naoSalvos) db[u].naoSalvos=[]; if(sim && lastOpenedLink) { db[u].salvos.push(lastOpenedLink); } else if (!sim && lastOpenedLink) { db[u].naoSalvos.push(lastOpenedLink); } document.getElementById('save-prompt').style.display = 'none'; lastOpenedLink = ""; renderizar(); }
         function limparPendentes() { if(confirm("Apagar?")) { db[currentUserData.user].links = []; pgPend = 0; renderizar(); } }
         function limparSalvos() { if(confirm("Limpar?")) { db[currentUserData.user].salvos = []; pgSalv = 0; renderizar(); } }
@@ -1082,7 +1099,7 @@
         function prepararEnvioAposCriacao() { fecharModalSucessoCriacao(); prepararEnvioWhatsApp(tempUser, tempPass, tempWa, tempDate, tempVal); }
         function fecharModalSucessoCriacao() { document.getElementById('modal-created-success').classList.remove('show'); }
         function prepararEnvioWhatsApp(u, p, w, d, v) { tempUser = u; tempPass = p; tempWa = w; tempDate = d; tempVal = v; document.getElementById('send-dest').innerText = u; const previewHtml = `👤 <b>Usuário:</b> ${u}<br>🔑 <b>Senha:</b> ${p}<br>📅 <b>Vencimento:</b> ${d}<br>🌐 <b>Site:</b> www.gerenciadorwa.com.br`; document.getElementById('preview-msg-content').innerHTML = previewHtml; document.getElementById('whatsapp-extra-msg').value = ""; document.getElementById('modal-send-whatsapp').classList.add('show'); }
-        function finalizarEnvioWhatsApp() { const extra = document.getElementById('whatsapp-extra-msg').value; const quebra = extra ? `\n\n${extra}` : ""; const msg = `🔐 *Seu Acesso Gerenciador |WA|*\n\n👤 *Usuário:* ${tempUser}\n🔑 *Senha:* ${tempPass}\n📅 *Vencimento:* ${tempDate}\n🌐 *Site:* www.gerenciadorwa.com.br${quebra}`; window.open(`https://wa.me/55${String(tempWa).replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`); fecharModal('modal-send-whatsapp'); }
+        function finalizarEnvioWhatsApp() { const extra = document.getElementById('whatsapp-extra-msg').value; const quebra = extra ? `\n\n${extra}` : ""; const msg = `🔐 *Seu Acesso Gerenciador |WA|*\n\n👤 *Usuário:* ${tempUser}\n🔑 *Senha:* ${tempPass}\n📅 *Vencimento:* ${tempDate}\n🌐 *Site:* www.gerenciadorwa.com.br${quebra}`; window.open(`https://wa.me/55${normalizarWhatsApp(tempWa)}?text=${encodeURIComponent(msg)}`); fecharModal('modal-send-whatsapp'); }
         
         async function iniciarTimerTeste(seconds) {
             const display = document.getElementById('status-acesso');
