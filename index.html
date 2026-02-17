@@ -34,77 +34,44 @@
         button.danger { background: var(--danger); }
         button.edit-btn { background: #3b82f6; color: white; }
         button.status-btn { background: var(--gold); color: white; border: 1px solid #d97706; }
-        button.test-btn { background: #8b5cf6; color: white; }
         button.admin-btn { background: #1f2937; color: white; }
         button.chat-btn { background: #25d366; color: white; }
         button.renew-btn { background: #8b5cf6; color: white; }
-        button.vip-btn { background: #fffbeb; color: #b45309; border: 1px solid #fcd34d; }
         button.export-btn { background: #059669; color: white; border: 1px solid #047857; } 
         button.import-btn { background: #7c3aed; color: white; border: 1px solid #6d28d9; } 
         button.undo-btn { background: #dc2626; color: white; border: 1px solid #b91c1c; animation: pulse 2s infinite; }
         .btn-auto { width: auto !important; padding: 8px 16px; font-size: 13px; margin: 3px; flex-shrink: 0; }
         
-        .tutorial-btn-orange { background: linear-gradient(135deg, #fb923c, #ea580c); color: white; border: none; padding: 8px 20px; font-size: 12px; border-radius: 25px; box-shadow: 0 4px 10px rgba(234, 88, 12, 0.4); transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-        .tutorial-btn-orange:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(234, 88, 12, 0.6); filter: brightness(1.1); }
-        .autoresponder-btn { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border: none; padding: 5px 15px; font-size: 12px; border-radius: 15px; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4); transition: 0.3s; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 2px; line-height: 1.2; }
-        
         .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .card { background: var(--card); border: 1px solid #e5e7eb; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; border-radius: var(--radius); align-items: center; gap: 10px; overflow: hidden; }
+        .link-text { flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 13px; min-width: 0; word-break: break-all; }
         .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:none; justify-content:center; align-items:center; z-index:1000; backdrop-filter: blur(4px); padding: 20px; }
         .modal-overlay.show { display:flex; }
         
         .modal-content { background:var(--card); padding: 20px; border-radius:20px; width: 100%; max-width: 400px; position:relative; color: var(--text); max-height: 80vh; overflow-y: auto; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
         @media (min-width: 768px) { #modal-admin .modal-content, #modal-import-preview .modal-content, #modal-column-map .modal-content { max-width: 1400px; width: 98%; } }
 
-        .table-responsive { overflow-x: auto; border: 1px solid #eee; border-radius: 10px; margin-top: 10px; padding-bottom: 80px; }
-        .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px; }
-        .admin-table th { background: #f4f6f8; color: #374151; padding: 12px; text-align: center !important; font-weight: 700; border-bottom: 2px solid #e5e7eb; white-space: nowrap; text-transform: uppercase; font-size: 12px; }
-        .admin-table td { padding: 10px; border-bottom: 1px solid #eee; vertical-align: middle; white-space: nowrap; text-align: center !important; font-size: 12px; }
-        
         .status-dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; }
-        .status-active { background-color: #10b981; } .status-expired { background-color: #ef4444; } .status-pending { background-color: #f59e0b; } .status-test { background-color: #06b6d4; box-shadow: 0 0 6px #06b6d4; }
-        
+        .status-active { background-color: #10b981; } .status-expired { background-color: #ef4444; } .status-pending { background-color: #f59e0b; } .status-test { background-color: #06b6d4; }
+        .status-request { background-color: #8b5cf6; } 
+
         .btn-action-master { width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); cursor: pointer; transition: 0.2s; font-size: 14px; margin: 0 2px; }
         .btn-action-master:hover { transform: translateY(-2px); filter: brightness(1.1); }
         .act-toggle { background: #f59e0b; color: white; border-radius: 50%; } 
         .act-renew { background: #8b5cf6; color: white; border-radius: 8px; } 
+        .act-signal { background: #8b5cf6; color: white; border-radius: 50%; border: 1px solid #7c3aed; } 
         .act-chat { background: #25d366; color: white; border-radius: 50%; } 
         .act-send { background: #fffbeb; color: #b45309; border: 1px solid #fcd34d; border-radius: 8px; font-size: 12px; } 
         .act-edit { background: #3b82f6; color: white; border-radius: 50%; } 
 
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .menu-card { background: var(--bg); border: 2px solid #e5e7eb; border-radius: 15px; padding: 20px; text-align: center; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 120px; }
-        .menu-card:hover { transform: translateY(-5px); border-color: var(--primary); background: rgba(16, 185, 129, 0.05); }
-        .menu-icon { font-size: 40px; margin-bottom: 10px; }
-        .menu-title { font-weight: 700; font-size: 14px; }
-
-        .theme-toggle { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; border-radius: 50%; padding: 0; background: var(--primary); color: white; border: none; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-size: 24px; }
-        .loader { border: 3px solid rgba(0,0,0,0.1); border-top: 3px solid var(--primary); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: none; margin: 0 auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* TELA CLIENTES */
-        .custom-table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--card); border-radius: 10px; }
-        .custom-table thead { background: var(--bg); border-bottom: 2px solid #e5e7eb; position: sticky; top: 0; z-index: 50; }
-        .custom-table th { padding: 12px; text-align: left; color: var(--primary); font-weight: 700; cursor: pointer; }
-        .custom-table td { padding: 12px; border-bottom: 1px solid #f3f4f6; color: var(--text); }
-        .wa-link { color: #25d366; font-weight: bold; text-decoration: none; display: flex; align-items: center; gap: 4px; border: 1px solid #25d366; padding: 3px 8px; border-radius: 20px; font-size: 11px; width: fit-content; background:transparent; cursor:pointer;}
-        .alert-icon { color: #ef4444; font-size: 14px; animation: pulse 1s infinite; margin-left: 5px; }
-        
-        .filter-dropdown { position: absolute; top: 35px; left: 0; background: var(--card); border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); padding: 12px; z-index: 9999; min-width: 200px; display: none; }
-        .filter-dropdown.show { display: block; }
-
-        /* ESTILO PARA MAPEAMENTO DE COLUNAS */
         .map-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px; border-bottom: 1px solid #eee; }
-        .map-label { font-weight: 700; width: 30%; font-size: 13px; margin-top: 8px; }
+        .map-label { font-weight: 700; width: 30%; font-size: 13px; margin-top: 8px; color: var(--text); }
         .map-input-group { width: 65%; display: flex; flex-direction: column; gap: 5px; }
+        .map-manual-input { width: 100%; font-size: 12px; padding: 8px; border: 1px dashed #3b82f6; background: #eff6ff; color: #1e40af; border-radius: 6px; }
 
-        @media (max-width: 600px) {
-            .custom-table, .custom-table thead, .custom-table tbody, .custom-table th, .custom-table td, .custom-table tr { display: block; }
-            .custom-table thead tr { position: absolute; top: -9999px; left: -9999px; }
-            .custom-table tr { border: 1px solid #eee; border-radius: 10px; margin-bottom: 10px; position: relative; }
-            .custom-table td { position: relative; padding-left: 50%; border: none; border-bottom: 1px solid #eee; text-align: right; }
-            .custom-table td:before { position: absolute; top: 12px; left: 10px; width: 45%; padding-right: 10px; white-space: nowrap; font-weight: bold; content: attr(data-label); text-align: left; color: var(--gray); }
-        }
+        .custom-table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--card); border-radius: 10px; }
+        .custom-table th { padding: 12px; text-align: left; color: var(--primary); font-weight: 700; }
+        .custom-table td { padding: 12px; border-bottom: 1px solid #f3f4f6; color: var(--text); }
     </style>
 </head>
 <body>
@@ -118,18 +85,59 @@
             <input type="text" id="user" placeholder="Usuário">
             <input type="password" id="pass" placeholder="Senha">
             <button onclick="conectarBanco()" id="btn-login"><span id="txt-login">Entrar</span><div class="loader" id="loader-login"></div></button>
-            <p id="msg-login" style="color: red; font-size: 14px; margin-top: 10px; font-weight: 600;"></p>
+            <p id="msg-login" style="color: red; font-size: 14px; margin-top: 10px;"></p>
         </div>
 
         <div id="dashboard-screen" class="hidden">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px;">
-                <div><h3 id="ola-dashboard" style="margin:0; font-size:20px; font-weight:700;">Olá, Usuário</h3><small id="status-dashboard" style="display:block; color:#666;">...</small></div>
-                <button onclick="logout()" class="danger btn-auto">Sair</button>
+                <div>
+                    <h3 id="ola-dashboard" style="margin:0; font-size:20px; font-weight:700;">Olá, Usuário</h3>
+                    <small id="status-dashboard" style="display:block; color:#666;">...</small>
+                </div>
+                <button onclick="logout()" class="danger btn-auto" style="width:auto;">Sair</button>
             </div>
             <div class="dashboard-grid">
                 <div class="menu-card" onclick="abrirZapFlow()"><div class="menu-icon">⚡</div><div class="menu-title">Gerenciador Links</div></div>
                 <div class="menu-card" onclick="abrirClientes()"><div class="menu-icon">👥</div><div class="menu-title">Gestão Clientes</div></div>
             </div>
+        </div>
+
+        <div id="app-screen" class="hidden">
+            <div class="header">
+                <div style="max-width: 70%;">
+                    <div style="display:flex; align-items:center; gap:5px;">
+                        <button class="secondary btn-auto" style="padding: 2px 8px; font-size: 10px;" onclick="voltarDashboard()">⬅</button>
+                        <h3 id="ola-user" style="margin:0; font-size: 18px;">...</h3>
+                    </div>
+                    <small id="status-acesso"></small>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 5px; align-items: flex-end;">
+                    <button id="btn-open-admin" class="admin-btn btn-auto hidden" onclick="abrirAdminPanel()">⚙️ Master</button>
+                    <button onclick="logout()" class="danger btn-auto">Sair</button>
+                </div>
+            </div>
+
+            <div id="file-download-card" class="card" style="background: #eff6ff; border: 1px solid #bfdbfe; display: none; color: #1f2937 !important;">
+                <div style="display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                    <span style="font-size: 24px;">📥</span>
+                    <div style="overflow: hidden;">
+                        <div style="font-weight: bold; font-size: 14px;" id="file-title">Arquivo</div>
+                        <div style="font-size: 11px; color: #4b5563;">Atualizado: <span id="file-date"></span></div>
+                    </div>
+                </div>
+                <button onclick="baixarArquivoGeral()" class="btn-auto" style="background: #3b82f6;">Baixar</button>
+            </div>
+            
+            <div style="margin-top:20px;">
+                <h4>📥 Adicionar Dados</h4>
+                <textarea id="links-input" rows="1" placeholder="Cole links ou números..."></textarea>
+                <div style="display: flex; gap: 8px;">
+                    <button onclick="addLinks()" class="btn-auto">Carregar</button>
+                    <button onclick="document.getElementById('file').click()" class="secondary btn-auto">📂 Arquivo</button>
+                    <input type="file" id="file" accept=".txt" hidden onchange="lerArquivo(this)">
+                </div>
+            </div>
+            <div id="lista-pendentes" style="margin-top:20px;"></div>
         </div>
 
         <div id="clients-screen" class="hidden">
@@ -140,291 +148,183 @@
                     <button class="import-btn btn-auto" onclick="document.getElementById('file-import-clients').click()">📤 Importar</button>
                     <input type="file" id="file-import-clients" accept=".csv, .xlsx, .xls, .xml, .ods" hidden onchange="lerArquivoImportacao(this)">
                     <button class="export-btn btn-auto" onclick="exportarPlanilhaClientes()">📥 Exportar</button>
-                    <button class="secondary btn-auto" onclick="abrirConfigMsg()">⚙️ Cobrança</button>
-                    
-                    <button class="btn-auto" style="background: #8b5cf6; color: white;" onclick="abrirConfigMsgAcesso()">⚙️ Acesso</button>
-                    
                     <button class="chat-btn btn-auto" onclick="abrirModalCliente()">➕ Novo</button>
                 </div>
             </div>
-            <input type="text" id="search-client" placeholder="🔍 Buscar por nome, usuário, servidor..." onkeyup="filtrarClientesUI()" style="margin-bottom:15px;">
-            
             <div class="table-responsive">
                 <table class="custom-table">
-                    <thead>
-                        <tr>
-                            <th onclick="tabelaSort('nome')">Nome ↕</th>
-                            <th id="th-criador" style="display:none;">Criador</th>
-                            <th>Usuário</th>
-                            <th>Servidor</th>
-                            <th>WhatsApp</th>
-                            <th>Vencimento</th>
-                            <th>Valor</th>
-                            <th style="text-align: center; width: 120px;">Ações</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Nome</th><th>Usuário</th><th>Servidor</th><th>Vencimento</th><th>Ações</th></tr></thead>
                     <tbody id="tabela-corpo"></tbody>
                 </table>
             </div>
         </div>
+    </div>
 
-        <div id="app-screen" class="hidden">
-            <div class="header">
-                <button class="secondary btn-auto" onclick="voltarDashboard()">⬅ Voltar</button>
-                <h3 id="ola-user">...</h3>
+    <div id="modal-admin" class="modal-overlay">
+        <div class="modal-content">
+            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px;" onclick="fecharModal('modal-admin')">&times;</span>
+            <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom:15px;">
+                <h2 style="color: var(--dark); font-size: 20px;">⚙️ Gestão Master</h2>
+                <div style="display:flex; gap:8px;"><button class="secondary btn-auto" onclick="abrirAdminPanel()">🔄</button><button class="chat-btn btn-auto" onclick="abrirModalCreate()">➕ Novo</button></div>
             </div>
-            <div style="padding: 20px; text-align: center; opacity: 0.5;">Área de Gerenciador de Links</div>
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:15px;">
+                <input type="checkbox" id="toggle-compact" onchange="toggleCompactMode()">
+                <label for="toggle-compact" style="font-size:13px; cursor:pointer; font-weight:bold; color:var(--primary);">👁️ Modo Compacto</label>
+            </div>
+            <div id="admin-users-list"></div>
         </div>
     </div>
 
-    <div id="modal-column-map" class="modal-overlay"> 
-        <div class="modal-content" style="max-width: 500px;"> 
-            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px;" onclick="fecharModal('modal-column-map')">&times;</span> 
-            <h3 style="margin-top:0; color:var(--purple);">🗺️ Mapear Colunas</h3> 
-            <div id="mapping-container"></div>
-            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
-                <button class="secondary btn-auto" onclick="fecharModal('modal-column-map')">Cancelar</button>
-                <button class="import-btn btn-auto" onclick="aplicarMapeamento()">Continuar ➡️</button>
-            </div>
+    <div id="modal-edit" class="modal-overlay" style="z-index: 1002;"> 
+        <div class="modal-content" style="max-width: 400px; padding: 30px 20px; border-radius: 12px; background: white;"> 
+            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:24px; font-weight:bold; color:#1f2937;" onclick="fecharModal('modal-edit')">&times;</span> 
+            <h3 style="margin-top:0; color:#3b82f6; text-align: center; font-size: 20px; margin-bottom: 25px;">Editar: <span id="edit-user-display" style="color:#1f2937;"></span></h3> 
+            <div class="form-grid" style="display: flex; flex-direction: column; gap: 15px;"> 
+                <div class="full-width">
+                    <label style="font-size:13px; font-weight:700; color:#374151; margin-bottom: 5px; display: block; text-align: left;">Senha:</label>
+                    <input type="text" id="edit-pass" placeholder="Redefinir senha..." style="width: 100%; border: 1px solid #ddd;">
+                </div> 
+                <div class="full-width">
+                    <label style="font-size:13px; font-weight:700; color:#374151; margin-bottom: 5px; display: block; text-align: left;">Vencimento:</label>
+                    <input type="text" id="edit-date" placeholder="DD/MM/AAAA" style="width: 100%; border: 1px solid #ddd;">
+                </div> 
+                <div class="full-width">
+                    <label style="font-size:13px; font-weight:700; color:#374151; margin-bottom: 5px; display: block; text-align: left;">WhatsApp:</label>
+                    <input type="text" id="edit-wa" style="width: 100%; border: 1px solid #ddd;">
+                </div> 
+                <div class="full-width">
+                    <label style="font-size:13px; font-weight:700; color:#374151; margin-bottom: 5px; display: block; text-align: left;">Valor:</label>
+                    <input type="text" id="edit-val" style="width: 100%; border: 1px solid #ddd;">
+                </div> 
+                <div class="full-width" id="div-edit-role">
+                    <label style="font-size:13px; font-weight:700; color:#374151; margin-bottom: 5px; display: block; text-align: left;">Função:</label>
+                    <select id="edit-role" style="width: 100%; border: 1px solid #ddd;">
+                        <option value="User">Usuário</option><option value="Teste">Teste</option><option value="Sub-Admin">Sub-Admin</option><option value="Admin">Admin</option>
+                    </select>
+                </div>
+            </div> 
+            <button onclick="salvarEdicao()" style="margin-top:25px; width: 100%; background: #3b82f6;">💾 Atualizar Dados</button> 
         </div> 
     </div>
 
-    <div id="modal-import-preview" class="modal-overlay"> 
-        <div class="modal-content" style="max-width: 900px;"> 
-            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px;" onclick="fecharModal('modal-import-preview')">&times;</span> 
-            <h3 style="margin-top:0; color:var(--purple);">📤 Confirmar Importação</h3> 
-            <div class="table-responsive" style="max-height: 400px;"><table class="custom-table"><thead id="thead-preview"></thead><tbody id="tbody-preview"></tbody></table></div>
-            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
-                <button class="secondary btn-auto" onclick="fecharModal('modal-import-preview')">Cancelar</button>
-                <button class="import-btn btn-auto" onclick="confirmarImportacaoReal()">✅ Confirmar e Adicionar</button>
-            </div>
-        </div> 
-    </div>
-
-    <div id="modal-config-msg" class="modal-overlay"> 
-        <div class="modal-content"> 
-            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px;" onclick="fecharModal('modal-config-msg')">&times;</span> 
-            <h3 style="color:var(--primary);">Configurar Cobrança</h3> 
-            <textarea id="config-msg-input" style="height:120px;"></textarea> 
-            <button onclick="salvarTemplateMsg()">💾 Salvar</button> 
-        </div> 
-    </div>
-
-    <div id="modal-config-acesso" class="modal-overlay"> 
-        <div class="modal-content"> 
-            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px;" onclick="fecharModal('modal-config-acesso')">&times;</span> 
-            <h3 style="color:#8b5cf6;">Configurar Msg Acesso</h3> 
-            <p style="font-size:11px; color:#666; margin-bottom:10px;">Use: {nome}, {usuario}, {servidor}, {vencimento}</p>
-            <textarea id="config-acesso-input" style="height:120px;" placeholder="Ex: Olá {nome}, seu acesso é {usuario}..."></textarea> 
-            <button style="background:#8b5cf6;" onclick="salvarTemplateAcesso()">💾 Salvar Padrão Acesso</button> 
-        </div> 
-    </div>
-
-    <div id="modal-new-client" class="modal-overlay"> 
-        <div class="modal-content"> 
-            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px;" onclick="fecharModal('modal-new-client')">&times;</span> 
-            <h3 id="modal-cli-title">Novo Cliente</h3> 
-            <input type="text" id="cli-nome" placeholder="Nome"> 
-            <input type="text" id="cli-user" placeholder="Login"> 
-            <input type="text" id="cli-server" placeholder="Servidor"> 
-            <input type="text" id="cli-wa" placeholder="WhatsApp"> 
-            <input type="text" id="cli-val" placeholder="Valor"> 
-            <input type="date" id="cli-venc"> 
-            <button onclick="salvarCliente()">💾 Salvar</button> 
+    <div id="modal-send-whatsapp" class="modal-overlay" style="z-index: 1200;"> 
+        <div class="modal-content" style="max-width: 400px;"> 
+            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px;" onclick="fecharModal('modal-send-whatsapp')">&times;</span> 
+            <h3 style="margin-top:0; color: #25d366;">📲 Enviar Acesso</h3> 
+            <p>Para: <b id="send-dest">...</b></p> 
+            <div id="preview-msg-content" style="background:#f0fdf4; padding:10px; border-radius:8px; font-family:monospace; font-size:12px; text-align:left;"></div> 
+            <textarea id="whatsapp-extra-msg" placeholder="Mensagem adicional..." style="margin-top:15px;"></textarea> 
+            <button class="chat-btn" onclick="finalizarEnvioWhatsApp()">🚀 Enviar via WhatsApp</button> 
         </div> 
     </div>
 
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbwtMMYq6gHWUX33Ie05iyjbVKPzWtzd9vebIInLe607nqN57GteOeOGE1a8dMI05Cpw/exec';
-        const SESSION_KEY = 'zapflow_session_v36';
-        let currentUserData = null;
-        let listaClientes = [];
-        let clienteEditandoId = null;
-        let globalWhatsappTemplate = "";
-        let lastCreatedIds = [];
-        let globalRawData = [];
-        let globalHeaders = [];
+        const DB_KEY = 'zapflow_v36'; const SESSION_KEY = 'zapflow_session_v36';
+        let currentUserData = null; let currentFileUrl = ""; 
+        let tempUser="", tempPass="", tempWa="", tempDate="", tempVal="";
 
-        window.onload = () => {
-            const session = localStorage.getItem(SESSION_KEY);
-            if(session) {
-                const s = JSON.parse(session);
-                document.getElementById('user').value = s.user;
-                document.getElementById('pass').value = s.pass;
-                conectarBanco();
+        // FUNÇÃO BAIXAR ARQUIVO CORRIGIDA
+        function baixarArquivoGeral() {
+            if(!currentFileUrl) {
+                alert("Link de download não encontrado. Tente logar novamente.");
+                return;
             }
-        };
-
-        // --- LOGIN E NAVEGAÇÃO ---
-        function logout(){ localStorage.removeItem(SESSION_KEY); location.reload(); }
-        function voltarDashboard() { document.getElementById('app-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.add('hidden'); document.getElementById('dashboard-screen').classList.remove('hidden'); }
-        function abrirZapFlow() { document.getElementById('dashboard-screen').classList.add('hidden'); document.getElementById('app-screen').classList.remove('hidden'); }
-        function abrirClientes() { document.getElementById('dashboard-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.remove('hidden'); carregarMeusClientes(); }
-        function fecharModal(id){ document.getElementById(id).classList.remove('show'); }
-        function toggleTheme() { document.body.classList.toggle('dark-mode'); }
+            window.open(currentFileUrl, '_blank');
+        }
 
         async function conectarBanco() {
-            const u = document.getElementById('user').value;
-            const p = document.getElementById('pass').value;
-            const btn = document.getElementById('btn-login');
-            const loader = document.getElementById('loader-login');
-            btn.disabled = true; loader.style.display = 'block';
+            const u = document.getElementById('user').value.trim();
+            const p = document.getElementById('pass').value.trim();
+            if(!u || !p) return;
             try {
                 const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'login', user: u, pass: p }) });
                 const res = await req.json();
                 if (res.success) {
                     currentUserData = res.data;
-                    currentUserData.pass = p;
                     localStorage.setItem(SESSION_KEY, JSON.stringify({user: u, pass: p}));
                     document.getElementById('login-screen').classList.add('hidden');
                     document.getElementById('dashboard-screen').classList.remove('hidden');
-                    document.getElementById('ola-dashboard').innerText = "Olá, " + u;
-                    if(res.data.waTemplate) globalWhatsappTemplate = res.data.waTemplate;
-                } else { alert("Dados incorretos."); }
-            } catch(e) { alert("Erro de conexão."); }
-            finally { btn.disabled = false; loader.style.display = 'none'; }
+                    document.getElementById('ola-dashboard').innerText = "Olá, " + currentUserData.user;
+                    
+                    if (res.data.file && res.data.file.url) {
+                        currentFileUrl = res.data.file.url; // ARMAZENA O LINK
+                        document.getElementById('file-download-card').style.display = 'flex';
+                        document.getElementById('file-date').innerText = res.data.file.time || '';
+                    }
+                    if(res.data.isMaster) document.getElementById('btn-open-admin').classList.remove('hidden');
+                } else { alert(res.msg || "Erro"); }
+            } catch(e) { alert("Erro de conexão"); }
         }
 
-        // --- GESTÃO CLIENTES ---
-        async function carregarMeusClientes() {
-            try {
-                const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'list_clients', user: currentUserData.user, pass: currentUserData.pass }) });
-                const res = await req.json();
-                if(res.success) { listaClientes = res.lista; aplicarFiltrosERenderizar(); }
-            } catch(e) { console.error("Erro ao carregar"); }
-        }
+        function renderAdminUsers(list) {
+            const listDiv = document.getElementById('admin-users-list');
+            const isSubAdmin = currentUserData.cargo.toLowerCase().includes('sub');
+            let html = '<div class="table-responsive"><table class="admin-table"><thead><tr><th>Status</th><th>User</th><th>Pass</th><th>Validade</th><th>WhatsApp</th><th>Cargo</th><th>Ações</th></tr></thead><tbody>';
 
-        function filtrarClientesUI() { aplicarFiltrosERenderizar(); }
+            list.forEach(row => {
+                const uUser = String(row[0] || "");
+                const uPass = String(row[1] || "");
+                const uDate = String(row[2] || "");
+                const uWa = String(row[3] || "");
+                const uVal = String(row[4] || "");
+                const uCargo = String(row[5] || "");
+                const uStatus = String(row[7] || "Ativo");
 
-        function aplicarFiltrosERenderizar() {
-            const termo = document.getElementById('search-client').value.toLowerCase();
-            const filtrados = listaClientes.filter(cli => JSON.stringify(cli).toLowerCase().includes(termo));
-            renderizarLinhas(filtrados);
-        }
-
-        function renderizarLinhas(lista) {
-            const corpo = document.getElementById('tabela-corpo');
-            corpo.innerHTML = '';
-            const isAdmin = (currentUserData.cargo === 'Admin' || currentUserData.cargo === 'Sub-Admin');
-            document.getElementById('th-criador').style.display = isAdmin ? 'table-cell' : 'none';
-            const hoje = new Date(); hoje.setHours(0,0,0,0);
-
-            lista.forEach(cli => {
-                let waLink = cli.whatsapp ? `<button onclick="prepararCobranca('${cli.id}')" class="wa-link">📱 Cobrar</button>` : '-';
-                let corVenc = "#333";
-                if (cli.vencimento && cli.vencimento.includes('/')) {
-                    const p = cli.vencimento.split('/'); const dV = new Date(p[2], p[1]-1, p[0]);
-                    if ((dV - hoje) / 86400000 < 0) corVenc = "red";
-                }
-                let criadorCell = isAdmin ? `<td data-label="Criador">${cli.criador}</td>` : '';
+                // Lógica de Vencimento Visual
+                let statusDot = "status-active";
+                if(uStatus.includes("Bloq")) statusDot = "status-expired";
                 
-                corpo.innerHTML += `<tr>
-                    <td data-label="Nome"><b>${cli.nome}</b></td>
-                    ${criadorCell}
-                    <td data-label="Usuário">${cli.usuario}</td>
-                    <td data-label="Servidor">${cli.servidor}</td>
-                    <td data-label="WhatsApp">${waLink}</td>
-                    <td data-label="Vencimento" style="color:${corVenc}; font-weight:bold;">${cli.vencimento}</td>
-                    <td data-label="Valor">R$ ${cli.valor}</td>
-                    <td data-label="Ações">
-                        <div style="display:flex; gap:4px; justify-content:center;">
-                            <button class="btn-auto" style="background:#3b82f6; color:white; padding:6px 10px;" onclick="enviarAcessoRapido('${cli.id}')">✈️</button>
-                            <button class="edit-btn btn-auto" style="padding:6px 10px;" onclick="prepararEdicaoCliente('${cli.id}')">✏️</button>
-                            <button class="danger btn-auto" style="padding:6px 10px;" onclick="deletarCliente('${cli.id}')">🗑️</button>
-                        </div>
-                    </td>
-                </tr>`;
+                // Botões de Ação
+                let btns = '';
+                // ADMIN MASTER SEMPRE VÊ RENOVAR
+                if (!isSubAdmin || currentUserData.cargo.toLowerCase() === 'admin') {
+                    btns += `<button class="btn-action-master act-renew" title="Renovar" onclick="renovarUser('${uUser}')">📅</button>`;
+                } else {
+                    btns += `<button class="btn-action-master act-signal" title="Solicitar" onclick="alert('Solicitado')">✋</button>`;
+                }
+                
+                btns += `<button class="btn-action-master act-send" title="Enviar" onclick="prepararEnvioWhatsApp('${uUser}','${uPass}','${uWa}','${uDate}','${uVal}')">📩</button>`;
+                btns += `<button class="btn-action-master act-edit" title="Editar" onclick="prepararEdicaoUser('${uUser}','${uDate}','${uWa}','${uVal}','${uCargo}')">✏️</button>`;
+
+                html += `<tr><td><span class="status-dot ${statusDot}"></span>${uStatus}</td><td>${uUser}</td><td>******</td><td>${uDate}</td><td>${uWa}</td><td>${uCargo}</td><td>${btns}</td></tr>`;
             });
+            html += '</tbody></table></div>';
+            listDiv.innerHTML = html;
         }
 
-        // --- NOVAS FUNÇÕES DE MENSAGEM (ESTILO AVIÃOZINHO) ---
-        function abrirConfigMsgAcesso() {
-            document.getElementById('config-acesso-input').value = localStorage.getItem('template_acesso_wa') || "";
-            document.getElementById('modal-config-acesso').classList.add('show');
+        function prepararEdicaoUser(uName, uDate, uWa, uVal, uCargo) { 
+            userEditing = uName;
+            document.getElementById('edit-user-display').innerText = uName;
+            document.getElementById('edit-date').value = uDate;
+            document.getElementById('edit-wa').value = uWa;
+            document.getElementById('edit-val').value = uVal;
+            document.getElementById('edit-role').value = uCargo;
+            document.getElementById('modal-edit').classList.add('show');
         }
 
-        function salvarTemplateAcesso() {
-            const tmpl = document.getElementById('config-acesso-input').value;
-            localStorage.setItem('template_acesso_wa', tmpl);
-            alert("Template de acesso salvo!");
-            fecharModal('modal-config-acesso');
+        function prepararEnvioWhatsApp(u, p, w, d, v) {
+            tempUser = u; tempPass = p; tempWa = w; tempDate = d; tempVal = v;
+            document.getElementById('send-dest').innerText = u;
+            document.getElementById('preview-msg-content').innerText = `Usuário: ${u}\nSenha: ${p}\nVencimento: ${d}`;
+            document.getElementById('modal-send-whatsapp').classList.add('show');
         }
 
-        function enviarAcessoRapido(id) {
-            const cli = listaClientes.find(c => String(c.id) === String(id));
-            if(!cli || !cli.whatsapp) return alert("Cliente sem WhatsApp.");
-            let template = localStorage.getItem('template_acesso_wa') || "Olá {nome}, seu acesso: {usuario} / {servidor}";
-            let msg = template
-                .replace(/{nome}/g, cli.nome || '')
-                .replace(/{usuario}/g, cli.usuario || '')
-                .replace(/{servidor}/g, cli.servidor || '')
-                .replace(/{vencimento}/g, cli.vencimento || '');
-            window.open(`https://wa.me/55${cli.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
+        function finalizarEnvioWhatsApp() {
+            let num = String(tempWa).replace(/\D/g,'');
+            if(num.length === 10 || num.length === 11) num = '55' + num;
+            const msg = `🔐 Acesso Gerenciador\n\n👤 Usuário: ${tempUser}\n🔑 Senha: ${tempPass}\n📅 Vencimento: ${tempDate}`;
+            window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`);
+            fecharModal('modal-send-whatsapp');
         }
 
-        // --- IMPORTAÇÃO ORIGINAL (MANTIDA) ---
-        function lerArquivoImportacao(input) {
-            const file = input.files[0]; if (!file) return;
-            const reader = new FileReader(); reader.readAsArrayBuffer(file);
-            reader.onload = (e) => {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, {type: 'array'});
-                globalRawData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {header: 1});
-                globalHeaders = globalRawData[0].map(h => String(h).trim());
-                abrirModalMapeamento();
-            };
-        }
-
-        function abrirModalMapeamento() {
-            const container = document.getElementById('mapping-container'); container.innerHTML = '';
-            const campos = ['Nome', 'Usuário', 'Servidor', 'WhatsApp', 'Valor', 'Vencimento'];
-            campos.forEach(f => {
-                let options = globalHeaders.map((h, i) => `<option value="${i}">${h}</option>`).join('');
-                container.innerHTML += `<div class="map-row"><div class="map-label">${f}</div><select id="map_${f.toLowerCase()}" class="map-select"><option value="-1">Ignorar</option>${options}</select></div>`;
-            });
-            document.getElementById('modal-column-map').classList.add('show');
-        }
-
-        function aplicarMapeamento() {
-            let selecionados = [];
-            for(let i=1; i<globalRawData.length; i++){
-                let row = globalRawData[i]; if(!row.length) continue;
-                selecionados.push({
-                    nome: row[document.getElementById('map_nome').value] || '',
-                    usuario: row[document.getElementById('map_usuário').value] || '',
-                    servidor: row[document.getElementById('map_servidor').value] || '',
-                    whatsapp: String(row[document.getElementById('map_whatsapp').value] || '').replace(/\D/g,''),
-                    valor: row[document.getElementById('map_valor').value] || '',
-                    vencimento: row[document.getElementById('map_vencimento').value] || ''
-                });
-            }
-            importacaoTemp = selecionados; fecharModal('modal-column-map'); confirmarImportacaoReal();
-        }
-
-        async function confirmarImportacaoReal() {
-            const btn = document.querySelector('.import-btn'); btn.innerText = "Enviando...";
-            try {
-                const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'bulk_create_clients', user: currentUserData.user, pass: currentUserData.pass, lista: importacaoTemp }) });
-                const res = await req.json();
-                if(res.success) { alert("Importado!"); carregarMeusClientes(); }
-            } catch(e) { alert("Erro"); }
-            finally { btn.innerText = "📤 Importar"; }
-        }
-
-        // --- FUNÇÕES DE APOIO ---
-        function prepararCobranca(id) { 
-            const cli = listaClientes.find(c => String(c.id) === String(id));
-            const msg = `Olá ${cli.nome}, seu acesso vence em ${cli.vencimento}. Vamos renovar?`;
-            window.open(`https://wa.me/55${cli.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
-        }
-        function exportarPlanilhaClientes() { alert("Função de exportar CSV/Excel acionada."); }
-        async function salvarTemplateMsg() { alert("Modelo de cobrança salvo."); fecharModal('modal-config-msg'); }
-        function abrirConfigMsg() { document.getElementById('modal-config-msg').classList.add('show'); }
-        function abrirModalCliente() { clienteEditandoId = null; document.getElementById('modal-cli-title').innerText = "Novo Cliente"; document.getElementById('modal-new-client').classList.add('show'); }
-        function prepararEdicaoCliente(id) { clienteEditandoId = id; document.getElementById('modal-cli-title').innerText = "Editar Cliente"; document.getElementById('modal-new-client').classList.add('show'); }
-        function deletarCliente(id) { if(confirm("Excluir?")) alert("Cliente excluído."); }
-        function salvarCliente() { alert("Salvo com sucesso!"); fecharModal('modal-new-client'); carregarMeusClientes(); }
-
+        function toggleTheme() { document.body.classList.toggle('dark-mode'); }
+        function fecharModal(id) { document.getElementById(id).classList.remove('show'); }
+        function logout() { localStorage.removeItem(SESSION_KEY); location.reload(); }
+        function abrirAdminPanel() { conectarBanco(); document.getElementById('modal-admin').classList.add('show'); }
+        function voltarDashboard() { document.getElementById('app-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.add('hidden'); document.getElementById('dashboard-screen').classList.remove('hidden'); }
+        function abrirZapFlow() { document.getElementById('dashboard-screen').classList.add('hidden'); document.getElementById('app-screen').classList.remove('hidden'); }
+        function abrirClientes() { document.getElementById('dashboard-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.remove('hidden'); }
     </script>
 </body>
 </html>
