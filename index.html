@@ -1,299 +1,91 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Gerenciador |WA|</title>
-    
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%2310b981%22/><text x=%2250%22 y=%2250%22 font-size=%2260%22 text-anchor=%22middle%22 dy=%22.35em%22>⚡</text></svg>">
-    <meta name="theme-color" content="#10b981">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
-    
-    <style>
-        :root { --primary: #10b981; --dark: #064e3b; --bg: #f3f4f6; --text: #1f2937; --danger: #ef4444; --card: #fff; --radius: 12px; --blue: #3b82f6; --gold: #f59e0b; --gray: #6b7280; --purple: #8b5cf6; }
-        body.dark-mode { --bg: #111827; --text: #f9fafb; --card: #1f2937; }
-        * { box-sizing: border-box; } 
-        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 10px; transition: 0.3s; }
-        .container { max-width: 900px; margin: 0 auto; background: var(--card); padding: 15px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .hidden { display: none !important; }
-        
-        input, textarea, select { width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #e5e7eb; border-radius: var(--radius); font-family: inherit; background: #f9fafb; color: #333; font-size: 14px; }
-        body.dark-mode input, body.dark-mode select, body.dark-mode textarea { background: #374151; color: white; border-color: #4b5563; }
-        
-        .modal-content input, .modal-content select, .modal-content textarea {
-            background: #f9fafb !important;
-            color: #1f2937 !important;
-            border-color: #e5e7eb !important;
-        }
-
-        button { width: 100%; padding: 12px; border: none; border-radius: var(--radius); background: var(--primary); color: white; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; }
-        button:hover { filter: brightness(0.9); transform: translateY(-1px); }
-        button.secondary { background: #e5e7eb; color: #333; }
-        button.danger { background: var(--danger); }
-        button.edit-btn { background: #3b82f6; color: white; }
-        button.btn-access-msg { background: #8b5cf6; color: white; } /* Cor roxa para o novo botão de config */
-        button.btn-quick-send { background: #3b82f6; color: white; } /* Cor azul para o botão da tabela */
-        
-        .btn-auto { width: auto !important; padding: 8px 16px; font-size: 13px; margin: 3px; flex-shrink: 0; }
-        
-        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:none; justify-content:center; align-items:center; z-index:1000; backdrop-filter: blur(4px); padding: 20px; }
-        .modal-overlay.show { display:flex; }
-        .modal-content { background:var(--card); padding: 20px; border-radius:20px; width: 100%; max-width: 400px; position:relative; color: var(--text); max-height: 80vh; overflow-y: auto; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
-
-        .table-responsive { overflow-x: auto; border: 1px solid #eee; border-radius: 10px; margin-top: 10px; padding-bottom: 80px; }
-        .custom-table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--card); border-radius: 10px; }
-        .custom-table thead { background: var(--bg); border-bottom: 2px solid #e5e7eb; position: sticky; top: 0; z-index: 50; }
-        .custom-table th { padding: 12px; text-align: left; color: var(--primary); font-weight: 700; cursor: pointer; }
-        .custom-table td { padding: 12px; border-bottom: 1px solid #f3f4f6; color: var(--text); }
-        
-        .wa-link { color: #25d366; font-weight: bold; text-decoration: none; display: flex; align-items: center; gap: 4px; border: 1px solid #25d366; padding: 3px 8px; border-radius: 20px; font-size: 11px; width: fit-content; background:transparent; cursor:pointer;}
-        .alert-icon { color: #ef4444; font-size: 14px; animation: pulse 1s infinite; margin-left: 5px; }
-
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .menu-card { background: var(--bg); border: 2px solid #e5e7eb; border-radius: 15px; padding: 20px; text-align: center; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 120px; }
-        .menu-card:hover { transform: translateY(-5px); border-color: var(--primary); background: rgba(16, 185, 129, 0.05); }
-        .menu-icon { font-size: 40px; margin-bottom: 10px; }
-        .menu-title { font-weight: 700; font-size: 14px; }
-
-        .theme-toggle { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; border-radius: 50%; padding: 0; background: var(--primary); color: white; border: none; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-size: 24px; }
-        
-        @media (max-width: 600px) {
-            .custom-table, .custom-table thead, .custom-table tbody, .custom-table th, .custom-table td, .custom-table tr { display: block; }
-            .custom-table thead tr { position: absolute; top: -9999px; left: -9999px; }
-            .custom-table tr { border: 1px solid #eee; border-radius: 10px; margin-bottom: 10px; position: relative; }
-            .custom-table td { position: relative; padding-left: 50%; border: none; border-bottom: 1px solid #eee; text-align: right; }
-            .custom-table td:before { position: absolute; top: 12px; left: 10px; width: 45%; padding-right: 10px; white-space: nowrap; font-weight: bold; content: attr(data-label); text-align: left; color: var(--gray); }
-        }
-    </style>
-</head>
-<body>
-
-    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
-
-    <div class="container">
-        <div id="login-screen" style="text-align: center; max-width: 400px; margin: 40px auto;">
-            <div style="background: var(--primary); width: 60px; height: 60px; border-radius: 15px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 30px; color: white;">⚡</div>
-            <h2 style="font-weight: 700;">Gerenciador <span>|WA|</span></h2>
-            <input type="text" id="user" placeholder="Usuário">
-            <input type="password" id="pass" placeholder="Senha">
-            <button onclick="conectarBanco()" id="btn-login"><span id="txt-login">Entrar</span></button>
-            <p id="msg-login" style="color: red; font-size: 14px; margin-top: 10px;"></p>
+<div id="clients-screen" class="hidden">
+    <div class="header">
+        <div style="display:flex; gap:10px; align-items:center;">
+            <button class="secondary btn-auto" onclick="voltarDashboard()">⬅ Voltar</button>
+            <h3 style="margin:0;">Gestão Clientes</h3>
         </div>
-
-        <div id="dashboard-screen" class="hidden">
-            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px;">
-                <div><h3 id="ola-dashboard" style="margin:0;">Olá, Usuário</h3><small id="status-dashboard">...</small></div>
-                <button onclick="logout()" class="danger btn-auto">Sair</button>
-            </div>
-            <div class="dashboard-grid">
-                <div class="menu-card" onclick="abrirZapFlow()"><div class="menu-icon">⚡</div><div class="menu-title">Gerenciador Links</div></div>
-                <div class="menu-card" onclick="abrirClientes()"><div class="menu-icon">👥</div><div class="menu-title">Gestão Clientes</div></div>
-            </div>
+        <div style="display:flex; gap:5px; flex-wrap: wrap; justify-content: flex-end;">
+            <button id="btn-undo-import" class="undo-btn btn-auto" onclick="desfazerImportacao()" style="display:none;">↺ Desfazer</button>
+            <button class="import-btn btn-auto" onclick="document.getElementById('file-import-clients').click()">📤 Importar</button>
+            <input type="file" id="file-import-clients" accept=".csv, .xlsx, .xls, .xml, .ods" hidden onchange="lerArquivoImportacao(this)">
+            <button class="export-btn btn-auto" onclick="exportarPlanilhaClientes()">📥 Exportar</button>
+            <button class="secondary btn-auto" onclick="abrirConfigMsg()">⚙️ Cobrança</button>
+            
+            <button class="btn-auto" style="background: #8b5cf6; color: white;" onclick="abrirConfigMsgAcesso()">⚙️ Acesso</button>
+            
+            <button class="chat-btn btn-auto" onclick="abrirModalCliente()">➕ Novo</button>
         </div>
+    </div>
+    ...
+</div>
 
-        <div id="clients-screen" class="hidden">
-            <div class="header">
-                <div style="display:flex; gap:10px; align-items:center;"><button class="secondary btn-auto" onclick="voltarDashboard()">⬅ Voltar</button><h3 style="margin:0;">Gestão Clientes</h3></div>
-                <div style="display:flex; gap:5px; flex-wrap: wrap; justify-content: flex-end;">
-                    <button class="export-btn btn-auto" style="background:#059669; color:white;" onclick="exportarPlanilhaClientes()">Planilha</button>
-                    <button class="secondary btn-auto" onclick="abrirConfigMsg()">⚙️ Cobrança</button>
-                    <button class="btn-access-msg btn-auto" onclick="abrirConfigMsgAcesso()">⚙️ Acesso</button>
-                    <button class="chat-btn btn-auto" style="background:#25d366; color:white;" onclick="abrirModalCliente()">➕ Novo</button>
+<script>
+function renderizarLinhas(lista) {
+    const corpo = document.getElementById('tabela-corpo');
+    const msgEmpty = document.getElementById('msg-sem-clientes');
+    corpo.innerHTML = '';
+    if(lista.length === 0) { msgEmpty.style.display = 'block'; return; } else { msgEmpty.style.display = 'none'; }
+    const isAdmin = (currentUserData.cargo === 'Admin' || currentUserData.cargo === 'Sub-Admin');
+    const thCriador = document.getElementById('th-criador');
+    if(thCriador) thCriador.style.display = isAdmin ? 'table-cell' : 'none';
+    const hoje = new Date(); hoje.setHours(0,0,0,0);
+    
+    lista.forEach(cli => {
+        let waLink = '-'; if(cli.whatsapp) { waLink = `<button onclick="prepararCobranca('${cli.id}')" class="wa-link">📱 Cobrar</button>`; }
+        let alerta = ""; let corVenc = "#333";
+        if (cli.vencimento && cli.vencimento.includes('/')) {
+            const parts = cli.vencimento.split('/'); const dataVenc = new Date(parts[2], parts[1]-1, parts[0]); const diffDias = (dataVenc - hoje) / (1000 * 60 * 60 * 24);
+            if (diffDias < 0) { alerta = "<span class='alert-icon'>⚠</span>"; corVenc = "red"; } else if (diffDias <= 3) { alerta = "<span class='alert-icon'>⚠</span>"; corVenc = "#d97706"; }
+        }
+        let criadorCell = isAdmin ? `<td data-label="Criador" style="color:var(--blue); font-weight:bold;">${cli.criador}</td>` : '';
+        
+        corpo.innerHTML += `<tr>
+            <td data-label="Nome"><b>${cli.nome}</b></td>
+            ${criadorCell}
+            <td data-label="Usuário">${cli.usuario}</td>
+            <td data-label="Servidor">${cli.servidor}</td>
+            <td data-label="WhatsApp">${waLink}</td>
+            <td data-label="Vencimento" style="color:${corVenc}; font-weight:bold;">${cli.vencimento || '-'} ${alerta}</td>
+            <td data-label="Valor" style="color:var(--primary); font-weight:bold;">R$ ${cli.valor}</td>
+            <td data-label="Ações">
+                <div style="display:flex; gap:5px; justify-content:center;">
+                    <button class="btn-auto" style="background:#3b82f6; color:white; padding:6px 10px;" title="Enviar Acesso" onclick="enviarAcessoRapido('${cli.id}')">✈️</button>
+                    
+                    <button class="edit-btn btn-auto" style="padding:6px 10px;" onclick="prepararEdicaoCliente('${cli.id}')">✏️</button>
+                    <button class="danger btn-auto" style="padding:6px 10px;" onclick="deletarCliente('${cli.id}')">🗑️</button>
                 </div>
-            </div>
-            <input type="text" id="search-client" placeholder="🔍 Buscar cliente..." onkeyup="aplicarFiltrosERenderizar()" style="margin-bottom:15px;">
-            
-            <div class="table-responsive">
-                <table class="custom-table">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Usuário</th>
-                            <th>Servidor</th>
-                            <th>WhatsApp</th>
-                            <th>Vencimento</th>
-                            <th>Valor</th>
-                            <th style="text-align: center;">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabela-corpo"></tbody>
-                </table>
-            </div>
-        </div>
+            </td>
+        </tr>`;
+    });
+}
 
-        <div id="app-screen" class="hidden">
-            <div class="header">
-                <button class="secondary btn-auto" onclick="voltarDashboard()">⬅ Voltar</button>
-                <h3 id="ola-user">...</h3>
-            </div>
-            <p>Conteúdo do Gerenciador de Links...</p>
-        </div>
-    </div>
+// ADICIONE ESTAS DUAS FUNÇÕES NO FINAL DO SEU SCRIPT
+function abrirConfigMsgAcesso() {
+    document.getElementById('config-acesso-input').value = localStorage.getItem('template_acesso_wa') || "";
+    document.getElementById('modal-config-acesso').classList.add('show');
+}
 
-    <div id="modal-config-msg" class="modal-overlay"> 
-        <div class="modal-content"> 
-            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px;" onclick="fecharModal('modal-config-msg')">&times;</span> 
-            <h3 style="color:var(--primary);">Configurar Cobrança</h3> 
-            <textarea id="config-msg-input" style="height:120px;"></textarea> 
-            <button onclick="salvarTemplateMsg()">💾 Salvar</button> 
-        </div> 
-    </div>
+function salvarTemplateAcesso() {
+    const tmpl = document.getElementById('config-acesso-input').value;
+    localStorage.setItem('template_acesso_wa', tmpl);
+    alert("Template salvo!");
+    fecharModal('modal-config-acesso');
+}
 
-    <div id="modal-config-acesso" class="modal-overlay"> 
-        <div class="modal-content"> 
-            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px;" onclick="fecharModal('modal-config-acesso')">&times;</span> 
-            <h3 style="color:var(--purple);">Template de Acesso</h3> 
-            <p style="font-size:11px; color:#666;">Use: {nome}, {usuario}, {servidor}, {vencimento}</p>
-            <textarea id="config-acesso-input" style="height:120px;" placeholder="Ex: Olá {nome}, seu login é {usuario}..."></textarea> 
-            <button class="btn-access-msg" onclick="salvarTemplateAcesso()">💾 Salvar Padrão Acesso</button> 
-        </div> 
-    </div>
+function enviarAcessoRapido(id) {
+    const cli = listaClientes.find(c => String(c.id) === String(id));
+    if(!cli || !cli.whatsapp) return alert("Cliente sem WhatsApp.");
+    let template = localStorage.getItem('template_acesso_wa') || "Olá {nome}, seu acesso: {usuario}";
+    let msg = template.replace(/{nome}/g, cli.nome).replace(/{usuario}/g, cli.usuario).replace(/{servidor}/g, cli.servidor).replace(/{vencimento}/g, cli.vencimento);
+    window.open(`https://wa.me/55${cli.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
+}
+</script>
 
-    <div id="modal-new-client" class="modal-overlay"> 
-        <div class="modal-content"> 
-            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px;" onclick="fecharModal('modal-new-client')">&times;</span> 
-            <h3 id="modal-cli-title">Novo Cliente</h3> 
-            <input type="text" id="cli-nome" placeholder="Nome"> 
-            <input type="text" id="cli-user" placeholder="Login"> 
-            <input type="text" id="cli-server" placeholder="Servidor"> 
-            <input type="text" id="cli-wa" placeholder="WhatsApp"> 
-            <input type="text" id="cli-val" placeholder="Valor"> 
-            <input type="date" id="cli-venc"> 
-            <button onclick="salvarCliente()">💾 Salvar</button> 
-        </div> 
-    </div>
-
-    <script>
-        const API_URL = 'SUA_URL_DO_APPS_SCRIPT_AQUI';
-        const SESSION_KEY = 'zapflow_session_v36';
-        let currentUserData = null;
-        let listaClientes = [];
-        let clienteEditandoId = null;
-        let globalWhatsappTemplate = "";
-        let globalAcessoTemplate = ""; // Variável para o novo template
-
-        window.onload = () => {
-            const session = localStorage.getItem(SESSION_KEY);
-            if(session) {
-                const s = JSON.parse(session);
-                document.getElementById('user').value = s.user;
-                document.getElementById('pass').value = s.pass;
-                conectarBanco();
-            }
-            // Carrega template de acesso salvo no navegador
-            globalAcessoTemplate = localStorage.getItem('template_acesso_wa');
-        };
-
-        // --- NAVEGAÇÃO ---
-        function abrirZapFlow() { document.getElementById('dashboard-screen').classList.add('hidden'); document.getElementById('app-screen').classList.remove('hidden'); }
-        function abrirClientes() { document.getElementById('dashboard-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.remove('hidden'); carregarMeusClientes(); }
-        function voltarDashboard() { document.getElementById('app-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.add('hidden'); document.getElementById('dashboard-screen').classList.remove('hidden'); }
-        function fecharModal(id){ document.getElementById(id).classList.remove('show'); }
-        function toggleTheme() { document.body.classList.toggle('dark-mode'); }
-        function logout(){ localStorage.removeItem(SESSION_KEY); location.reload(); }
-
-        // --- LÓGICA DE LOGIN ---
-        async function conectarBanco() {
-            const u = document.getElementById('user').value;
-            const p = document.getElementById('pass').value;
-            // Simulando conexão (substituir pelo seu fetch real)
-            currentUserData = { user: u, pass: p, cargo: 'Admin', date: 'Vitalício' };
-            localStorage.setItem(SESSION_KEY, JSON.stringify({user: u, pass: p}));
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('dashboard-screen').classList.remove('hidden');
-            document.getElementById('ola-dashboard').innerText = "Olá, " + u;
-        }
-
-        // --- GESTÃO DE CLIENTES ---
-        async function carregarMeusClientes() {
-            // Aqui você faria o fetch para a sua API. Exemplo de mock:
-            listaClientes = [
-                {id: 1, nome: 'Carlos Alexandre', usuario: '921081', servidor: 'FSPLAY', whatsapp: '21999999999', vencimento: '20/11/2025', valor: '30,00'}
-            ];
-            aplicarFiltrosERenderizar();
-        }
-
-        function aplicarFiltrosERenderizar() {
-            const termo = document.getElementById('search-client').value.toLowerCase();
-            const filtrados = listaClientes.filter(c => c.nome.toLowerCase().includes(termo) || c.usuario.toLowerCase().includes(termo));
-            renderizarLinhas(filtrados);
-        }
-
-        function renderizarLinhas(lista) {
-            const corpo = document.getElementById('tabela-corpo');
-            corpo.innerHTML = '';
-            lista.forEach(cli => {
-                corpo.innerHTML += `
-                    <tr>
-                        <td data-label="Nome"><b>${cli.nome}</b></td>
-                        <td data-label="Usuário">${cli.usuario}</td>
-                        <td data-label="Servidor">${cli.servidor}</td>
-                        <td data-label="WhatsApp">
-                            <button class="wa-link" onclick="enviarCobrancaRapida('${cli.id}')">📱 Cobrar</button>
-                        </td>
-                        <td data-label="Vencimento"><b>${cli.vencimento}</b></td>
-                        <td data-label="Valor" style="color:var(--primary)">R$ ${cli.valor}</td>
-                        <td data-label="Ações">
-                            <div style="display:flex; gap:5px; justify-content:center;">
-                                <button class="btn-quick-send btn-auto" style="padding:6px 10px;" title="Enviar Acesso" onclick="enviarAcessoRapido('${cli.id}')">✈️</button>
-                                <button class="edit-btn btn-auto" style="padding:6px 10px;" onclick="prepararEdicaoCliente('${cli.id}')">✏️</button>
-                                <button class="danger btn-auto" style="padding:6px 10px;" onclick="deletarCliente('${cli.id}')">🗑️</button>
-                            </div>
-                        </td>
-                    </tr>`;
-            });
-        }
-
-        // --- NOVAS FUNÇÕES DE MENSAGEM ---
-
-        function abrirConfigMsgAcesso() {
-            document.getElementById('config-acesso-input').value = globalAcessoTemplate || "";
-            document.getElementById('modal-config-acesso').classList.add('show');
-        }
-
-        function salvarTemplateAcesso() {
-            const tmpl = document.getElementById('config-acesso-input').value;
-            globalAcessoTemplate = tmpl;
-            localStorage.setItem('template_acesso_wa', tmpl);
-            alert("Template de acesso atualizado!");
-            fecharModal('modal-config-acesso');
-        }
-
-        function enviarAcessoRapido(id) {
-            const cli = listaClientes.find(c => String(c.id) === String(id));
-            if(!cli || !cli.whatsapp) return alert("Cliente sem WhatsApp.");
-            
-            let template = globalAcessoTemplate;
-            if(!template) {
-                template = "Olá {nome}, seus dados de acesso são:\n👤 Usuário: {usuario}\n🌐 Servidor: {servidor}\n📅 Vencimento: {vencimento}";
-            }
-
-            const msg = template
-                .replace(/{nome}/g, cli.nome)
-                .replace(/{usuario}/g, cli.usuario)
-                .replace(/{servidor}/g, cli.servidor)
-                .replace(/{vencimento}/g, cli.vencimento);
-
-            const num = cli.whatsapp.replace(/\D/g, '');
-            window.open(`https://wa.me/55${num}?text=${encodeURIComponent(msg)}`);
-        }
-
-        function enviarCobrancaRapida(id) {
-            const cli = listaClientes.find(c => String(c.id) === String(id));
-            const msg = `Olá ${cli.nome}, seu acesso vence dia ${cli.vencimento}. Vamos renovar?`;
-            window.open(`https://wa.me/55${cli.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
-        }
-
-        // --- RESTANTE DAS FUNÇÕES (STUBS) ---
-        function abrirModalCliente() { document.getElementById('modal-new-client').classList.add('show'); }
-        function salvarCliente() { alert("Cliente salvo!"); fecharModal('modal-new-client'); }
-        function prepararEdicaoCliente(id) { alert("Editar ID: " + id); }
-        function deletarCliente(id) { if(confirm("Excluir?")) alert("Excluído"); }
-        function exportarPlanilhaClientes() { alert("Exportando..."); }
-        function abrirConfigMsg() { document.getElementById('modal-config-msg').classList.add('show'); }
-    </script>
-</body>
-</html>
+<div id="modal-config-acesso" class="modal-overlay" style="z-index: 2000;"> 
+    <div class="modal-content" style="max-width: 400px;"> 
+        <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px;" onclick="fecharModal('modal-config-acesso')">&times;</span> 
+        <h3 style="color:#8b5cf6;">Configurar Msg Acesso</h3> 
+        <textarea id="config-acesso-input" class="msg-box" style="height:120px;"></textarea> 
+        <button onclick="salvarTemplateAcesso()" style="background:#8b5cf6;">💾 Salvar</button> 
+    </div> 
+</div>
