@@ -129,6 +129,22 @@
         .filter-option input { width: 14px; height: 14px; margin: 0; cursor: pointer; }
         .filter-actions { border-top: 1px solid #eee; margin-top: 8px; padding-top: 8px; text-align: right; }
         .filter-btn-small { font-size: 10px; padding: 4px 10px; background: var(--text); color: var(--card); border-radius: 4px; width: auto; display: inline-block; cursor: pointer;}
+        
+        /* CONTADORES */
+        .stats-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
+        .stat-card { background: var(--bg); padding: 10px; border-radius: 10px; text-align: center; border: 1px solid #e5e7eb; }
+        .stat-value { display: block; font-size: 18px; font-weight: 700; color: var(--primary); }
+        .stat-label { display: block; font-size: 10px; color: var(--gray); text-transform: uppercase; font-weight: 600; }
+        .stat-vencidos .stat-value { color: var(--danger); }
+        .stat-vencendo .stat-value { color: var(--gold); }
+        
+        /* AJUSTE BOTÕES AÇÕES */
+        .actions-wrapper { display: flex; gap: 8px; justify-content: center; align-items: center; }
+        .btn-action-custom { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; border: none; color: white; font-size: 14px; }
+        .btn-action-custom:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn-edit { background: #3b82f6; }
+        .btn-delete { background: #ef4444; }
+        .btn-whatsapp { background: #25d366; }
 
         /* ESTILO PARA MAPEAMENTO DE COLUNAS */
         .map-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px; border-bottom: 1px solid #eee; }
@@ -264,6 +280,24 @@
                     <button class="export-btn btn-auto" onclick="exportarPlanilhaClientes()">📥 Exportar</button>
                     <button class="secondary btn-auto" onclick="abrirConfigMsg()">⚙️ Msg</button>
                     <button class="chat-btn btn-auto" onclick="abrirModalCliente()">➕ Novo</button>
+                </div>
+            </div>
+            <div class="stats-container">
+                <div class="stat-card">
+                    <span class="stat-value" id="stat-total">0</span>
+                    <span class="stat-label">Total</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="stat-ativos">0</span>
+                    <span class="stat-label">Ativos</span>
+                </div>
+                <div class="stat-card stat-vencendo">
+                    <span class="stat-value" id="stat-vencendo">0</span>
+                    <span class="stat-label">Vencendo</span>
+                </div>
+                <div class="stat-card stat-vencidos">
+                    <span class="stat-value" id="stat-vencidos">0</span>
+                    <span class="stat-label">Vencidos</span>
                 </div>
             </div>
             <input type="text" id="search-client" placeholder="🔍 Buscar por nome, usuário, criador..." onkeyup="filtrarClientesUI()" style="margin-bottom:15px;">
@@ -830,16 +864,41 @@
             const thCriador = document.getElementById('th-criador');
             if(thCriador) thCriador.style.display = isAdmin ? 'table-cell' : 'none';
             const hoje = new Date(); hoje.setHours(0,0,0,0);
+            let total = 0, ativos = 0, vencendo = 0, vencidos = 0;
+
             lista.forEach(cli => {
+                total++;
                 let waLink = '-'; if(cli.whatsapp) { waLink = `<button onclick="prepararCobranca('${cli.id}')" class="wa-link">📱 Cobrar</button>`; }
                 let alerta = ""; let corVenc = "#333";
+                
                 if (cli.vencimento && cli.vencimento.includes('/')) {
-                    const parts = cli.vencimento.split('/'); const dataVenc = new Date(parts[2], parts[1]-1, parts[0]); const diffDias = (dataVenc - hoje) / (1000 * 60 * 60 * 24);
-                    if (diffDias < 0) { alerta = "<span class='alert-icon'>⚠</span>"; corVenc = "red"; } else if (diffDias <= 3) { alerta = "<span class='alert-icon'>⚠</span>"; corVenc = "#d97706"; }
+                    const parts = cli.vencimento.split('/'); 
+                    const dataVenc = new Date(parts[2], parts[1]-1, parts[0]); 
+                    const diffDias = (dataVenc - hoje) / (1000 * 60 * 60 * 24);
+                    
+                    if (diffDias < 0) { 
+                        alerta = "<span class='alert-icon'>⚠</span>"; corVenc = "red"; 
+                        vencidos++;
+                    } else if (diffDias <= 3) { 
+                        alerta = "<span class='alert-icon'>⚠</span>"; corVenc = "#d97706"; 
+                        vencendo++;
+                        ativos++;
+                    } else {
+                        ativos++;
+                    }
+                } else {
+                    ativos++;
                 }
+
                 let criadorCell = isAdmin ? `<td data-label="Criador" style="color:var(--blue); font-weight:bold;">${cli.criador}</td>` : '';
-                corpo.innerHTML += `<tr><td data-label="Nome"><b>${cli.nome}</b></td>${criadorCell}<td data-label="Usuário">${cli.usuario}</td><td data-label="Servidor">${cli.servidor}</td><td data-label="WhatsApp">${waLink}</td><td data-label="Vencimento" style="color:${corVenc}; font-weight:bold;">${cli.vencimento || '-'} ${alerta}</td><td data-label="Valor" style="color:var(--primary); font-weight:bold;">R$ ${cli.valor}</td><td data-label="Ações"><div style="display:flex; gap:5px;"><button class="edit-btn btn-auto" style="padding:6px 10px;" onclick="prepararEdicaoCliente('${cli.id}')">✏️</button><button class="danger btn-auto" style="padding:6px 10px;" onclick="deletarCliente('${cli.id}')">🗑️</button><button class="chat-btn btn-auto" style="padding:6px 10px;" onclick="prepararMensagemAcao('${cli.id}')">💬</button></div></td></tr>`;
+                corpo.innerHTML += `<tr><td data-label="Nome"><b>${cli.nome}</b></td>${criadorCell}<td data-label="Usuário">${cli.usuario}</td><td data-label="Servidor">${cli.servidor}</td><td data-label="WhatsApp">${waLink}</td><td data-label="Vencimento" style="color:${corVenc}; font-weight:bold;">${cli.vencimento || '-'} ${alerta}</td><td data-label="Valor" style="color:var(--primary); font-weight:bold;">R$ ${cli.valor}</td><td data-label="Ações"><div class="actions-wrapper"><button class="btn-action-custom btn-edit" title="Editar" onclick="prepararEdicaoCliente('${cli.id}')">✏️</button><button class="btn-action-custom btn-delete" title="Excluir" onclick="deletarCliente('${cli.id}')">🗑️</button><button class="btn-action-custom btn-whatsapp" title="WhatsApp" onclick="prepararMensagemAcao('${cli.id}')">💬</button></div></td></tr>`;
             });
+
+            // Atualizar Contadores
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-ativos').innerText = ativos;
+            document.getElementById('stat-vencendo').innerText = vencendo;
+            document.getElementById('stat-vencidos').innerText = vencidos;
         }
 
         // --- ADMIN FUNCTIONS ---
