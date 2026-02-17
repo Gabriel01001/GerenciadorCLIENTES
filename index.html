@@ -18,8 +18,18 @@
         body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 10px; transition: 0.3s; }
         .container { max-width: 900px; margin: 0 auto; background: var(--card); padding: 15px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .hidden { display: none !important; }
+        
+        /* CORREÇÃO DE INPUTS NOS MODAIS (VISIBILIDADE) */
         input, textarea, select { width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #e5e7eb; border-radius: var(--radius); font-family: inherit; background: #f9fafb; color: #333; font-size: 14px; }
         body.dark-mode input, body.dark-mode select, body.dark-mode textarea { background: #374151; color: white; border-color: #4b5563; }
+        
+        /* FORÇA COR ESCURA EM INPUTS DE MODAIS BRANCOS PARA NÃO SUMIR TEXTO */
+        .modal-content input, .modal-content select, .modal-content textarea {
+            background: #f9fafb !important;
+            color: #1f2937 !important;
+            border-color: #e5e7eb !important;
+        }
+
         button { width: 100%; padding: 12px; border: none; border-radius: var(--radius); background: var(--primary); color: white; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; }
         button:hover { filter: brightness(0.9); transform: translateY(-1px); }
         button.secondary { background: #e5e7eb; color: #333; }
@@ -367,23 +377,23 @@
             <div class="form-grid" style="display: flex; flex-direction: column; gap: 15px;"> 
                 <div class="full-width">
                     <label style="font-size:13px; font-weight:700; color:#374151; margin-bottom: 5px; display: block;">Senha (Deixe vazio para não alterar):</label>
-                    <input type="text" id="edit-pass" placeholder="Redefinir senha..." style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; background: #f9fafb;">
+                    <input type="text" id="edit-pass" placeholder="Redefinir senha..." style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px;">
                 </div> 
                 <div class="full-width">
                     <label style="font-size:13px; font-weight:700; color:#374151; margin-bottom: 5px; display: block;">Vencimento:</label>
-                    <input type="text" id="edit-date" placeholder="DD/MM/AAAA" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; background: #f9fafb;">
+                    <input type="text" id="edit-date" placeholder="DD/MM/AAAA" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px;">
                 </div> 
                 <div class="full-width">
                     <label style="font-size:13px; font-weight:700; color:#374151; margin-bottom: 5px; display: block;">WhatsApp:</label>
-                    <input type="text" id="edit-wa" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; background: #f9fafb;">
+                    <input type="text" id="edit-wa" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px;">
                 </div> 
                 <div class="full-width">
                     <label style="font-size:13px; font-weight:700; color:#374151; margin-bottom: 5px; display: block;">Valor:</label>
-                    <input type="text" id="edit-val" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; background: #f9fafb;">
+                    <input type="text" id="edit-val" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px;">
                 </div> 
                 <div class="full-width" id="div-edit-role">
                     <label style="font-size:13px; font-weight:700; color:#374151; margin-bottom: 5px; display: block;">Função (Cargo):</label>
-                    <select id="edit-role" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; background: #f9fafb;">
+                    <select id="edit-role" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px;">
                         <option value="User">Usuário</option>
                         <option value="Teste">Teste</option>
                         <option value="Sub-Admin">Sub-Admin</option>
@@ -412,7 +422,12 @@
         const DB_KEY = 'zapflow_v36'; const SESSION_KEY = 'zapflow_session_v36';
         let db = JSON.parse(localStorage.getItem(DB_KEY)) || {};
         let currentUserData = null; let lastOpenedLink = ""; let pgPend = 0, pgSalv = 0, pgDesc = 0; const ITENS_PAG = 5;
-        let autoTimer = null; let countdownRef = null; let userEditing = null; let currentFileUrl = ""; let deferredPrompt; let tempUser="", tempPass="", tempWa="", tempDate="", tempVal=""; let timerInterval = null;
+        let autoTimer = null; let countdownRef = null; let userEditing = null; let currentFileUrl = ""; let deferredPrompt; 
+        
+        // VARIÁVEIS GLOBAIS PARA ENVIO
+        let tempUser="", tempPass="", tempWa="", tempDate="", tempVal=""; 
+        
+        let timerInterval = null;
         let listaClientes = []; let clienteEditandoId = null; let globalWhatsappTemplate = "";
         let filtrosAtivos = {}; 
         
@@ -434,6 +449,12 @@
         function abrirZapFlow() { document.getElementById('dashboard-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.add('hidden'); document.getElementById('app-screen').classList.remove('hidden'); }
         function abrirClientes() { document.getElementById('dashboard-screen').classList.add('hidden'); document.getElementById('app-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.remove('hidden'); carregarMeusClientes(); }
         function voltarDashboard() { document.getElementById('app-screen').classList.add('hidden'); document.getElementById('clients-screen').classList.add('hidden'); document.getElementById('dashboard-screen').classList.remove('hidden'); }
+
+        // --- FUNÇÃO DE DOWNLOAD REINTRODUZIDA ---
+        function baixarArquivoGeral() {
+            if(!currentFileUrl) return alert("Nenhum arquivo disponível.");
+            window.open(currentFileUrl, '_blank');
+        }
 
         // --- IMPORTAÇÃO UNIVERSAL COM MAPEAMENTO (V121) ---
         function lerArquivoImportacao(input) {
@@ -826,10 +847,28 @@
             const hoje = new Date();
 
             list.forEach(row => {
-                const uUser = row[0] || "";
+                let uUser = row[0] || "";
                 if (isSubAdmin && uUser.toLowerCase() === currentUserData.user.toLowerCase()) return; 
 
-                const uPass = row[1]; const uDate = row[2] || ""; const uWa = row[3] || ""; const uVal = row[4] || ""; let uCargo = row[5] || ""; const uPix = row[6] || ""; const uStatus = row[7] || "Ativo"; const uCriador = row[8] || "-"; const uCadastro = "-"; const uRevenda = row[10] || "0"; 
+                // SANITIZAÇÃO DE DADOS PARA NÃO QUEBRAR O ONCLICK
+                let uPass = row[1];
+                let uDate = row[2] || "";
+                let uWa = row[3] || "";
+                let uVal = row[4] || "";
+                let uCargo = row[5] || "";
+                let uPix = row[6] || "";
+                let uStatus = row[7] || "Ativo";
+                let uCriador = row[8] || "-";
+                let uCadastro = "-";
+                let uRevenda = row[10] || "0"; 
+
+                // Limpa aspas simples e duplas para não quebrar o HTML
+                const safeUser = uUser.replace(/'/g, "").replace(/"/g, "");
+                const safePass = String(uPass).replace(/'/g, "").replace(/"/g, "");
+                const safeWa = String(uWa).replace(/'/g, "").replace(/"/g, "");
+                const safeDate = String(uDate).replace(/'/g, "").replace(/"/g, "");
+                const safeVal = String(uVal).replace(/'/g, "").replace(/"/g, "");
+                const safeCargo = String(uCargo).replace(/'/g, "").replace(/"/g, "");
 
                 if(uCargo.toLowerCase() === 'administrador') uCargo = "Admin";
                 if(uCargo.toLowerCase() === 'subadministrador') uCargo = "Sub-Admin";
@@ -847,20 +886,20 @@
 
                 let btns = '';
                 if (!isSubAdmin) {
-                    btns += `<button class="btn-action-master act-toggle" title="Aprovar/Bloquear" onclick="toggleStatus('${uUser}')">✅</button>`;
-                    btns += `<button class="btn-action-master act-renew" title="Renovar" onclick="renovarUser('${uUser}')">📅</button>`;
+                    btns += `<button class="btn-action-master act-toggle" title="Aprovar/Bloquear" onclick="toggleStatus('${safeUser}')">✅</button>`;
+                    btns += `<button class="btn-action-master act-renew" title="Renovar" onclick="renovarUser('${safeUser}')">📅</button>`;
                 } else {
-                    btns += `<button class="btn-action-master act-signal" title="Solicitar Renovação ao Admin" onclick="sinalizarRenovacao('${uUser}')">✋</button>`;
+                    btns += `<button class="btn-action-master act-signal" title="Solicitar Renovação ao Admin" onclick="sinalizarRenovacao('${safeUser}')">✋</button>`;
                 }
                 
-                // CORREÇÃO: Passando todos os dados para o botão de editar e enviar
-                const btnSendReal = `<button class="btn-action-master act-send" title="Enviar Dados" onclick="prepararEnvioWhatsApp('${uUser}','${uPass}','${uWa}','${uDate}','${uVal}')">📩</button>`;
+                // CORREÇÃO: Passando dados "safe" (sem aspas)
+                const btnSendReal = `<button class="btn-action-master act-send" title="Enviar Dados" onclick="prepararEnvioWhatsApp('${safeUser}','${safePass}','${safeWa}','${safeDate}','${safeVal}')">📩</button>`;
                 
                 btns += `<button class="btn-action-master act-chat" title="WhatsApp" onclick="window.open('https://wa.me/55${String(uWa).replace(/\D/g,'')}')">💬</button>`;
                 btns += btnSendReal;
                 
-                // CORREÇÃO AQUI: Passando os dados para o modal de edição
-                btns += `<button class="btn-action-master act-edit" title="Editar" onclick="prepararEdicaoUser('${uUser}', '${uDate}', '${uWa}', '${uVal}', '${uCargo}')">✏️</button>`;
+                // CORREÇÃO: Passando dados "safe" para o modal de edição
+                btns += `<button class="btn-action-master act-edit" title="Editar" onclick="prepararEdicaoUser('${safeUser}', '${safeDate}', '${safeWa}', '${safeVal}', '${safeCargo}')">✏️</button>`;
 
                 html += `<tr><td><span class="status-dot ${statusDot}"></span>${statusTexto}</td><td><b>${uUser}</b></td><td class="col-detailed">******</td><td>${uDate}</td><td>${uWa}</td><td class="col-detailed">${uVal}</td><td class="col-detailed">${uCargo}</td><td class="col-detailed">${uPix}</td>`;
                 if (!isSubAdmin) { html += `<td class="col-detailed">${uCadastro}</td><td class="col-detailed">${uCriador}</td><td class="col-detailed">${uRevenda}</td>`; }
@@ -895,6 +934,34 @@
             document.getElementById('modal-edit').classList.add('show'); 
         }
         
+        // CORREÇÃO: Função de Envio com preparação
+        function prepararEnvioWhatsApp(u, p, w, d, v) { 
+            tempUser = u; tempPass = p; tempWa = w; tempDate = d; tempVal = v; 
+            document.getElementById('send-dest').innerText = u; 
+            const previewHtml = `👤 <b>Usuário:</b> ${u}<br>🔑 <b>Senha:</b> ${p}<br>📅 <b>Vencimento:</b> ${d}<br>🌐 <b>Site:</b> www.gerenciadorwa.com.br`; 
+            document.getElementById('preview-msg-content').innerHTML = previewHtml; 
+            document.getElementById('whatsapp-extra-msg').value = ""; 
+            document.getElementById('modal-send-whatsapp').classList.add('show'); 
+        }
+
+        // CORREÇÃO: Função de Envio com tratamento de número
+        function finalizarEnvioWhatsApp() { 
+            const extra = document.getElementById('whatsapp-extra-msg').value; 
+            const quebra = extra ? `\n\n${extra}` : ""; 
+            const msg = `🔐 *Seu Acesso Gerenciador |WA|*\n\n👤 *Usuário:* ${tempUser}\n🔑 *Senha:* ${tempPass}\n📅 *Vencimento:* ${tempDate}\n🌐 *Site:* www.gerenciadorwa.com.br${quebra}`; 
+            
+            // LIMPEZA E CORREÇÃO DO NÚMERO
+            let num = String(tempWa).replace(/\D/g,'');
+            if(!num || num.length < 8) return alert("Este usuário não tem número de WhatsApp válido.");
+
+            if (num.length >= 10 && num.length <= 11) {
+                num = '55' + num; // Adiciona Brasil se faltar
+            }
+            
+            window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`); 
+            fecharModal('modal-send-whatsapp'); 
+        }
+        
         async function salvarEdicao() { const btn = document.getElementById('btn-save-edit'); const p = document.getElementById('edit-pass').value; const d = document.getElementById('edit-date').value; const w = document.getElementById('edit-wa').value; const v = document.getElementById('edit-val').value; const r = document.getElementById('edit-role').value; btn.disabled = true; btn.innerText = "Salvando..."; const edit = { userOriginal: userEditing, pass: p, date: d, wa: w, val: v, cargo: r }; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'edit_user', user: currentUserData.user, pass: currentUserData.pass, dadosEditados: edit }) }); alert("Editado!"); fecharModal('modal-edit'); abrirAdminPanel(); } catch (e) { alert("Erro."); } finally { btn.disabled = false; btn.innerText = "💾 Atualizar Dados"; } }
         async function renovarUser(target) { const d = prompt("Quantos dias adicionar?", "30"); if (!d) return; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'renew_user', user: currentUserData.user, pass: currentUserData.pass, targetUser: target, days: d }) }); alert("Renovado!"); abrirAdminPanel(); } catch (e) { alert("Erro."); } }
         async function toggleStatus(target) { if (!confirm("Alterar status?")) return; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggle_status', user: currentUserData.user, pass: currentUserData.pass, targetUser: target }) }); abrirAdminPanel(); } catch (e) { alert("Erro."); } }
@@ -926,27 +993,12 @@
         function processarNovosLinks(listaBruta) { const u = currentUserData.user; if (!db[u]) db[u] = { links: [], salvos: [], naoSalvos: [] }; if (!db[u].salvos) db[u].salvos = []; if (!db[u].naoSalvos) db[u].naoSalvos = []; const jaExistem = new Set([...db[u].links, ...db[u].salvos, ...db[u].naoSalvos]); let adicionados = 0; let duplicados = 0; listaBruta.forEach(link => { const l = link.trim(); if (l) { if (jaExistem.has(l)) { duplicados++; } else { db[u].links.push(l); jaExistem.add(l); adicionados++; } } }); if (duplicados > 0) alert(`Filtrado: ${adicionados} novos adicionados. ${duplicados} repetidos removidos.`); renderizar(); }
         function addLinks(){ const t=document.getElementById('links-input'); const linhas = t.value.split('\n'); processarNovosLinks(linhas); t.value=''; pgPend = 0; }
         function renderizar() { const u = currentUserData.user; if(!db[u]) db[u] = {links:[], salvos:[], naoSalvos:[]}; if(!db[u].naoSalvos) db[u].naoSalvos = []; const p = document.getElementById('lista-pendentes'); p.innerHTML = ''; const tP = db[u].links.length; document.getElementById('count-pend').innerText = tP; db[u].links.slice(pgPend*ITENS_PAG, (pgPend+1)*ITENS_PAG).forEach((l,i) => { p.innerHTML += `<div class="card"><span class="link-text">${l}</span><button class="btn-auto" onclick="tratarAberturaLink(${pgPend*ITENS_PAG+i},'${l}')">Abrir ↗</button></div>`; }); renderControles('paginacao-pend', tP, pgPend, (n)=> {pgPend=n; renderizar();}); const s = document.getElementById('lista-salvos'); s.innerHTML = ''; const tS = db[u].salvos ? db[u].salvos.length : 0; document.getElementById('count-saved').innerText = tS; if(db[u].salvos) db[u].salvos.slice(pgSalv*ITENS_PAG, (pgSalv+1)*ITENS_PAG).forEach((l,i) => { s.innerHTML += `<div class="card" style="border-left:4px solid var(--primary)"><span class="link-text">${l}</span><button class="danger btn-auto" onclick="db['${u}'].salvos.splice(${pgSalv*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-salv', tS, pgSalv, (n)=> {pgSalv=n; renderizar();}); const d = document.getElementById('lista-descartados'); d.innerHTML = ''; const tD = db[u].naoSalvos ? db[u].naoSalvos.length : 0; document.getElementById('count-discarded').innerText = tD; if(db[u].naoSalvos) db[u].naoSalvos.slice(pgDesc*ITENS_PAG, (pgDesc+1)*ITENS_PAG).forEach((l,i) => { d.innerHTML += `<div class="card card-discarded"><span class="link-text">${l}</span><button class="btn-auto" onclick="resgatarDescartado(${pgDesc*ITENS_PAG+i})">♻️</button><button class="danger btn-auto" onclick="db['${u}'].naoSalvos.splice(${pgDesc*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-desc', tD, pgDesc, (n)=> {pgDesc=n; renderizar();}); localStorage.setItem(DB_KEY, JSON.stringify(db)); }
-        function renderControles(id, total, atual, cb) { const div = document.getElementById(id), max = Math.ceil(total/ITENS_PAG); if(max <= 1) { div.innerHTML = ''; return; } div.innerHTML = `<button class="secondary btn-auto" ${atual===0?'disabled':''} onclick="(${cb})(${atual-1})">«</button><span>${atual+1}/${max}</span><button class="secondary btn-auto" ${atual>=max-1?'disabled':''} onclick="(${cb})(${atual+1})">»</button>`; }
+        function renderControles(id, total, atual, cb) { const div = document.getElementById(id), max = Math.ceil(total/ITENS_PAG); if(max <= 1) { div.innerHTML = ''; return; } div.innerHTML = `<button class="secondary btn-auto" ${atual===0?'disabled':''} onclick="(${cb})(${atual+1})">«</button><span>${atual+1}/${max}</span><button class="secondary btn-auto" ${atual>=max-1?'disabled':''} onclick="(${cb})(${atual+1})">»</button>`; }
         
         function prepararEnvioAposCriacao() { fecharModalSucessoCriacao(); prepararEnvioWhatsApp(tempUser, tempPass, tempWa, tempDate, tempVal); }
         function fecharModalSucessoCriacao() { document.getElementById('modal-created-success').classList.remove('show'); }
         function prepararEnvioWhatsApp(u, p, w, d, v) { tempUser = u; tempPass = p; tempWa = w; tempDate = d; tempVal = v; document.getElementById('send-dest').innerText = u; const previewHtml = `👤 <b>Usuário:</b> ${u}<br>🔑 <b>Senha:</b> ${p}<br>📅 <b>Vencimento:</b> ${d}<br>🌐 <b>Site:</b> www.gerenciadorwa.com.br`; document.getElementById('preview-msg-content').innerHTML = previewHtml; document.getElementById('whatsapp-extra-msg').value = ""; document.getElementById('modal-send-whatsapp').classList.add('show'); }
-        
-        // CORREÇÃO: Função de Envio com tratamento de número
-        function finalizarEnvioWhatsApp() { 
-            const extra = document.getElementById('whatsapp-extra-msg').value; 
-            const quebra = extra ? `\n\n${extra}` : ""; 
-            const msg = `🔐 *Seu Acesso Gerenciador |WA|*\n\n👤 *Usuário:* ${tempUser}\n🔑 *Senha:* ${tempPass}\n📅 *Vencimento:* ${tempDate}\n🌐 *Site:* www.gerenciadorwa.com.br${quebra}`; 
-            
-            // LIMPEZA E CORREÇÃO DO NÚMERO
-            let num = String(tempWa).replace(/\D/g,'');
-            if (num.length >= 10 && num.length <= 11) {
-                num = '55' + num; // Adiciona Brasil se faltar
-            }
-            
-            window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`); 
-            fecharModal('modal-send-whatsapp'); 
-        }
+        function finalizarEnvioWhatsApp() { const extra = document.getElementById('whatsapp-extra-msg').value; const quebra = extra ? `\n\n${extra}` : ""; const msg = `🔐 *Seu Acesso Gerenciador |WA|*\n\n👤 *Usuário:* ${tempUser}\n🔑 *Senha:* ${tempPass}\n📅 *Vencimento:* ${tempDate}\n🌐 *Site:* www.gerenciadorwa.com.br${quebra}`; window.open(`https://wa.me/55${String(tempWa).replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`); fecharModal('modal-send-whatsapp'); }
         
         async function iniciarTimerTeste(seconds) {
             const display = document.getElementById('status-acesso');
