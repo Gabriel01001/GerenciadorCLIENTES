@@ -1079,6 +1079,20 @@
              if(document.getElementById('ola-user')) document.getElementById('ola-user').innerText = "Olá, Admin";
         }
         if (dados.cargo === 'Teste' && dados.testSeconds) { iniciarTimerTeste(dados.testSeconds); document.getElementById('status-dashboard').innerText = "Modo Teste"; } else { document.getElementById('status-dashboard').innerText = "Vence: " + currentUserData.date; if(diff <= 5 && !dados.isMaster && dados.date !== 'Vitalício') { document.getElementById('vencimento-alert').style.display = 'block'; document.getElementById('dias-restantes-alerta').innerText = diff < 0 ? 0 : diff; } } const btnAuto = document.getElementById('btn-autoresponder'); if (dados.cargo === 'Admin' || dados.cargo === 'User') { btnAuto.style.display = 'inline-flex'; } else { btnAuto.style.display = 'none'; } if(dados.isMaster) { document.getElementById('btn-open-admin').classList.remove('hidden'); } if (dados.file && dados.file.url && dados.cargo !== 'Sub-Admin') { document.getElementById('file-download-card').style.display = 'flex'; document.getElementById('file-date').innerText = dados.file.time; document.getElementById('file-title').innerText = (dados.cargo === 'Teste') ? "Arquivo Teste (1h)" : "Arquivo Geral"; currentFileUrl = dados.file.url; document.getElementById('btn-download-file').style.display = 'block'; } else { document.getElementById('file-download-card').style.display = 'none'; } if(dados.message && dados.message.trim() !== "") { const savedMsg = localStorage.getItem('zapflow_last_msg_' + currentUserData.user); if (savedMsg !== dados.message) { document.getElementById('msg-text').innerText = dados.message; document.getElementById('modal-global-msg').classList.add('show'); } } renderizar(); } else { msg.innerText = res.msg || "Dados incorretos."; localStorage.removeItem(SESSION_KEY); } } catch(e) { console.error(e); msg.innerText = "Erro ao conectar. Verifique internet."; } finally { btn.disabled = false; txt.style.display = 'block'; loader.style.display = 'none'; } }
+    // Função para enviar o acesso via WhatsApp logo após criar o usuário
+function prepararEnvioAposCriacao() {
+    // Fecha o modal de sucesso
+    fecharModalSucessoCriacao();
+    
+    // Chama a função de envio que já existe no seu código, 
+    // usando os dados temporários salvos durante a criação
+    prepararEnvioWhatsApp(tempUser, tempPass, tempWa, tempDate, tempVal);
+}
+
+// Função para fechar o modal de sucesso
+function fecharModalSucessoCriacao() {
+    document.getElementById('modal-created-success').classList.remove('show');
+}
     </script>
 </body>
 </html>
