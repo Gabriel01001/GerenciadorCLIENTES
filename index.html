@@ -11,22 +11,6 @@
     
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     
-    <script>
-        // ========================================
-        // FUNÇÃO DE NORMALIZAÇÃO DO WHATSAPP
-        // ========================================
-        /**
-         * Normaliza o número do WhatsApp removendo todos os caracteres não numéricos
-         * Aceita formatos como: +55 21 96584-2561, (21) 96584-2561, 21965842561, etc.
-         * Retorna apenas os dígitos: 5521965842561
-         */
-        function normalizarWhatsApp(numero) {
-            if (!numero) return "";
-            // Remove todos os caracteres que não sejam dígitos
-            return String(numero).replace(/\D/g, '');
-        }
-    </script>
-    
     <style>
         :root { --primary: #10b981; --dark: #064e3b; --bg: #f3f4f6; --text: #1f2937; --danger: #ef4444; --card: #fff; --radius: 12px; --blue: #3b82f6; --gold: #f59e0b; --gray: #6b7280; --purple: #8b5cf6; }
         body.dark-mode { --bg: #111827; --text: #f9fafb; --card: #1f2937; }
@@ -123,59 +107,6 @@
         .tutorial-step { text-align: left; margin-bottom: 15px; background: rgba(0,0,0,0.03); padding: 10px; border-radius: 10px; font-size: 13px; }
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border-radius: 10px; background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        .timer-badge { background: #ef4444; color: white; padding: 2px 8px; border-radius: 5px; font-size: 12px; font-weight: bold; margin-left: 5px; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
-
-        /* TELA CLIENTES */
-        .custom-table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--card); border-radius: 10px; overflow: visible !important; }
-        .custom-table thead { background: var(--bg); border-bottom: 2px solid #e5e7eb; position: sticky; top: 0; z-index: 50; }
-        .custom-table th { padding: 12px; text-align: left; color: var(--primary); font-weight: 700; cursor: pointer; position: relative; }
-        .custom-table th:hover { background: rgba(0,0,0,0.05); }
-        .custom-table td { padding: 12px; border-bottom: 1px solid #f3f4f6; color: var(--text); }
-        .custom-table tr:hover { background: rgba(0,0,0,0.02); }
-        .wa-link { color: #25d366; font-weight: bold; text-decoration: none; display: flex; align-items: center; gap: 4px; border: 1px solid #25d366; padding: 3px 8px; border-radius: 20px; font-size: 11px; width: fit-content; background:transparent; cursor:pointer;}
-        .wa-link:hover { background: #f0fdf4; }
-        .alert-icon { color: #ef4444; font-size: 14px; animation: pulse 1s infinite; margin-left: 5px; }
-        
-        .filter-dropdown { position: absolute; top: 35px; left: 0; background: var(--card); border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); padding: 12px; z-index: 9999; min-width: 200px; text-align: left !important; display: none; }
-        .filter-dropdown.show { display: block; }
-        .filter-content { max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
-        .filter-option { display: flex !important; align-items: center; gap: 8px; font-size: 12px; color: var(--text); cursor: pointer; white-space: nowrap; padding: 4px; border-radius: 4px; width: 100%; }
-        .filter-option:hover { background: rgba(0,0,0,0.05); }
-        .filter-option input { width: 14px; height: 14px; margin: 0; cursor: pointer; }
-        .filter-actions { border-top: 1px solid #eee; margin-top: 8px; padding-top: 8px; text-align: right; }
-        .filter-btn-small { font-size: 10px; padding: 4px 10px; background: var(--text); color: var(--card); border-radius: 4px; width: auto; display: inline-block; cursor: pointer;}
-        
-        /* CONTADORES */
-        .stats-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
-        .stat-card { background: var(--bg); padding: 10px; border-radius: 10px; text-align: center; border: 1px solid #e5e7eb; }
-        .stat-value { display: block; font-size: 18px; font-weight: 700; color: var(--primary); }
-        .stat-label { display: block; font-size: 10px; color: var(--gray); text-transform: uppercase; font-weight: 600; }
-        .stat-vencidos .stat-value { color: var(--danger); }
-        .stat-vencendo .stat-value { color: var(--gold); }
-        
-        /* AJUSTE BOTÕES AÇÕES */
-        .actions-wrapper { display: flex; gap: 8px; justify-content: center; align-items: center; }
-        .btn-action-custom { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; border: none; color: white; font-size: 14px; }
-        .btn-action-custom:hover { transform: translateY(-2px); filter: brightness(1.1); }
-        .btn-edit { background: #3b82f6; }
-        .btn-delete { background: #ef4444; }
-        .btn-whatsapp { background: #25d366; }
-
-        /* ESTILO PARA MAPEAMENTO DE COLUNAS */
-        .map-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px; border-bottom: 1px solid #eee; }
-        .map-label { font-weight: 700; width: 30%; font-size: 13px; margin-top: 8px; }
-        .map-input-group { width: 65%; display: flex; flex-direction: column; gap: 5px; }
-        .map-select { width: 100%; font-size: 12px; padding: 8px; }
-        .map-manual-input { width: 100%; font-size: 12px; padding: 8px; border: 1px dashed #3b82f6; background: #eff6ff; color: #1e40af; border-radius: 6px; }
-
-        @media (max-width: 600px) {
-            .custom-table, .custom-table thead, .custom-table tbody, .custom-table th, .custom-table td, .custom-table tr { display: block; }
-            .custom-table thead tr { position: absolute; top: -9999px; left: -9999px; }
-            .custom-table tr { border: 1px solid #eee; border-radius: 10px; margin-bottom: 10px; background: var(--card); position: relative; }
-            .custom-table td { position: relative; padding-left: 50%; border: none; border-bottom: 1px solid #eee; }
-            .custom-table td:before { position: absolute; top: 12px; left: 10px; width: 45%; padding-right: 10px; white-space: nowrap; font-weight: bold; content: attr(data-label); color: var(--gray); }
-        }
     </style>
 </head>
 <body>
@@ -316,24 +247,27 @@
                     <span class="stat-label">Vencidos</span>
                 </div>
             </div>
-            <input type="text" id="search-client" placeholder="🔍 Buscar por nome, usuário, criador..." onkeyup="filtrarClientesUI()" style="margin-bottom:15px;">
-            
-            <div class="table-responsive" style="min-height: 300px;">
-                <table class="custom-table">
-                    <thead>
-                        <tr>
-                            <th onclick="tabelaSort('nome')">Nome ↕</th>
-                            <th id="th-criador" style="display:none;" onclick="toggleFilter(event, 'criador')">Criador ▾<div id="filter-criador" class="filter-dropdown"><div class="filter-content"></div><div class="filter-actions"><button class="secondary filter-btn-small" onclick="limparFiltro('criador')">Limpar</button></div></div></th>
-                            <th onclick="tabelaSort('usuario')">Usuário ↕</th>
-                            <th onclick="toggleFilter(event, 'servidor')">Servidor ▾<div id="filter-servidor" class="filter-dropdown"><div class="filter-content"></div><div class="filter-actions"><button class="secondary filter-btn-small" onclick="limparFiltro('servidor')">Limpar</button></div></div></th>
-                            <th onclick="tabelaSort('whatsapp')">WhatsApp ↕</th>
-                            <th onclick="toggleFilter(event, 'vencimento')">Vencimento ▾<div id="filter-vencimento" class="filter-dropdown"><div class="filter-content"></div><div class="filter-actions"><button class="secondary filter-btn-small" onclick="limparFiltro('vencimento')">Limpar</button></div></div></th>
-                            <th onclick="toggleFilter(event, 'valor')">Valor ▾<div id="filter-valor" class="filter-dropdown"><div class="filter-content"></div><div class="filter-actions"><button class="secondary filter-btn-small" onclick="limparFiltro('valor')">Limpar</button></div></div></th>
-                            <th style="width: 100px;">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabela-corpo"></tbody>
-                </table>
+
+            <div style="background: var(--card); border: 1px solid #e5e7eb; border-radius: 15px; padding: 15px;">
+                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                    <input type="text" id="search-client" placeholder="🔍 Pesquisar por nome ou usuário..." onkeyup="filtrarClientes()" style="margin:0;">
+                </div>
+                <div class="table-responsive">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th onclick="tabelaSort('nome')">Nome ↕</th>
+                                <th onclick="tabelaSort('usuario')">Usuário ↕</th>
+                                <th onclick="toggleFilter(event, 'servidor')">Servidor ▾<div id="filter-servidor" class="filter-dropdown"><div class="filter-content"></div><div class="filter-actions"><button class="secondary filter-btn-small" onclick="limparFiltro('servidor')">Limpar</button></div></div></th>
+                                <th onclick="tabelaSort('whatsapp')">WhatsApp ↕</th>
+                                <th onclick="toggleFilter(event, 'vencimento')">Vencimento ▾<div id="filter-vencimento" class="filter-dropdown"><div class="filter-content"></div><div class="filter-actions"><button class="secondary filter-btn-small" onclick="limparFiltro('vencimento')">Limpar</button></div></div></th>
+                                <th onclick="toggleFilter(event, 'valor')">Valor ▾<div id="filter-valor" class="filter-dropdown"><div class="filter-content"></div><div class="filter-actions"><button class="secondary filter-btn-small" onclick="limparFiltro('valor')">Limpar</button></div></div></th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-corpo"></tbody>
+                    </table>
+                </div>
                 <div id="loader-clientes" class="loader" style="display:none; border-color:#ccc; border-top-color:#333; margin-top:20px;"></div>
                 <p id="msg-sem-clientes" style="text-align:center; opacity:0.6; margin-top:20px; display:none;">Nenhum cliente encontrado.</p>
             </div>
@@ -414,46 +348,44 @@
             </div>
 
             <input type="text" id="search-user" placeholder="🔍 Pesquisar usuário..." onkeyup="filtrarUsuarios()" style="margin-bottom: 15px;">
-            <div id="admin-users-list"></div>
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Usuário</th>
+                            <th>Vencimento</th>
+                            <th>WhatsApp</th>
+                            <th>Valor</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-corpo"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <div id="modal-edit" class="modal-overlay" style="z-index: 1002;"> 
-        <div class="modal-content" style="max-width: 400px; padding: 30px 20px; border-radius: 12px; background: white;"> 
-            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:24px; z-index:1000; font-weight:bold; color:#1f2937;" onclick="fecharModal('modal-edit')">&times;</span> 
-            
-            <h3 style="margin-top:0; color:#3b82f6; text-align: center; font-size: 20px; margin-bottom: 25px;">Editar: <span id="edit-user-display" style="color:#1f2937;"></span></h3> 
-            
-            <div class="form-grid" style="display: flex; flex-direction: column; gap: 15px;"> 
-                <div class="full-width">
-                    <label style="font-size:13px; font-weight:700; color:#374151; margin-bottom: 5px; display: block;">Senha (Deixe vazio para não alterar):</label>
-                    <input type="text" id="edit-pass" placeholder="Redefinir senha..." style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px;">
-                </div> 
-                <div class="full-width">
-                    <label style="font-size:13px; font-weight:700; color:#374151; margin-bottom: 5px; display: block;">Vencimento:</label>
-                    <input type="text" id="edit-date" placeholder="DD/MM/AAAA" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px;">
-                </div> 
-                <div class="full-width">
-                    <label style="font-size:13px; font-weight:700; color:#374151; margin-bottom: 5px; display: block;">WhatsApp:</label>
-                    <input type="text" id="edit-wa" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px;">
-                </div> 
-                <div class="full-width">
-                    <label style="font-size:13px; font-weight:700; color:#374151; margin-bottom: 5px; display: block;">Valor:</label>
-                    <input type="text" id="edit-val" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px;">
-                </div> 
-                <div class="full-width" id="div-edit-role">
-                    <label style="font-size:13px; font-weight:700; color:#374151; margin-bottom: 5px; display: block;">Função (Cargo):</label>
-                    <select id="edit-role" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px;">
-                        <option value="User">Usuário</option>
-                        <option value="Teste">Teste</option>
-                        <option value="Sub-Admin">Sub-Admin</option>
-                        <option value="Admin">Admin</option>
-                    </select>
+    <div id="modal-edit" class="modal-overlay">
+        <div class="modal-content">
+            <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000; font-weight:bold; color:var(--text);" onclick="fecharModal('modal-edit')">&times;</span>
+            <h3 style="margin-top:0;">Editar Acesso</h3>
+            <div class="form-grid">
+                <input type="text" id="edit-user" placeholder="Usuário" disabled style="opacity:0.6;">
+                <div class="full-width" style="display:flex; gap:5px; align-items:center;">
+                    <input type="date" id="edit-date" style="margin:0;">
+                    <span style="font-size:12px; color:#666">vencimento</span>
                 </div>
-            </div> 
-            <button onclick="salvarEdicao()" id="btn-save-edit" style="margin-top:25px; width: 100%; padding: 12px; border: none; border-radius: 8px; background: #3b82f6; color: white; font-weight: 600; cursor: pointer; transition: 0.2s;">💾 Atualizar Dados</button> 
-            <p id="msg-edit" style="color:red; font-size:12px; text-align:center; margin-top:5px;"></p> 
-        </div> 
+                <div class="full-width" id="div-edit-role">
+                    <label style="font-size:12px; font-weight:bold; color:#333;">Tipo de Acesso:</label>
+                    <select id="edit-role"></select>
+                </div>
+                <input type="text" id="edit-wa" placeholder="WhatsApp" class="full-width">
+                <input type="text" id="edit-val" placeholder="Valor">
+            </div>
+            <button onclick="salvarEdicao()" id="btn-save-edit" style="margin-top:25px; width: 100%; padding: 12px; border: none; border-radius: 8px; background: #3b82f6; color: white; font-weight: 600; cursor: pointer; transition: 0.2s;">💾 Atualizar Dados</button>
+            <p id="msg-edit" style="color:red; font-size:12px; text-align:center; margin-top:5px;"></p>
+        </div>
     </div>
 
     <div id="modal-new-client" class="modal-overlay" style="z-index: 1005;"> <div class="modal-content" style="max-width: 350px;"> <span style="position:absolute; top:15px; right:15px; cursor:pointer; font-size:30px; z-index:1000;" onclick="fecharModal('modal-new-client')">&times;</span> <h3 id="modal-cli-title" style="margin-top:0; color:var(--primary);">Novo Cliente</h3> <input type="text" id="cli-nome" placeholder="Nome do Cliente"> <input type="text" id="cli-user" placeholder="Usuário/Login"> <input type="text" id="cli-server" placeholder="Servidor"> <input type="text" id="cli-wa" placeholder="WhatsApp (só números)"> <input type="text" id="cli-val" placeholder="Valor (ex: 20,00)"> <label style="display:block; text-align:left; font-size:12px; font-weight:bold; margin-bottom:5px; color:#333;">Data de Vencimento:</label> <input type="date" id="cli-venc"> <button onclick="salvarCliente()" id="btn-save-cli" style="margin-top:15px;">💾 Salvar Cliente</button> </div> </div>
@@ -468,6 +400,14 @@
     <div id="modal-created-success" class="modal-overlay" style="z-index: 1300;"> <div class="modal-content" style="max-width: 350px; text-align:center;"> <div style="font-size: 50px;">✅</div> <h3 style="margin-top:0; color:var(--primary);">Usuário Criado!</h3> <p style="font-size:13px; color:#666; margin-bottom:20px;">O que deseja fazer agora?</p> <div style="display:flex; flex-direction:column; gap:10px;"><button class="chat-btn" onclick="prepararEnvioAposCriacao()">📲 Enviar Acesso</button><button class="secondary" onclick="fecharModalSucessoCriacao()">❌ Fechar</button></div> </div> </div>
 
     <script>
+        // ========================================
+        // FUNÇÃO DE NORMALIZAÇÃO DO WHATSAPP
+        // ========================================
+        function normalizarWhatsApp(numero) {
+            if (!numero) return "";
+            return String(numero).replace(/\D/g, '');
+        }
+
         const API_URL = 'https://script.google.com/macros/s/AKfycbwtMMYq6gHWUX33Ie05iyjbVKPzWtzd9vebIInLe607nqN57GteOeOGE1a8dMI05Cpw/exec';
         const DB_KEY = 'zapflow_v36'; const SESSION_KEY = 'zapflow_session_v36';
         let db = JSON.parse(localStorage.getItem(DB_KEY)) || {};
@@ -714,28 +654,25 @@
                         action: 'bulk_delete_clients', 
                         user: currentUserData.user, 
                         pass: currentUserData.pass,
-                        ids: lastCreatedIds
+                        ids: lastCreatedIds 
                     }) 
                 });
                 const res = await req.json();
-                if (res.success) {
-                    alert(`Desfeito! ${res.count} clientes removidos.`);
-                    lastCreatedIds = []; // Limpa lista
-                    btn.style.display = 'none'; // Esconde botão
+                if(res.success) {
+                    alert("Importação desfeita!");
+                    lastCreatedIds = [];
+                    document.getElementById('btn-undo-import').style.display = 'none';
                     carregarMeusClientes();
-                } else {
-                    alert("Erro ao desfazer.");
-                }
+                } else { alert("Erro ao desfazer."); }
             } catch(e) { alert("Erro de conexão."); }
             finally { btn.disabled = false; btn.innerText = "↺ Desfazer"; }
         }
 
-        // --- EXPORTAR PLANILHA ---
         function exportarPlanilhaClientes() {
-            if (!listaClientes || listaClientes.length === 0) return alert("Nada para exportar.");
+            if(listaClientes.length === 0) return alert("Nenhum cliente para exportar.");
             let csvContent = "\uFEFFNome;Criador;Usuário;Servidor;WhatsApp;Valor;Vencimento;Cadastro\n";
             listaClientes.forEach(cli => {
-                const wa = cli.whatsapp ? cli.whatsapp.replace(/\D/g, '') : '';
+                const wa = cli.whatsapp ? normalizarWhatsApp(cli.whatsapp) : '';
                 const linha = [
                     `"${cli.nome || ''}"`,
                     `"${cli.criador || ''}"`,
@@ -744,39 +681,51 @@
                     `"${wa}"`,
                     `"${cli.valor || ''}"`,
                     `"${cli.vencimento || ''}"`,
-                    `"${cli.data || ''}"`
-                ].join(";");
-                csvContent += linha + "\n";
+                    `"${cli.cadastro || ''}"`
+                ];
+                csvContent += linha.join(";") + "\n";
             });
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
             const url = URL.createObjectURL(blob);
             link.setAttribute("href", url);
-            link.setAttribute("download", `clientes_${new Date().toLocaleDateString().replace(/\//g,'-')}.csv`);
+            link.setAttribute("download", "clientes_gerenciador_wa.csv");
             link.style.visibility = 'hidden';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         }
 
-        // --- MENSAGEM & COBRANÇA ---
-        function abrirConfigMsg() { document.getElementById('config-msg-input').value = globalWhatsappTemplate; document.getElementById('config-action-msg-input').value = globalActionWaTemplate; document.getElementById('modal-config-msg').classList.add('show'); }
-        async function salvarTemplateMsg() { 
-            const tmpl = document.getElementById('config-msg-input').value; 
-            const tmplAction = document.getElementById('config-action-msg-input').value;
-            if(!tmpl || !tmplAction) return alert("Preencha ambos os campos."); 
-            try { 
-                const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'save_wa_template', user: currentUserData.user, pass: currentUserData.pass, template: tmpl, actionTemplate: tmplAction }) }); 
-                const res = await req.json(); 
-                if(res.success) { 
-                    globalWhatsappTemplate = tmpl; 
-                    globalActionWaTemplate = tmplAction;
-                    alert("Modelos salvos!"); 
-                    fecharModal('modal-config-msg'); 
-                } 
-            } catch(e) { alert("Erro."); } 
+        function abrirConfigMsg() {
+            document.getElementById('config-msg-input').value = globalWhatsappTemplate;
+            document.getElementById('config-action-msg-input').value = globalActionWaTemplate;
+            document.getElementById('modal-config-msg').classList.add('show');
         }
-        
+
+        async function salvarTemplateMsg() {
+            const template = document.getElementById('config-msg-input').value;
+            const actionTemplate = document.getElementById('config-action-msg-input').value;
+            try {
+                const req = await fetch(API_URL, { 
+                    method: 'POST', 
+                    body: JSON.stringify({ 
+                        action: 'save_templates', 
+                        user: currentUserData.user, 
+                        pass: currentUserData.pass,
+                        waTemplate: template,
+                        actionWaTemplate: actionTemplate
+                    }) 
+                });
+                const res = await req.json();
+                if(res.success) {
+                    globalWhatsappTemplate = template;
+                    globalActionWaTemplate = actionTemplate;
+                    alert("Modelos salvos!");
+                    fecharModal('modal-config-msg');
+                }
+            } catch(e) { alert("Erro ao salvar modelos."); }
+        }
+
         function prepararCobranca(id) {
             const cli = listaClientes.find(c => String(c.id) === String(id));
             if(!cli) { console.error("Cliente nao encontrado", id); return; }
@@ -788,6 +737,7 @@
             document.getElementById('wa-dest-charge').value = normalizarWhatsApp(cli.whatsapp);
             document.getElementById('modal-send-charge').classList.add('show');
         }
+
         function prepararMensagemAcao(id) {
             const cli = listaClientes.find(c => String(c.id) === String(id));
             if(!cli) return;
@@ -799,20 +749,20 @@
             document.getElementById('wa-dest-charge').value = normalizarWhatsApp(cli.whatsapp);
             document.getElementById('modal-send-charge').classList.add('show');
         }
+
         function enviarCobrancaReal() {
             const num = document.getElementById('wa-dest-charge').value;
             const texto = document.getElementById('msg-final-charge').value;
-            window.open(`https://wa.me/55${num}?text=${encodeURIComponent(texto)}`);
+            window.open(`https://wa.me/${num}?text=${encodeURIComponent(texto)}`);
             fecharModal('modal-send-charge');
         }
 
-        // --- CLIENTES ---
         function abrirModalCliente() { clienteEditandoId = null; document.getElementById('modal-cli-title').innerText = "Novo Cliente"; document.getElementById('cli-nome').value = ''; document.getElementById('cli-user').value = ''; document.getElementById('cli-server').value = ''; document.getElementById('cli-wa').value = ''; document.getElementById('cli-val').value = ''; document.getElementById('cli-venc').value = ''; document.getElementById('modal-new-client').classList.add('show'); }
         function prepararEdicaoCliente(id) { 
             const cli = listaClientes.find(c => String(c.id) === String(id)); 
             if(!cli) return; 
             clienteEditandoId = id; 
-            document.getElementById('modal-cli-title').innerText = "Editar Cliente"; document.getElementById('cli-nome').value = cli.nome; document.getElementById('cli-user').value = cli.usuario; document.getElementById('cli-server').value = cli.ser            document.getElementById('cli-wa').value = cli.whatsapp ? normalizarWhatsApp(cli.whatsapp) : '';ment.getElementById('cli-val').value = cli.valor; 
+            document.getElementById('modal-cli-title').innerText = "Editar Cliente"; document.getElementById('cli-nome').value = cli.nome; document.getElementById('cli-user').value = cli.usuario; document.getElementById('cli-server').value = cli.servidor; document.getElementById('cli-wa').value = cli.whatsapp ? normalizarWhatsApp(cli.whatsapp) : ''; document.getElementById('cli-val').value = cli.valor; 
             if(cli.vencimento && cli.vencimento.includes('/')) { const parts = cli.vencimento.split('/'); document.getElementById('cli-venc').value = `${parts[2]}-${parts[1]}-${parts[0]}`; } else { document.getElementById('cli-venc').value = ''; } 
             document.getElementById('modal-new-client').classList.add('show'); 
         }
@@ -825,257 +775,70 @@
             msgEmpty.style.display = 'none';
             corpo.innerHTML = '';
             try { 
-                const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'list_clients', user: currentUserData.user, pass: currentUserData.pass }) }); 
+                const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'get_clients', user: currentUserData.user, pass: currentUserData.pass }) }); 
                 const res = await req.json(); 
-                if(res.success) { listaClientes = res.lista; popularFiltros(); aplicarFiltrosERenderizar(); } else { msgEmpty.innerText = "Erro ao carregar."; msgEmpty.style.display = 'block'; } 
-            } catch(e) { msgEmpty.innerText = "Erro de conexão."; msgEmpty.style.display = 'block'; } finally { loader.style.display = 'none'; }
+                if(res.success) { 
+                    listaClientes = res.data; 
+                    renderizarClientes(listaClientes); 
+                } 
+            } catch(e) { console.error(e); } finally { loader.style.display = 'none'; } 
         }
-        async function deletarCliente(id) { if(!confirm("Excluir?")) return; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'delete_client', user: currentUserData.user, pass: currentUserData.pass, id: id }) }); carregarMeusClientes(); } catch(e) { alert("Erro."); } }
 
-        function toggleFilter(e, campo) { e.stopPropagation(); document.querySelectorAll('.filter-dropdown').forEach(el => { if(el.id !== `filter-${campo}`) el.classList.remove('show'); }); const menu = document.getElementById(`filter-${campo}`); if(menu) menu.classList.toggle('show'); }
-        function popularFiltros() {
-            ['criador', 'servidor', 'vencimento', 'valor'].forEach(campo => {
-                const contentDiv = document.querySelector(`#filter-${campo} .filter-content`);
-                if(!contentDiv) return;
-                contentDiv.innerHTML = '';
-                if (campo === 'vencimento') {
-                    ['Vencidos', 'Expira em 7 dias'].forEach(op => { contentDiv.innerHTML += `<label class="filter-option" onclick="event.stopPropagation()"><input type="checkbox" value="${op}" onchange="atualizarFiltro('${campo}', this)"> ${op}</label>`; });
-                } else {
-                    const unicos = [...new Set(listaClientes.map(item => item[campo]).filter(Boolean))].sort();
-                    if(unicos.length === 0) contentDiv.innerHTML = '<small style="color:#999; padding:5px;">Vazio</small>';
-                    unicos.forEach(val => { contentDiv.innerHTML += `<label class="filter-option" onclick="event.stopPropagation()"><input type="checkbox" value="${val}" onchange="atualizarFiltro('${campo}', this)"> ${val}</label>`; });
-                }
-            });
-        }
-        function atualizarFiltro(campo, checkbox) { if(!filtrosAtivos[campo]) filtrosAtivos[campo] = []; if(checkbox.checked) { filtrosAtivos[campo].push(checkbox.value); } else { filtrosAtivos[campo] = filtrosAtivos[campo].filter(v => v !== checkbox.value); } aplicarFiltrosERenderizar(); }
-        function limparFiltro(campo) { filtrosAtivos[campo] = []; const inputs = document.querySelectorAll(`#filter-${campo} input`); inputs.forEach(i => i.checked = false); aplicarFiltrosERenderizar(); document.getElementById(`filter-${campo}`).classList.remove('show'); }
-        function aplicarFiltrosERenderizar() {
-            let filtrados = listaClientes.filter(cli => {
-                const termo = document.getElementById('search-client').value.toLowerCase();
-                if(termo && !JSON.stringify(cli).toLowerCase().includes(termo)) return false;
-                for (const [campo, valores] of Object.entries(filtrosAtivos)) {
-                    if (valores.length === 0) continue; 
-                    if (campo === 'vencimento') {
-                        const hoje = new Date(); hoje.setHours(0,0,0,0);
-                        let p = cli.vencimento.split('/');
-                        let dVenc = new Date(p[2], p[1]-1, p[0]);
-                        let diff = (dVenc - hoje) / (1000 * 60 * 60 * 24);
-                        let match = false;
-                        if(valores.includes('Vencidos') && diff < 0) match = true;
-                        if(valores.includes('Expira em 7 dias') && diff >= 0 && diff <= 7) match = true;
-                        if(!match) return false;
-                    } else { if (!valores.includes(cli[campo])) return false; }
-                }
-                return true;
-            });
-            filtrados.sort((a,b) => { function d(str) { if(!str || str==='-') return new Date(9999,0,1); const p = str.split('/'); return new Date(p[2], p[1]-1, p[0]); } return d(a.vencimento) - d(b.vencimento); });
-            renderizarLinhas(filtrados);
-        }
-        function filtrarClientesUI() { aplicarFiltrosERenderizar(); } 
-        function renderizarLinhas(lista) {
+        function renderizarClientes(lista) {
             const corpo = document.getElementById('tabela-corpo');
             const msgEmpty = document.getElementById('msg-sem-clientes');
             corpo.innerHTML = '';
-            if(lista.length === 0) { msgEmpty.style.display = 'block'; return; } else { msgEmpty.style.display = 'none'; }
-            const isAdmin = (currentUserData.cargo === 'Admin' || currentUserData.cargo === 'Sub-Admin');
-            const thCriador = document.getElementById('th-criador');
-            if(thCriador) thCriador.style.display = isAdmin ? 'table-cell' : 'none';
-            const hoje = new Date(); hoje.setHours(0,0,0,0);
+            
+            if(!lista || lista.length === 0) { msgEmpty.style.display = 'block'; return; }
+            msgEmpty.style.display = 'none';
+
             let total = 0, ativos = 0, vencendo = 0, vencidos = 0;
+            const isAdmin = currentUserData.isMaster;
 
             lista.forEach(cli => {
                 total++;
                 let waLink = '-'; if(cli.whatsapp) { waLink = `<button onclick="prepararCobranca('${cli.id}')" class="wa-link">📱 Cobrar</button>`; }
                 let alerta = ""; let corVenc = "#333";
                 
-                if (cli.vencimento && cli.vencimento.includes('/')) {
-                    const parts = cli.vencimento.split('/'); 
-                    const dataVenc = new Date(parts[2], parts[1]-1, parts[0]); 
-                    const diffDias = (dataVenc - hoje) / (1000 * 60 * 60 * 24);
+                if(cli.vencimento && cli.vencimento !== "-") {
+                    const dV = formatarData(cli.vencimento);
+                    dV.setHours(0,0,0,0);
+                    const hoje = new Date();
+                    hoje.setHours(0,0,0,0);
+                    const diff = Math.ceil((dV - hoje) / 86400000);
                     
-                    if (diffDias < 0) { 
-                        alerta = "<span class='alert-icon'>⚠</span>"; corVenc = "red"; 
-                        vencidos++;
-                    } else if (diffDias <= 3) { 
-                        alerta = "<span class='alert-icon'>⚠</span>"; corVenc = "#d97706"; 
-                        vencendo++;
-                        ativos++;
-                    } else {
-                        ativos++;
-                    }
-                } else {
-                    ativos++;
-                }
+                    if(diff < 0) { vencidos++; alerta = "🔴"; corVenc = "var(--danger)"; }
+                    else if(diff <= 5) { vencendo++; alerta = "🟡"; corVenc = "var(--gold)"; }
+                    else { ativos++; }
+                } else { ativos++; }
 
                 let criadorCell = isAdmin ? `<td data-label="Criador" style="color:var(--blue); font-weight:bold;">${cli.criador}</td>` : '';
                 corpo.innerHTML += `<tr><td data-label="Nome"><b>${cli.nome}</b></td>${criadorCell}<td data-label="Usuário">${cli.usuario}</td><td data-label="Servidor">${cli.servidor}</td><td data-label="WhatsApp">${waLink}</td><td data-label="Vencimento" style="color:${corVenc}; font-weight:bold;">${cli.vencimento || '-'} ${alerta}</td><td data-label="Valor" style="color:var(--primary); font-weight:bold;">R$ ${cli.valor}</td><td data-label="Ações"><div class="actions-wrapper"><button class="btn-action-custom btn-edit" title="Editar" onclick="prepararEdicaoCliente('${cli.id}')">✏️</button><button class="btn-action-custom btn-delete" title="Excluir" onclick="deletarCliente('${cli.id}')">🗑️</button><button class="btn-action-custom btn-whatsapp" title="WhatsApp" onclick="prepararMensagemAcao('${cli.id}')">💬</button></div></td></tr>`;
             });
 
-            // Atualizar Contadores
             document.getElementById('stat-total').innerText = total;
             document.getElementById('stat-ativos').innerText = ativos;
             document.getElementById('stat-vencendo').innerText = vencendo;
             document.getElementById('stat-vencidos').innerText = vencidos;
         }
 
-        // --- ADMIN FUNCTIONS ---
-        async function abrirAdminPanel() {
-            document.getElementById('modal-admin').classList.add('show');
-            const listDiv = document.getElementById('admin-users-list');
-            listDiv.innerHTML = '<div class="loader" style="display:block; margin:20px auto"></div>';
-            
-            const isSub = currentUserData.cargo === 'Sub-Admin';
-            const actionBar = document.querySelector('.admin-action-bar');
-            if(actionBar) actionBar.style.display = isSub ? 'none' : 'grid';
+        async function deletarCliente(id) { if(!confirm("Excluir este cliente?")) return; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'delete_client', user: currentUserData.user, pass: currentUserData.pass, id: id }) }); const res = await req.json(); if(res.success) { carregarMeusClientes(); } } catch(e) { alert("Erro ao excluir."); } }
+        function filtrarClientes() { const termo = document.getElementById('search-client').value.toLowerCase(); const filtrados = listaClientes.filter(c => c.nome.toLowerCase().includes(termo) || c.usuario.toLowerCase().includes(termo) || (c.servidor && c.servidor.toLowerCase().includes(termo))); renderizarClientes(filtrados); }
+        function tabelaSort(col) { listaClientes.sort((a,b) => String(a[col]).localeCompare(String(b[col]))); renderizarClientes(listaClientes); }
 
-            try {
-                const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'admin_list', user: currentUserData.user, pass: currentUserData.pass }) });
-                const res = await req.json();
-                if (res.success) { renderAdminUsers(res.list); } else { listDiv.innerHTML = '<p style="text-align:center; color:red">Erro ao carregar.</p>'; }
-            } catch (e) { listDiv.innerHTML = '<p style="text-align:center; color:red">Erro de conexão.</p>'; }
-        }
+        function toggleFilter(e, col) { e.stopPropagation(); const drop = document.getElementById('filter-'+col); const isShow = drop.classList.contains('show'); document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('show')); if(!isShow) { drop.classList.add('show'); const values = [...new Set(listaClientes.map(c => c[col] || '-'))]; const content = drop.querySelector('.filter-content'); content.innerHTML = values.map(v => `<label><input type="checkbox" onchange="aplicarFiltro('${col}', '${v}', this.checked)"> ${v}</label>`).join(''); } }
+        function aplicarFiltro(col, val, checked) { if(!filtrosAtivos[col]) filtrosAtivos[col] = []; if(checked) { filtrosAtivos[col].push(val); } else { filtrosAtivos[col] = filtrosAtivos[col].filter(v => v !== val); } let filtrados = listaClientes; Object.keys(filtrosAtivos).forEach(c => { if(filtrosAtivos[c].length > 0) { filtrados = filtrados.filter(item => filtrosAtivos[c].includes(item[c] || '-')); } }); renderizarClientes(filtrados); }
+        function limparFiltro(col) { filtrosAtivos[col] = []; renderizarClientes(listaClientes); }
 
-        function renderAdminUsers(list) {
-            const listDiv = document.getElementById('admin-users-list');
-            if (!list || list.length === 0) { listDiv.innerHTML = '<p style="text-align:center">Vazio.</p>'; return; }
-            
-            const isSubAdmin = currentUserData.cargo === 'Sub-Admin';
-            let html = '<div class="table-responsive"><table class="admin-table"><thead><tr>';
-            html += '<th>Status</th><th>User</th><th class="col-detailed">Pass</th><th>Validade</th><th>WhatsApp</th><th class="col-detailed">Valor</th><th class="col-detailed">Cargo</th><th class="col-detailed">Pix</th>';
-            if (!isSubAdmin) { html += '<th class="col-detailed">Cadastro</th><th class="col-detailed">Criador</th><th class="col-detailed">Valor Revenda</th>'; }
-            html += '<th>Ações</th></tr></thead><tbody>';
-
-            const hoje = new Date();
-
-            list.forEach(row => {
-                let uUser = row[0] || "";
-                if (isSubAdmin && uUser.toLowerCase() === currentUserData.user.toLowerCase()) return; 
-
-                // SANITIZAÇÃO DE DADOS PARA NÃO QUEBRAR O ONCLICK
-                let uPass = row[1];
-                let uDate = row[2] || "";
-                let uWa = row[3] || "";
-                let uVal = row[4] || "";
-                let uCargo = row[5] || "";
-                let uPix = row[6] || "";
-                let uStatus = row[7] || "Ativo";
-                let uCriador = row[8] || "-";
-                let uCadastro = "-";
-                let uRevenda = row[10] || "0"; 
-
-                // Limpa aspas simples e duplas para não quebrar o HTML
-                const safeUser = uUser.replace(/'/g, "").replace(/"/g, "");
-                const safePass = String(uPass).replace(/'/g, "").replace(/"/g, "");
-                const safeWa = String(uWa).replace(/'/g, "").replace(/"/g, "");
-                const safeDate = String(uDate).replace(/'/g, "").replace(/"/g, "");
-                const safeVal = String(uVal).replace(/'/g, "").replace(/"/g, "");
-                const safeCargo = String(uCargo).replace(/'/g, "").replace(/"/g, "");
-
-                if(uCargo.toLowerCase() === 'administrador') uCargo = "Admin";
-                if(uCargo.toLowerCase() === 'subadministrador') uCargo = "Sub-Admin";
-
-                let statusDot = "status-active"; let statusTexto = uStatus;
-                if (uCargo !== 'Admin' && uCargo !== 'Sub-Admin' && !uDate.includes("Vitalício")) {
-                    const d = parseData(uDate); 
-                    if (d && !isNaN(d.getTime())) {
-                        if (d < hoje) { statusDot = "status-expired"; statusTexto = (uCargo === 'Teste') ? "Expirado" : "Vencido"; } else if (uCargo === 'Teste') { statusDot = "status-test"; }
-                    }
-                }
-                if (String(uStatus).includes('Bloq')) { statusDot = "status-expired"; statusTexto = "Bloqueado"; }
-                if (String(uStatus).includes('Pendente')) { statusDot = "status-pending"; statusTexto = "Pendente"; }
-                if (String(uStatus).includes('Solicitando')) { statusDot = "status-request"; statusTexto = "Solicitando Renovação"; }
-
-                let btns = '';
-                if (!isSubAdmin) {
-                    btns += `<button class="btn-action-master act-toggle" title="Aprovar/Bloquear" onclick="toggleStatus('${safeUser}')">✅</button>`;
-                    btns += `<button class="btn-action-master act-renew" title="Renovar" onclick="renovarUser('${safeUser}')">📅</button>`;
-                } else {
-                    btns += `<button class="btn-action-master act-signal" title="Solicitar Renovação ao Admin" onclick="sinalizarRenovacao('${safeUser}')">✋</button>`;
-                }
-                
-                // CORREÇÃO: Passando dados "safe" (sem aspas)
-                const btnSendReal = `<button class="btn-action-master act-send" title="Enviar Dados" onclick="prepararEnvioWhatsApp('${safeUser}','${safePass}','${safeWa}','${safeDate}','${safeVal}')">📩</button>`;
-                
-                btns += `<button class="btn-action-master act-chat" title="WhatsApp" onclick="window.open('https://wa.me/55${normalizarWhatsApp(uWa)}')">💬</button>`;
-                btns += btnSendReal;
-                
-                // CORREÇÃO: Passando dados "safe" para o modal de edição
-                btns += `<button class="btn-action-master act-edit" title="Editar" onclick="prepararEdicaoUser('${safeUser}', '${safeDate}', '${safeWa}', '${safeVal}', '${safeCargo}')">✏️</button>`;
-
-                html += `<tr><td><span class="status-dot ${statusDot}"></span>${statusTexto}</td><td><b>${uUser}</b></td><td class="col-detailed">******</td><td>${uDate}</td><td>${uWa}</td><td class="col-detailed">${uVal}</td><td class="col-detailed">${uCargo}</td><td class="col-detailed">${uPix}</td>`;
-                if (!isSubAdmin) { html += `<td class="col-detailed">${uCadastro}</td><td class="col-detailed">${uCriador}</td><td class="col-detailed">${uRevenda}</td>`; }
-                html += `<td><div style="display:flex; justify-content:center; gap:4px;">${btns}</div></td></tr>`;
-            });
-            html += '</tbody></table></div>';
-            listDiv.innerHTML = html;
-            toggleCompactMode(); 
-        }
-
-        function toggleCompactMode() { const hide = document.getElementById('toggle-compact').checked; document.querySelectorAll('.col-detailed').forEach(el => { el.style.display = hide ? 'none' : 'table-cell'; }); }
-        async function sinalizarRenovacao(target) { if(!confirm("Solicitar ao Admin que renove este usuário?")) return; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'signal_renewal', user: currentUserData.user, pass: currentUserData.pass, targetUser: target }) }); const res = await req.json(); if(res.success) { alert("Solicitação enviada! O status mudou para 'Solicitando Renovação'."); abrirAdminPanel(); } else { alert("Erro ao solicitar."); } } catch(e) { alert("Erro de conexão."); } }
-        function parseData(v) { if(!v) return null; if(v instanceof Date) return v; if(typeof v==='string'){ var s=v.trim(); if(s.length>10){ try { var parts=s.split(' '); var d=parts[0].split('/'); var t=parts[1].split(':'); return new Date(d[2],d[1]-1,d[0],t[0],t[1]); } catch(e) { return null; } } else { var d=s.split('/'); if(d.length===3) return new Date(d[2],d[1]-1,d[0], 23, 59, 59); } } return new Date(v); }
-        function abrirModalCreate() { userEditing = null; document.getElementById('new-user').value = ''; document.getElementById('new-pass').value = ''; document.getElementById('new-days').value = '30'; document.getElementById('new-wa').value = ''; document.getElementById('new-val').value = ''; document.getElementById('new-pix').value = ''; const roleSelect = document.getElementById('new-role'); roleSelect.innerHTML = ''; const optUser = document.createElement('option'); optUser.value = 'User'; optUser.innerText = 'Usuário Comum'; roleSelect.appendChild(optUser); const optTest = document.createElement('option'); optTest.value = 'Teste'; optTest.innerText = 'Teste (1 Hora)'; roleSelect.appendChild(optTest); if (currentUserData.cargo === 'Admin') { const optSub = document.createElement('option'); optSub.value = 'Sub-Admin'; optSub.innerText = 'Sub-Admin'; roleSelect.appendChild(optSub); const optAdmin = document.createElement('option'); optAdmin.value = 'Admin'; optAdmin.innerText = 'Admin Master'; roleSelect.appendChild(optAdmin); } checkRole(); document.getElementById('modal-create').classList.add('show'); }
-        function checkRole() { const r = document.getElementById('new-role').value; const d = document.getElementById('days-container'); if (r === 'Teste') d.classList.add('hidden'); else d.classList.remove('hidden'); }
-        async function salvarNovoUsuario() { const btn = document.getElementById('btn-save-user'); const u = document.getElementById('new-user').value; const p = document.getElementById('new-pass').value; const d = parseInt(document.getElementById('new-days').value); const w = document.getElementById('new-wa').value; const v = document.getElementById('new-val').value; const x = document.getElementById('new-pix').value; const cargo = document.getElementById('new-role').value; const msg = document.getElementById('msg-create'); if(!u || !p) return msg.innerText = "Preencha usuário e senha."; btn.disabled = true; btn.innerText = "Salvando..."; let date = ""; const hoje = new Date(); if (cargo !== 'Teste') { hoje.setDate(hoje.getDate() + (d || 0)); const dia = ("0" + hoje.getDate()).slice(-2); const mes = ("0" + (hoje.getMonth() + 1)).slice(-2); const ano = hoje.getFullYear(); date = `${dia}/${mes}/${ano}`; } else { date = "1h"; } const novo = { user: u, pass: p, date: date, wa: w, val: v, cargo: cargo, pix: x }; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'create_user', user: currentUserData.user, pass: currentUserData.pass, novoUsuario: novo }) }); const res = await req.json(); if (res.success) { tempUser=u; tempPass=p; tempWa=w; tempDate=date; tempVal=v; fecharModal('modal-create'); document.getElementById('modal-created-success').classList.add('show'); abrirAdminPanel(); } else { msg.innerText = "Erro ao criar."; } } catch (e) { msg.innerText = "Erro conexão."; } finally { btn.disabled = false; btn.innerText = "💾 Salvar"; } }
-        
-        // CORREÇÃO: Função atualizada para receber os dados
-        function prepararEdicaoUser(uName, uDate, uWa, uVal, uCargo) { 
-            userEditing = uName; 
-            document.getElementById('edit-user-display').innerText = uName; 
-            document.getElementById('edit-pass').value = ''; 
-            
-            // Preenche os campos com os dados recebidos
-            document.getElementById('edit-date').value = uDate; 
-            document.getElementById('edit-wa').value = uWa; 
-            document.getElementById('edit-val').value = uVal; 
-            document.getElementById('edit-role').value = uCargo;
-
-            const isSub = currentUserData.cargo === 'Sub-Admin'; 
-            document.getElementById('div-edit-role').style.display = isSub ? 'none' : 'block'; 
-            document.getElementById('modal-edit').classList.add('show'); 
-        }
-        
-        // CORREÇÃO: Função de Envio com preparação
-        function prepararEnvioWhatsApp(u, p, w, d, v) { 
-            tempUser = u; tempPass = p; tempWa = w; tempDate = d; tempVal = v; 
-            document.getElementById('send-dest').innerText = u; 
-            const previewHtml = `👤 <b>Usuário:</b> ${u}<br>🔑 <b>Senha:</b> ${p}<br>📅 <b>Vencimento:</b> ${d}<br>🌐 <b>Site:</b> www.gerenciadorwa.com.br`; 
-            document.getElementById('preview-msg-content').innerHTML = previewHtml; 
-            document.getElementById('whatsapp-extra-msg').value = ""; 
-            document.getElementById('modal-send-whatsapp').classList.add('show'); 
-        }
-
-        // CORREÇÃO: Função de Envio com tratamento de número
-        function finalizarEnvioWhatsApp() { 
-            const extra = document.getElementById('whatsapp-extra-msg').value; 
-            const quebra = extra ? `\n\n${extra}` : ""; 
-            const msg = `🔐 *Seu Acesso Gerenciador |WA|*\n\n👤 *Usuário:* ${tempUser}\n🔑 *Senha:* ${tempPass}\n📅 *Vencimento:* ${tempDate}\n🌐 *Site:* www.gerenciadorwa.com.br${quebra}`; 
-            
-            // LIMPEZA E CORREÇÃO DO NÚMERO
-            let num = normalizarWhatsApp(tempWa);
-            if(!num || num.length < 8) return alert("Este usuário não tem número de WhatsApp válido.");
-
-            if (num.length >= 10 && num.length <= 11) {
-                num = '55' + num; // Adiciona Brasil se faltar
-            }
-            
-            window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`); 
-            fecharModal('modal-send-whatsapp'); 
-        }
-        
-        async function salvarEdicao() { const btn = document.getElementById('btn-save-edit'); const p = document.getElementById('edit-pass').value; const d = document.getElementById('edit-date').value; const w = document.getElementById('edit-wa').value; const v = document.getElementById('edit-val').value; const r = document.getElementById('edit-role').value; btn.disabled = true; btn.innerText = "Salvando..."; const edit = { userOriginal: userEditing, pass: p, date: d, wa: w, val: v, cargo: r }; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'edit_user', user: currentUserData.user, pass: currentUserData.pass, dadosEditados: edit }) }); alert("Editado!"); fecharModal('modal-edit'); abrirAdminPanel(); } catch (e) { alert("Erro."); } finally { btn.disabled = false; btn.innerText = "💾 Atualizar Dados"; } }
-        async function renovarUser(target) { const d = prompt("Quantos dias adicionar?", "30"); if (!d) return; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'renew_user', user: currentUserData.user, pass: currentUserData.pass, targetUser: target, days: d }) }); alert("Renovado!"); abrirAdminPanel(); } catch (e) { alert("Erro."); } }
-        async function toggleStatus(target) { if (!confirm("Alterar status?")) return; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'toggle_status', user: currentUserData.user, pass: currentUserData.pass, targetUser: target }) }); abrirAdminPanel(); } catch (e) { alert("Erro."); } }
-        async function fazerUploadArquivo(modo) { const input = (modo === 'teste') ? document.getElementById('admin-file-test') : document.getElementById('admin-file-upload'); if (input.files.length === 0) return alert("Selecione um arquivo."); const file = input.files[0]; const reader = new FileReader(); reader.onload = async function(e) { const base64 = e.target.result.split(',')[1]; document.getElementById('upload-status').innerText = "Enviando..."; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'upload_file', user: currentUserData.user, pass: currentUserData.pass, fileData: base64, fileName: file.name, fileType: file.type, mode: modo }) }); const res = await req.json(); if (res.success) { alert("Arquivo enviado!"); document.getElementById('upload-status').innerText = ""; } else { alert("Erro no envio."); } } catch (err) { alert("Erro de conexão."); } }; reader.readAsDataURL(file); }
-        async function salvarMensagem() { const m = document.getElementById('global-msg-input').value; if (!m) return alert("Digite algo."); try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'save_message', user: currentUserData.user, pass: currentUserData.pass, message: m }) }); alert("Mensagem salva!"); } catch (e) { alert("Erro."); } }
-        async function abrirTutoriais() { document.getElementById('modal-tutorials').classList.add('show'); const area = document.getElementById('tutorials-list'); area.innerHTML = 'Carregando...'; if(currentUserData.isMaster) document.getElementById('admin-tutorial-area').style.display = 'block'; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'get_tutorials' }) }); const res = await req.json(); if(res.success && res.list.length > 0) { area.innerHTML = ''; res.list.forEach(t => { let embed = t.link; if(t.link.includes('youtu')) { const vidId = t.link.split('v=')[1] || t.link.split('/').pop(); embed = `https://www.youtube.com/embed/${vidId}`; } area.innerHTML += `<div class="tutorial-card"><div class="tut-title-text">📺 ${t.title} ${currentUserData.isMaster ? `<button class="danger btn-auto" style="padding:2px 5px; font-size:10px;" onclick="apagarTutorial(${t.id})">X</button>` : ''}</div><div class="video-container"><iframe src="${embed}" frameborder="0" allowfullscreen></iframe></div></div>`; }); } else { area.innerHTML = '<p>Nenhum tutorial disponível.</p>'; } } catch(e) { area.innerHTML = 'Erro ao carregar.'; } }
-        async function salvarTutorial() { const t = document.getElementById('tut-title').value; const l = document.getElementById('tut-link').value; if(!t || !l) return alert("Preencha tudo."); try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'save_tutorial', title: t, link: l }) }); alert("Adicionado!"); abrirTutoriais(); } catch(e){ alert("Erro."); } }
-        async function apagarTutorial(id) { if(!confirm("Apagar?")) return; try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'delete_tutorial', id: id }) }); abrirTutoriais(); } catch(e){ alert("Erro."); } }
-        function verificarInstalacaoApp() { if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) return; const bannerFechadoEm = localStorage.getItem('install_banner_closed'); if (bannerFechadoEm && (new Date().getTime() - parseInt(bannerFechadoEm) < 86400000)) return; abrirTutorialInstall(); }
-        function abrirTutorialInstall() { const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream; if (deferredPrompt) { document.getElementById('btn-android-install').classList.remove('hidden'); document.getElementById('tutorial-android').classList.add('hidden'); document.getElementById('tutorial-ios').classList.add('hidden'); } else if (isIOS) { document.getElementById('btn-android-install').classList.add('hidden'); document.getElementById('tutorial-ios').classList.remove('hidden'); document.getElementById('tutorial-android').classList.add('hidden'); } else { document.getElementById('btn-android-install').classList.add('hidden'); document.getElementById('tutorial-ios').classList.add('hidden'); document.getElementById('tutorial-android').classList.remove('hidden'); } document.getElementById('modal-install-tutorial').classList.add('show'); }
-        async function instalarAndroid() { if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') fecharInstallModal(); deferredPrompt = null; } }
-        function fecharInstallModal() { document.getElementById('modal-install-tutorial').classList.remove('show'); localStorage.setItem('install_banner_closed', new Date().getTime()); }
         function toggleTheme() { document.body.classList.toggle('dark-mode'); const isDark = document.body.classList.contains('dark-mode'); localStorage.setItem('theme', isDark ? 'dark' : 'light'); document.querySelector('.theme-toggle').innerText = isDark ? '☀️' : '🌙'; }
+        function renderizar() { const u = currentUserData.user; const links = db[u].links || []; const salvos = db[u].salvos || []; const desc = db[u].naoSalvos || []; document.getElementById('count-pend').innerText = links.length; document.getElementById('count-saved').innerText = salvos.length; document.getElementById('count-discarded').innerText = desc.length; renderLista('lista-pendentes', links, pgPend, 'pend'); renderLista('lista-salvos', salvos, pgSalv, 'salv'); renderLista('lista-descartados', desc, pgDesc, 'desc'); localStorage.setItem(DB_KEY, JSON.stringify(db)); }
+        function renderLista(id, lista, pg, tipo) { const container = document.getElementById(id); container.innerHTML = ""; const start = pg * ITENS_PAG; const end = start + ITENS_PAG; const itens = lista.slice(start, end); itens.forEach((l, i) => { const idx = start + i; let html = `<div class="card ${tipo==='desc'?'card-discarded':''}">`; if(tipo==='pend') { html += `<div class="link-text">${l}</div><div style="display:flex; gap:5px;"><button onclick="tratarAberturaLink(${idx}, '${l}')" class="btn-auto">Abrir</button><button onclick="ignorarLink(${idx})" class="secondary btn-auto">Ignorar</button></div>`; } else { html += `<div class="link-text">${l}</div><button onclick="window.open('${l.includes('http')?l:'https://wa.me/55'+normalizarWhatsApp(l)}')" class="btn-auto" style="width:auto; padding:6px 12px;">Abrir</button>`; } html += `</div>`; container.innerHTML += html; }); renderPaginacao(tipo, lista.length, pg); }
+        function renderPaginacao(tipo, total, atual) { const container = document.getElementById('paginacao-'+tipo); container.innerHTML = ""; const pags = Math.ceil(total / ITENS_PAG); if(pags <= 1) return; if(atual > 0) container.innerHTML += `<button class="secondary btn-auto" style="padding:4px 8px;" onclick="mudarPag('${tipo}', ${atual-1})"> < </button>`; container.innerHTML += `<span>${atual+1} / ${pags}</span>`; if(atual < pags-1) container.innerHTML += `<button class="secondary btn-auto" style="padding:4px 8px;" onclick="mudarPag('${tipo}', ${atual+1})"> > </button>`; }
+        function mudarPag(tipo, nova) { if(tipo==='pend') pgPend=nova; else if(tipo==='salv') pgSalv=nova; else pgDesc=nova; renderizar(); }
+        function addLinks() { const input = document.getElementById('links-input'); const val = input.value.trim(); if(!val) return; const novos = val.split('\n').map(l => l.trim()).filter(l => l); db[currentUserData.user].links.push(...novos); input.value = ""; renderizar(); }
+        function lerArquivo(i) { const r=new FileReader(); r.onload=(e)=>{ const linhas = e.target.result.split('\n').map(l => l.trim()).filter(l => l); db[currentUserData.user].links.push(...linhas); renderizar();}; r.readAsText(i.files[0]); i.value=''; }
+        function ignorarLink(idx) { const u = currentUserData.user; const link = db[u].links.splice(idx, 1)[0]; if(!db[u].naoSalvos) db[u].naoSalvos = []; db[u].naoSalvos.push(link); renderizar(); }
+        function baixarSalvos() { const u = currentUserData.user; if(!db[u].salvos || db[u].salvos.length === 0) return alert("Nada salvo."); const blob = new Blob([db[u].salvos.join('\n')], {type: 'text/plain'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'salvos.txt'; a.click(); }
         function formatarData(d) { if(!d) return new Date(); let l = String(d).trim(); if(l.includes('/')) { const p = l.split('/'); return new Date(p[2], p[1]-1, p[0]); } return new Date(l); }
         function fecharModal(id){ document.getElementById(id).classList.remove('show'); }
         function logout(){ localStorage.removeItem(SESSION_KEY); location.reload(); }
@@ -1085,17 +848,165 @@
         function limparPendentes() { if(confirm("Apagar?")) { db[currentUserData.user].links = []; pgPend = 0; renderizar(); } }
         function limparSalvos() { if(confirm("Limpar?")) { db[currentUserData.user].salvos = []; pgSalv = 0; renderizar(); } }
         function limparDescartados() { if(confirm("Limpar?")) { db[currentUserData.user].naoSalvos = []; pgDesc = 0; renderizar(); } }
-        function resgatarDescartado(idx) { const u = currentUserData.user; const link = db[u].naoSalvos[idx]; db[u].links.push(link); db[u].naoSalvos.splice(idx, 1); renderizar(); }
-        function filtrarUsuarios() { const termo = document.getElementById('search-user').value.toLowerCase(); const linhas = document.querySelectorAll('.admin-table tbody tr'); linhas.forEach(tr => { const texto = tr.innerText.toLowerCase(); tr.style.display = texto.includes(termo) ? '' : 'none'; }); }
-        function abrirModalRenovar() { let chave = currentUserData.pix; if (!chave || chave === "undefined") chave = "Chave não cadastrada"; document.getElementById('pix-display').innerText = chave; document.getElementById('modal-renovar').classList.add('show'); }
-        function copiarPixReal() { const t = document.getElementById('pix-display').innerText; if(navigator.clipboard) { navigator.clipboard.writeText(t).then(()=>alert("Copiado!")); } else { const el = document.createElement("input"); el.value = t; document.body.appendChild(el); el.select(); document.execCommand("copy"); document.body.removeChild(el); alert("Copiado!"); } }
-        function baixarSalvos() { const u = currentUserData.user; if(!db[u].salvos.length) return alert("Nada."); const blob = new Blob([db[u].salvos.join('\n')], {type: 'text/plain'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `extraidos.txt`; a.click(); }
-        function lerArquivo(i) { const r=new FileReader(); r.onload=(e)=>{ const linhas = e.target.result.split('\n'); processarNovosLinks(linhas); }; r.readAsText(i.files[0]); i.value=''; }
-        function processarNovosLinks(listaBruta) { const u = currentUserData.user; if (!db[u]) db[u] = { links: [], salvos: [], naoSalvos: [] }; if (!db[u].salvos) db[u].salvos = []; if (!db[u].naoSalvos) db[u].naoSalvos = []; const jaExistem = new Set([...db[u].links, ...db[u].salvos, ...db[u].naoSalvos]); let adicionados = 0; let duplicados = 0; listaBruta.forEach(link => { const l = link.trim(); if (l) { if (jaExistem.has(l)) { duplicados++; } else { db[u].links.push(l); jaExistem.add(l); adicionados++; } } }); if (duplicados > 0) alert(`Filtrado: ${adicionados} novos adicionados. ${duplicados} repetidos removidos.`); renderizar(); }
-        function addLinks(){ const t=document.getElementById('links-input'); const linhas = t.value.split('\n'); processarNovosLinks(linhas); t.value=''; pgPend = 0; }
-        function renderizar() { const u = currentUserData.user; if(!db[u]) db[u] = {links:[], salvos:[], naoSalvos:[]}; if(!db[u].naoSalvos) db[u].naoSalvos = []; const p = document.getElementById('lista-pendentes'); p.innerHTML = ''; const tP = db[u].links.length; document.getElementById('count-pend').innerText = tP; db[u].links.slice(pgPend*ITENS_PAG, (pgPend+1)*ITENS_PAG).forEach((l,i) => { p.innerHTML += `<div class="card"><span class="link-text">${l}</span><button class="btn-auto" onclick="tratarAberturaLink(${pgPend*ITENS_PAG+i},'${l}')">Abrir ↗</button></div>`; }); renderControles('paginacao-pend', tP, pgPend, (n)=> {pgPend=n; renderizar();}); const s = document.getElementById('lista-salvos'); s.innerHTML = ''; const tS = db[u].salvos ? db[u].salvos.length : 0; document.getElementById('count-saved').innerText = tS; if(db[u].salvos) db[u].salvos.slice(pgSalv*ITENS_PAG, (pgSalv+1)*ITENS_PAG).forEach((l,i) => { s.innerHTML += `<div class="card" style="border-left:4px solid var(--primary)"><span class="link-text">${l}</span><button class="danger btn-auto" onclick="db['${u}'].salvos.splice(${pgSalv*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-salv', tS, pgSalv, (n)=> {pgSalv=n; renderizar();}); const d = document.getElementById('lista-descartados'); d.innerHTML = ''; const tD = db[u].naoSalvos ? db[u].naoSalvos.length : 0; document.getElementById('count-discarded').innerText = tD; if(db[u].naoSalvos) db[u].naoSalvos.slice(pgDesc*ITENS_PAG, (pgDesc+1)*ITENS_PAG).forEach((l,i) => { d.innerHTML += `<div class="card card-discarded"><span class="link-text">${l}</span><button class="btn-auto" onclick="resgatarDescartado(${pgDesc*ITENS_PAG+i})">♻️</button><button class="danger btn-auto" onclick="db['${u}'].naoSalvos.splice(${pgDesc*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-desc', tD, pgDesc, (n)=> {pgDesc=n; renderizar();}); localStorage.setItem(DB_KEY, JSON.stringify(db)); }
-        function renderControles(id, total, atual, cb) { const div = document.getElementById(id), max = Math.ceil(total/ITENS_PAG); if(max <= 1) { div.innerHTML = ''; return; } div.innerHTML = `<button class="secondary btn-auto" ${atual===0?'disabled':''} onclick="(${cb})(${atual+1})">«</button><span>${atual+1}/${max}</span><button class="secondary btn-auto" ${atual>=max-1?'disabled':''} onclick="(${cb})(${atual+1})">»</button>`; }
+
+        async function abrirAdminPanel() { 
+            const modal = document.getElementById('modal-admin');
+            const corpo = document.getElementById('admin-corpo');
+            corpo.innerHTML = '<tr><td colspan="6">Carregando usuários...</td></tr>';
+            modal.classList.add('show');
+            try {
+                const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'get_all_users', user: currentUserData.user, pass: currentUserData.pass }) });
+                const res = await req.json();
+                if (res.success) {
+                    allUsers = res.data;
+                    renderizarAdmin(allUsers);
+                }
+            } catch(e) { corpo.innerHTML = '<tr><td colspan="6">Erro ao carregar.</td></tr>'; }
+        }
+
+        function renderizarAdmin(lista) {
+            const corpo = document.getElementById('admin-corpo');
+            corpo.innerHTML = '';
+            const isCompact = document.getElementById('toggle-compact').checked;
+
+            lista.forEach(u => {
+                const uWa = u.whatsapp || '';
+                const uVal = u.valor || '0,00';
+                const uDate = u.date || '-';
+                const uCargo = u.cargo || 'User';
+                
+                // Tratar dados para o onclick (evitar quebra por aspas)
+                const safeUser = u.user.replace(/'/g, "\\'");
+                const safeWa = uWa.replace(/'/g, "\\'");
+                const safeVal = uVal.replace(/'/g, "\\'");
+                const safeDate = uDate.replace(/'/g, "\\'");
+                const safeCargo = uCargo.replace(/'/g, "\\'");
+
+                let statusClass = 'status-active';
+                if (uDate !== 'Vitalício') {
+                    const dV = formatarData(uDate);
+                    const hoje = new Date();
+                    if (dV < hoje) statusClass = 'status-expired';
+                }
+                if (uCargo === 'Teste') statusClass = 'status-test';
+
+                // Botão de Envio de Dados
+                const btnSendReal = `<button class="btn-action-master act-send" title="Enviar Dados" onclick="prepararEnvioWhatsApp('${safeUser}','${safePass}','${safeWa}','${safeDate}','${safeVal}')">📩</button>`;
+                
+                let btns = `<div style="display:flex; gap:4px; justify-content:center;">`;
+                btns += `<button class="btn-action-master act-toggle" title="Renovar/Alterar" onclick="prepararEdicaoUser('${safeUser}', '${safeDate}', '${safeWa}', '${safeVal}', '${safeCargo}')">⚙️</button>`;
+                
+                btns += `<button class="btn-action-master act-chat" title="WhatsApp" onclick="window.open('https://wa.me/55${normalizarWhatsApp(uWa)}')">💬</button>`;
+                btns += btnSendReal;
+                
+                // CORREÇÃO: Passando dados "safe" para o modal de edição
+                btns += `<button class="btn-action-master act-edit" title="Editar" onclick="prepararEdicaoUser('${safeUser}', '${safeDate}', '${safeWa}', '${safeVal}', '${safeCargo}')">✏️</button>`;
+                
+                btns += `<button class="btn-action-master act-renew" title="Excluir" onclick="deletarUsuario('${safeUser}')">🗑️</button>`;
+                btns += `</div>`;
+
+                if (isCompact) {
+                    corpo.innerHTML += `<tr><td><span class="status-dot ${statusClass}"></span></td><td><b>${u.user}</b></td><td>${uDate}</td><td colspan="2">-</td><td>${btns}</td></tr>`;
+                } else {
+                    corpo.innerHTML += `<tr><td><span class="status-dot ${statusClass}"></span></td><td><b>${u.user}</b><br><small style="opacity:0.6">${uCargo}</small></td><td>${uDate}</td><td>${uWa}</td><td>R$ ${uVal}</td><td>${btns}</td></tr>`;
+                }
+            });
+        }
+
+        function toggleCompactMode() { renderizarAdmin(allUsers); }
+        function filtrarUsuarios() { const t = document.getElementById('search-user').value.toLowerCase(); const f = allUsers.filter(u => u.user.toLowerCase().includes(t)); renderizarAdmin(f); }
+
+        function prepararEdicaoUser(uUser, uDate, uWa, uVal, uCargo) {
+            userEditing = uUser;
+            document.getElementById('edit-user').value = uUser;
+            document.getElementById('edit-wa').value = normalizarWhatsApp(uWa);
+            document.getElementById('edit-val').value = uVal;
+            
+            // Tratar data para o input date (YYYY-MM-DD)
+            if (uDate && uDate.includes('/')) {
+                const p = uDate.split('/');
+                document.getElementById('edit-date').value = `${p[2]}-${p[1]}-${p[0]}`;
+            } else {
+                document.getElementById('edit-date').value = "";
+            }
+
+            // Popular cargos
+            const sel = document.getElementById('edit-role');
+            sel.innerHTML = `<option value="User">Usuário Comum</option><option value="Admin">Admin (Master)</option><option value="Sub-Admin">Sub-Admin (Vendedor)</option><option value="Teste">Teste (Temporário)</option>`;
+            document.getElementById('edit-role').value = uCargo;
+
+            const isSub = currentUserData.cargo === 'Sub-Admin'; 
+            document.getElementById('div-edit-role').style.display = isSub ? 'none' : 'block'; 
+            document.getElementById('modal-edit').classList.add('show'); 
+        }
         
+        async function salvarEdicao() {
+            const btn = document.getElementById('btn-save-edit');
+            const d = document.getElementById('edit-date').value;
+            const w = document.getElementById('edit-wa').value;
+            const v = document.getElementById('edit-val').value;
+            const r = document.getElementById('edit-role').value;
+            
+            let dataFormatada = "-";
+            if (d) { const p = d.split('-'); dataFormatada = `${p[2]}/${p[1]}/${p[0]}`; }
+
+            btn.disabled = true; btn.innerText = "Salvando...";
+            try {
+                const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'update_user', adminUser: currentUserData.user, adminPass: currentUserData.pass, targetUser: userEditing, newData: { date: dataFormatada, whatsapp: w, valor: v, cargo: r } }) });
+                const res = await req.json();
+                if (res.success) { alert("Atualizado!"); fecharModal('modal-edit'); abrirAdminPanel(); }
+            } catch(e) { alert("Erro ao salvar."); }
+            finally { btn.disabled = false; btn.innerText = "💾 Atualizar Dados"; }
+        }
+
+        async function deletarUsuario(u) { if(!confirm(`Apagar usuário ${u}?`)) return; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'delete_user', adminUser: currentUserData.user, adminPass: currentUserData.pass, targetUser: u }) }); const res = await req.json(); if(res.success) { alert("Apagado!"); abrirAdminPanel(); } } catch(e) { alert("Erro ao excluir."); } }
+
+        function abrirModalCreate() {
+            const sel = document.getElementById('new-role');
+            sel.innerHTML = `<option value="User">Usuário Comum</option><option value="Admin">Admin (Master)</option><option value="Sub-Admin">Sub-Admin (Vendedor)</option><option value="Teste">Teste (Temporário)</option>`;
+            document.getElementById('modal-create').classList.add('show');
+        }
+
+        function checkRole() {
+            const r = document.getElementById('new-role').value;
+            document.getElementById('days-container').style.display = (r === 'Teste') ? 'none' : 'flex';
+        }
+
+        async function salvarNovoUsuario() {
+            const u = document.getElementById('new-user').value.trim();
+            const p = document.getElementById('new-pass').value.trim();
+            const d = document.getElementById('new-days').value || 30;
+            const r = document.getElementById('new-role').value;
+            const w = document.getElementById('new-wa').value;
+            const v = document.getElementById('new-val').value;
+            const px = document.getElementById('new-pix').value;
+
+            if(!u || !p) return alert("Usuário e Senha obrigatórios.");
+
+            const btn = document.getElementById('btn-save-user');
+            btn.disabled = true; btn.innerText = "Criando...";
+
+            try {
+                const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'create_user', adminUser: currentUserData.user, adminPass: currentUserData.pass, newUser: { user: u, pass: p, days: d, cargo: r, whatsapp: w, valor: v, pix: px } }) });
+                const res = await req.json();
+                if (res.success) {
+                    alert("Usuário criado com sucesso!");
+                    fecharModal('modal-create');
+                    abrirAdminPanel();
+                    
+                    // Salva dados temporários para o modal de sucesso
+                    tempUser = u; tempPass = p; tempWa = w; tempVal = v;
+                    const hoje = new Date(); hoje.setDate(hoje.getDate() + parseInt(d));
+                    tempDate = `${hoje.getDate().toString().padStart(2,'0')}/${(hoje.getMonth()+1).toString().padStart(2,'0')}/${hoje.getFullYear()}`;
+                    
+                    document.getElementById('modal-created-success').classList.add('show');
+                } else {
+                    alert(res.msg || "Erro ao criar usuário.");
+                }
+            } catch(e) { alert("Erro de conexão."); }
+            finally { btn.disabled = false; btn.innerText = "💾 Salvar"; }
+        }
+
         function prepararEnvioAposCriacao() { fecharModalSucessoCriacao(); prepararEnvioWhatsApp(tempUser, tempPass, tempWa, tempDate, tempVal); }
         function fecharModalSucessoCriacao() { document.getElementById('modal-created-success').classList.remove('show'); }
         function prepararEnvioWhatsApp(u, p, w, d, v) { tempUser = u; tempPass = p; tempWa = w; tempDate = d; tempVal = v; document.getElementById('send-dest').innerText = u; const previewHtml = `👤 <b>Usuário:</b> ${u}<br>🔑 <b>Senha:</b> ${p}<br>📅 <b>Vencimento:</b> ${d}<br>🌐 <b>Site:</b> www.gerenciadorwa.com.br`; document.getElementById('preview-msg-content').innerHTML = previewHtml; document.getElementById('whatsapp-extra-msg').value = ""; document.getElementById('modal-send-whatsapp').classList.add('show'); }
