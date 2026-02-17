@@ -107,6 +107,62 @@
         .tutorial-step { text-align: left; margin-bottom: 15px; background: rgba(0,0,0,0.03); padding: 10px; border-radius: 10px; font-size: 13px; }
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border-radius: 10px; background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .timer-badge { background: #ef4444; color: white; padding: 2px 8px; border-radius: 5px; font-size: 12px; font-weight: bold; margin-left: 5px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
+        /* TELA CLIENTES */
+        .custom-table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--card); border-radius: 10px; overflow: visible !important; }
+        .custom-table thead { background: var(--bg); border-bottom: 2px solid #e5e7eb; position: sticky; top: 0; z-index: 50; }
+        .custom-table th { padding: 12px; text-align: left; color: var(--primary); font-weight: 700; cursor: pointer; position: relative; }
+        .custom-table th:hover { background: rgba(0,0,0,0.05); }
+        .custom-table td { padding: 12px; border-bottom: 1px solid #f3f4f6; color: var(--text); }
+        .custom-table tr:hover { background: rgba(0,0,0,0.02); }
+        .wa-link { color: #25d366; font-weight: bold; text-decoration: none; display: flex; align-items: center; gap: 4px; border: 1px solid #25d366; padding: 3px 8px; border-radius: 20px; font-size: 11px; width: fit-content; background:transparent; cursor:pointer;}
+        .wa-link:hover { background: #f0fdf4; }
+        .alert-icon { color: #ef4444; font-size: 14px; animation: pulse 1s infinite; margin-left: 5px; }
+        
+        .filter-dropdown { position: absolute; top: 35px; left: 0; background: var(--card); border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); padding: 12px; z-index: 9999; min-width: 200px; text-align: left !important; display: none; }
+        .filter-dropdown.show { display: block; }
+        .filter-content { max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+        .filter-option { display: flex !important; align-items: center; gap: 8px; font-size: 12px; color: var(--text); cursor: pointer; white-space: nowrap; padding: 4px; border-radius: 4px; width: 100%; }
+        .filter-option:hover { background: rgba(0,0,0,0.05); }
+        .filter-option input { width: 14px; height: 14px; margin: 0; cursor: pointer; }
+        .filter-actions { border-top: 1px solid #eee; margin-top: 8px; padding-top: 8px; text-align: right; }
+        .filter-btn-small { font-size: 10px; padding: 4px 10px; background: var(--text); color: var(--card); border-radius: 4px; width: auto; display: inline-block; cursor: pointer;}
+        
+        /* CONTADORES */
+        .stats-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
+        .stat-card { background: var(--bg); padding: 10px; border-radius: 10px; text-align: center; border: 1px solid #e5e7eb; }
+        .stat-value { display: block; font-size: 18px; font-weight: 700; color: var(--primary); }
+        .stat-label { display: block; font-size: 10px; color: var(--gray); text-transform: uppercase; font-weight: 600; }
+        .stat-vencidos .stat-value { color: var(--danger); }
+        .stat-vencendo .stat-value { color: var(--gold); }
+        
+        /* AJUSTE BOTÕES AÇÕES */
+        .actions-wrapper { display: flex; gap: 8px; justify-content: center; align-items: center; }
+        .btn-action-custom { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; border: none; color: white; font-size: 14px; }
+        .btn-action-custom:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn-edit { background: #3b82f6; }
+        .btn-delete { background: #ef4444; }
+        .btn-whatsapp { background: #25d366; }
+
+        /* ESTILO PARA MAPEAMENTO DE COLUNAS */
+        .map-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px; border-bottom: 1px solid #eee; }
+        .map-label { font-weight: 700; width: 30%; font-size: 13px; margin-top: 8px; }
+        .map-input-group { width: 65%; display: flex; flex-direction: column; gap: 5px; }
+        .map-select { width: 100%; font-size: 12px; padding: 8px; }
+        .map-manual-input { width: 100%; font-size: 12px; padding: 8px; border: 1px dashed #3b82f6; background: #eff6ff; color: #1e40af; border-radius: 6px; }
+
+        @media (max-width: 600px) {
+            .custom-table, .custom-table thead, .custom-table tbody, .custom-table th, .custom-table td, .custom-table tr { display: block; }
+            .custom-table thead tr { position: absolute; top: -9999px; left: -9999px; }
+            .custom-table tr { border: 1px solid #eee; border-radius: 10px; margin-bottom: 10px; background: var(--card); position: relative; }
+            .custom-table td { position: relative; padding-left: 50%; border: none; border-bottom: 1px solid #eee; }
+            .custom-table td:before { position: absolute; left: 10px; width: 45%; padding-right: 10px; white-space: nowrap; content: attr(data-label); font-weight: 700; color: var(--primary); }
+            .custom-table td:last-child { border-bottom: 0; }
+            .actions-wrapper { justify-content: flex-start; padding: 5px 0; }
+            .stats-container { grid-template-columns: 1fr 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -400,14 +456,7 @@
     <div id="modal-created-success" class="modal-overlay" style="z-index: 1300;"> <div class="modal-content" style="max-width: 350px; text-align:center;"> <div style="font-size: 50px;">✅</div> <h3 style="margin-top:0; color:var(--primary);">Usuário Criado!</h3> <p style="font-size:13px; color:#666; margin-bottom:20px;">O que deseja fazer agora?</p> <div style="display:flex; flex-direction:column; gap:10px;"><button class="chat-btn" onclick="prepararEnvioAposCriacao()">📲 Enviar Acesso</button><button class="secondary" onclick="fecharModalSucessoCriacao()">❌ Fechar</button></div> </div> </div>
 
     <script>
-        // ========================================
-        // FUNÇÃO DE NORMALIZAÇÃO DO WHATSAPP
-        // ========================================
-        function normalizarWhatsApp(numero) {
-            if (!numero) return "";
-            return String(numero).replace(/\D/g, '');
-        }
-
+        function normalizarWhatsApp(numero) { if (!numero) return ""; return String(numero).replace(/\D/g, ''); }
         const API_URL = 'https://script.google.com/macros/s/AKfycbwtMMYq6gHWUX33Ie05iyjbVKPzWtzd9vebIInLe607nqN57GteOeOGE1a8dMI05Cpw/exec';
         const DB_KEY = 'zapflow_v36'; const SESSION_KEY = 'zapflow_session_v36';
         let db = JSON.parse(localStorage.getItem(DB_KEY)) || {};
@@ -932,13 +981,11 @@
                     btns += `<button class="btn-action-master act-signal" title="Solicitar Renovação ao Admin" onclick="sinalizarRenovacao('${safeUser}')">✋</button>`;
                 }
                 
-                // CORREÇÃO: Passando dados "safe" (sem aspas)
                 const btnSendReal = `<button class="btn-action-master act-send" title="Enviar Dados" onclick="prepararEnvioWhatsApp('${safeUser}','${safePass}','${safeWa}','${safeDate}','${safeVal}')">📩</button>`;
                 
                 btns += `<button class="btn-action-master act-chat" title="WhatsApp" onclick="window.open('https://wa.me/55${normalizarWhatsApp(uWa)}')">💬</button>`;
                 btns += btnSendReal;
                 
-                // CORREÇÃO: Passando dados "safe" para o modal de edição
                 btns += `<button class="btn-action-master act-edit" title="Editar" onclick="prepararEdicaoUser('${safeUser}', '${safeDate}', '${safeWa}', '${safeVal}', '${safeCargo}')">✏️</button>`;
 
                 html += `<tr><td><span class="status-dot ${statusDot}"></span>${statusTexto}</td><td><b>${uUser}</b></td><td class="col-detailed">******</td><td>${uDate}</td><td>${uWa}</td><td class="col-detailed">${uVal}</td><td class="col-detailed">${uCargo}</td><td class="col-detailed">${uPix}</td>`;
@@ -955,25 +1002,21 @@
         function parseData(v) { if(!v) return null; if(v instanceof Date) return v; if(typeof v==='string'){ var s=v.trim(); if(s.length>10){ try { var parts=s.split(' '); var d=parts[0].split('/'); var t=parts[1].split(':'); return new Date(d[2],d[1]-1,d[0],t[0],t[1]); } catch(e) { return null; } } else { var d=s.split('/'); if(d.length===3) return new Date(d[2],d[1]-1,d[0], 23, 59, 59); } } return new Date(v); }
         function abrirModalCreate() { userEditing = null; document.getElementById('new-user').value = ''; document.getElementById('new-pass').value = ''; document.getElementById('new-days').value = '30'; document.getElementById('new-wa').value = ''; document.getElementById('new-val').value = ''; document.getElementById('new-pix').value = ''; const roleSelect = document.getElementById('new-role'); roleSelect.innerHTML = ''; const optUser = document.createElement('option'); optUser.value = 'User'; optUser.innerText = 'Usuário Comum'; roleSelect.appendChild(optUser); const optTest = document.createElement('option'); optTest.value = 'Teste'; optTest.innerText = 'Teste (1 Hora)'; roleSelect.appendChild(optTest); if (currentUserData.cargo === 'Admin') { const optSub = document.createElement('option'); optSub.value = 'Sub-Admin'; optSub.innerText = 'Sub-Admin'; roleSelect.appendChild(optSub); const optAdmin = document.createElement('option'); optAdmin.value = 'Admin'; optAdmin.innerText = 'Admin Master'; roleSelect.appendChild(optAdmin); } checkRole(); document.getElementById('modal-create').classList.add('show'); }
         function checkRole() { const r = document.getElementById('new-role').value; const d = document.getElementById('days-container'); if (r === 'Teste') d.classList.add('hidden'); else d.classList.remove('hidden'); }
+        async function salvarNovoUsuario() { const btn = document.getElementById('btn-save-user'); const u = document.getElementById('new-user').value; const p = document.getElementById('new-pass').value; const d = parseInt(document.getElementById('new-days').value); const w = normalizarWhatsApp(document.getElementById('new-wa').value); const v = document.getElementById('new-val').value; const x = document.getElementById('new-pix').value; const cargo = document.getElementById('new-role').value; const msg = document.getElementById('msg-create'); if(!u || !p) return msg.innerText = "Preencha usuário e senha."; btn.disabled = true; btn.innerText = "Salvando..."; let date = ""; const hoje = new Date(); if (cargo !== 'Teste') { hoje.setDate(hoje.getDate() + (d || 0)); const dia = ("0" + hoje.getDate()).slice(-2); const mes = ("0" + (hoje.getMonth() + 1)).slice(-2); const ano = hoje.getFullYear(); date = `${dia}/${mes}/${ano}`; } else { date = "1h"; } const novo = { user: u, pass: p, date: date, wa: w, val: v, cargo: cargo, pix: x }; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'create_user', user: currentUserData.user, pass: currentUserData.pass, novoUsuario: novo }) }); const res = await req.json(); if (res.success) { tempUser=u; tempPass=p; tempWa=w; tempDate=date; tempVal=v; fecharModal('modal-create'); document.getElementById('modal-created-success').classList.add('show'); abrirAdminPanel(); } else { msg.innerText = "Erro ao criar."; } } catch (e) { msg.innerText = "Erro conexão."; } finally { btn.disabled = false; btn.innerText = "💾 Salvar"; } }
         
-        // CORREÇÃO: Função atualizada para receber os dados
         function prepararEdicaoUser(uName, uDate, uWa, uVal, uCargo) { 
             userEditing = uName; 
             document.getElementById('edit-user-display').innerText = uName; 
             document.getElementById('edit-pass').value = ''; 
-            
-            // Preenche os campos com os dados recebidos
             document.getElementById('edit-date').value = uDate; 
             document.getElementById('edit-wa').value = normalizarWhatsApp(uWa); 
             document.getElementById('edit-val').value = uVal; 
             document.getElementById('edit-role').value = uCargo;
-
             const isSub = currentUserData.cargo === 'Sub-Admin'; 
             document.getElementById('div-edit-role').style.display = isSub ? 'none' : 'block'; 
             document.getElementById('modal-edit').classList.add('show'); 
         }
         
-        // CORREÇÃO: Função de Envio com preparação
         function prepararEnvioWhatsApp(u, p, w, d, v) { 
             tempUser = u; tempPass = p; tempWa = w; tempDate = d; tempVal = v; 
             document.getElementById('send-dest').innerText = u; 
@@ -983,20 +1026,13 @@
             document.getElementById('modal-send-whatsapp').classList.add('show'); 
         }
 
-        // CORREÇÃO: Função de Envio com tratamento de número
         function finalizarEnvioWhatsApp() { 
             const extra = document.getElementById('whatsapp-extra-msg').value; 
             const quebra = extra ? `\n\n${extra}` : ""; 
             const msg = `🔐 *Seu Acesso Gerenciador |WA|*\n\n👤 *Usuário:* ${tempUser}\n🔑 *Senha:* ${tempPass}\n📅 *Vencimento:* ${tempDate}\n🌐 *Site:* www.gerenciadorwa.com.br${quebra}`; 
-            
-            // LIMPEZA E CORREÇÃO DO NÚMERO
             let num = normalizarWhatsApp(tempWa);
             if(!num || num.length < 8) return alert("Este usuário não tem número de WhatsApp válido.");
-
-            if (num.length >= 10 && num.length <= 11) {
-                num = '55' + num; // Adiciona Brasil se faltar
-            }
-            
+            if (num.length >= 10 && num.length <= 11) { num = '55' + num; }
             window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`); 
             fecharModal('modal-send-whatsapp'); 
         }
@@ -1031,25 +1067,8 @@
         function lerArquivo(i) { const r=new FileReader(); r.onload=(e)=>{ const linhas = e.target.result.split('\n'); processarNovosLinks(linhas); }; r.readAsText(i.files[0]); i.value=''; }
         function processarNovosLinks(listaBruta) { const u = currentUserData.user; if (!db[u]) db[u] = { links: [], salvos: [], naoSalvos: [] }; if (!db[u].salvos) db[u].salvos = []; if (!db[u].naoSalvos) db[u].naoSalvos = []; const jaExistem = new Set([...db[u].links, ...db[u].salvos, ...db[u].naoSalvos]); let adicionados = 0; let duplicados = 0; listaBruta.forEach(link => { const l = link.trim(); if (l) { if (jaExistem.has(l)) { duplicados++; } else { db[u].links.push(l); jaExistem.add(l); adicionados++; } } }); if (duplicados > 0) alert(`Filtrado: ${adicionados} novos adicionados. ${duplicados} repetidos removidos.`); renderizar(); }
         function addLinks(){ const t=document.getElementById('links-input'); const linhas = t.value.split('\n'); processarNovosLinks(linhas); t.value=''; pgPend = 0; }
-        
-        function prepararEnvioAposCriacao() { fecharModalSucessoCriacao(); prepararEnvioWhatsApp(tempUser, tempPass, tempWa, tempDate, tempVal); }
-        function fecharModalSucessoCriacao() { document.getElementById('modal-created-success').classList.remove('show'); }
-        function prepararEnvioWhatsApp(u, p, w, d, v) { tempUser = u; tempPass = p; tempWa = w; tempDate = d; tempVal = v; document.getElementById('send-dest').innerText = u; const previewHtml = `👤 <b>Usuário:</b> ${u}<br>🔑 <b>Senha:</b> ${p}<br>📅 <b>Vencimento:</b> ${d}<br>🌐 <b>Site:</b> www.gerenciadorwa.com.br`; document.getElementById('preview-msg-content').innerHTML = previewHtml; document.getElementById('whatsapp-extra-msg').value = ""; document.getElementById('modal-send-whatsapp').classList.add('show'); }
-        function finalizarEnvioWhatsApp() { const extra = document.getElementById('whatsapp-extra-msg').value; const quebra = extra ? `\n\n${extra}` : ""; const msg = `🔐 *Seu Acesso Gerenciador |WA|*\n\n👤 *Usuário:* ${tempUser}\n🔑 *Senha:* ${tempPass}\n📅 *Vencimento:* ${tempDate}\n🌐 *Site:* www.gerenciadorwa.com.br${quebra}`; window.open(`https://wa.me/55${String(tempWa).replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`); fecharModal('modal-send-whatsapp'); }
-        
-        async function iniciarTimerTeste(seconds) {
-            const display = document.getElementById('status-acesso');
-            if (timerInterval) clearInterval(timerInterval);
-            let remaining = seconds;
-            function update() {
-                if (remaining <= 0) { display.innerText = "EXPIRADO"; display.style.color = "red"; clearInterval(timerInterval); alert("Seu tempo de teste acabou!"); logout(); return; }
-                const m = Math.floor(remaining / 60); const s = remaining % 60;
-                display.innerHTML = `Expira em: <span class="timer-badge">${m}:${s < 10 ? '0'+s : s}</span>`; remaining--;
-            }
-            update(); timerInterval = setInterval(update, 1000);
-        }
-        function marcarMensagemLida() { const msg = document.getElementById('msg-text').innerText; localStorage.setItem('zapflow_last_msg_' + currentUserData.user, msg); fecharModal('modal-global-msg'); }
-
+        function renderizar() { const u = currentUserData.user; if(!db[u]) db[u] = {links:[], salvos:[], naoSalvos:[]}; if(!db[u].naoSalvos) db[u].naoSalvos = []; const p = document.getElementById('lista-pendentes'); p.innerHTML = ''; const tP = db[u].links.length; document.getElementById('count-pend').innerText = tP; db[u].links.slice(pgPend*ITENS_PAG, (pgPend+1)*ITENS_PAG).forEach((l,i) => { p.innerHTML += `<div class="card"><span class="link-text">${l}</span><button class="btn-auto" onclick="tratarAberturaLink(${pgPend*ITENS_PAG+i},'${l}')">Abrir ↗</button></div>`; }); renderControles('paginacao-pend', tP, pgPend, (n)=> {pgPend=n; renderizar();}); const s = document.getElementById('lista-salvos'); s.innerHTML = ''; const tS = db[u].salvos ? db[u].salvos.length : 0; document.getElementById('count-saved').innerText = tS; if(db[u].salvos) db[u].salvos.slice(pgSalv*ITENS_PAG, (pgSalv+1)*ITENS_PAG).forEach((l,i) => { s.innerHTML += `<div class="card" style="border-left:4px solid var(--primary)"><span class="link-text">${l}</span><button class="danger btn-auto" onclick="db['${u}'].salvos.splice(${pgSalv*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-salv', tS, pgSalv, (n)=> {pgSalv=n; renderizar();}); const d = document.getElementById('lista-descartados'); d.innerHTML = ''; const tD = db[u].naoSalvos ? db[u].naoSalvos.length : 0; document.getElementById('count-discarded').innerText = tD; if(db[u].naoSalvos) db[u].naoSalvos.slice(pgDesc*ITENS_PAG, (pgDesc+1)*ITENS_PAG).forEach((l,i) => { d.innerHTML += `<div class="card card-discarded"><span class="link-text">${l}</span><button class="btn-auto" onclick="resgatarDescartado(${pgDesc*ITENS_PAG+i})">♻️</button><button class="danger btn-auto" onclick="db['${u}'].naoSalvos.splice(${pgDesc*ITENS_PAG+i},1);renderizar();">X</button></div>`; }); renderControles('paginacao-desc', tD, pgDesc, (n)=> {pgDesc=n; renderizar();}); localStorage.setItem(DB_KEY, JSON.stringify(db)); }
+        function renderControles(id, total, atual, cb) { const div = document.getElementById(id), max = Math.ceil(total/ITENS_PAG); if(max <= 1) { div.innerHTML = ''; return; } div.innerHTML = `<button class="secondary btn-auto" ${atual===0?'disabled':''} onclick="(${cb})(${atual-1})">«</button><span>${atual+1}/${max}</span><button class="secondary btn-auto" ${atual>=max-1?'disabled':''} onclick="(${cb})(${atual+1})">»</button>`; }
         async function conectarBanco() { const u = document.getElementById('user').value.trim(); const p = document.getElementById('pass').value.trim(); const msg = document.getElementById('msg-login'); const btn = document.getElementById('btn-login'); const txt = document.getElementById('txt-login'); const loader = document.getElementById('loader-login'); if(!u || !p) return msg.innerText = "Preencha todos os campos."; btn.disabled = true; txt.style.display = 'none'; loader.style.display = 'block'; msg.innerText = ""; try { const req = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'login', user: u, pass: p }) }); const res = await req.json(); if (res.success) { const dados = res.data; let diff = 0; if (dados.cargo !== 'Teste' && dados.date !== 'Vitalício') { const dV = formatarData(dados.date); dV.setHours(0,0,0,0); const hoje = new Date(); hoje.setHours(0,0,0,0); diff = Math.ceil((dV - hoje) / 86400000); if(diff < 0 && !dados.isMaster) { msg.innerText = "Acesso expirado."; localStorage.removeItem(SESSION_KEY); btn.disabled = false; txt.style.display = 'block'; loader.style.display = 'none'; return; } } currentUserData = dados; if(dados.waTemplate) globalWhatsappTemplate = dados.waTemplate; if(dados.actionWaTemplate) globalActionWaTemplate = dados.actionWaTemplate; if(dados.pass) { currentUserData.pass = dados.pass; localStorage.setItem(SESSION_KEY, JSON.stringify({user: u, pass: dados.pass})); } else { currentUserData.pass = p; localStorage.setItem(SESSION_KEY, JSON.stringify({user: u, pass: p})); } if(!db[u]) db[u] = {links:[], salvos:[], naoSalvos: []}; document.getElementById('login-screen').classList.add('hidden'); 
         document.getElementById('dashboard-screen').classList.remove('hidden'); 
         document.getElementById('ola-dashboard').innerText = "Olá, " + currentUserData.user; 
